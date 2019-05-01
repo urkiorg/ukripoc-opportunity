@@ -1,0 +1,20 @@
+{
+    "appName": "ukri",
+    "roleName": "pinpointLambdaRolea9249f89",
+    "cloudWatchPolicyName": "cloudWatchPolicya9249f89",
+    "pinpointPolicyName": "pinpointPolicya9249f89",
+    "authPolicyName": "pinpoint_amplify_a9249f89",
+    "unauthPolicyName": "pinpoint_amplify_a9249f89",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

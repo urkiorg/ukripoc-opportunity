@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "ukri-20190430161600-authRole",
+            "UnauthRoleArn": "arn:aws:iam::522536411738:role/ukri-20190430161600-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::522536411738:role/ukri-20190430161600-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukri-20190430161600-deployment",
+            "UnauthRoleName": "ukri-20190430161600-unauthRole",
+            "StackName": "ukri-20190430161600",
+            "StackId": "arn:aws:cloudformation:eu-west-1:522536411738:stack/ukri-20190430161600/dcc92830-6b5a-11e9-af0c-0ade9df0c35e"
+        },
+        "categories": {
+            "auth": {
+                "cognito686849a5": {}
+            }
+        }
+    }
+}
