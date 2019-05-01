@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Auth from "@aws-amplify/auth";
-
 import awsmobile from './aws-exports';
-
 import API, {
   graphqlOperation
 } from '@aws-amplify/api';
