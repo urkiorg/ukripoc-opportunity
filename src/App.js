@@ -2,20 +2,16 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Auth from "@aws-amplify/auth";
-import awsmobile from './aws-exports';
-import API, {
-  graphqlOperation
-} from '@aws-amplify/api';
+import awsmobile from "./aws-exports";
+import API, { graphqlOperation } from "@aws-amplify/api";
 
-import Amplify from 'aws-amplify'
+import Amplify from "aws-amplify";
 Amplify.configure(awsmobile);
 
 API.configure(awsmobile);
 
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(awsmobile);
-
-
 
 const listOpportunity = `query opportunity {
   opportunity {
@@ -25,7 +21,7 @@ const listOpportunity = `query opportunity {
       description
     }
   }
-}`
+}`;
 
 const addOpportunity = `mutation createOpportunity($name:String! $description: String!) {
   createOpportunity(input: {
@@ -36,40 +32,42 @@ const addOpportunity = `mutation createOpportunity($name:String! $description: S
     name
     description
   }
-}`
+}`;
 
 class App extends Component {
+    todoMutation = async () => {
+        const todoDetails = {
+            name: "New opp",
+            description: "testing..."
+        };
 
-  
-
-  todoMutation = async () => {
-    const todoDetails = {
-      name: 'New opp',
-      description: 'testing...'
+        const newEvent = await API.graphql(
+            graphqlOperation(addOpportunity, todoDetails)
+        );
+        alert(JSON.stringify(newEvent));
     };
 
-    const newEvent = await API.graphql(graphqlOperation(addOpportunity, todoDetails));
-    alert(JSON.stringify(newEvent));
-  }
+    listQuery = async () => {
+        console.log("listing opp");
+        const allTodos = await API.graphql(graphqlOperation(listOpportunity));
+        alert(JSON.stringify(allTodos));
+    };
 
-  listQuery = async () => {
-    console.log('listing opp');
-    const allTodos = await API.graphql(graphqlOperation(listOpportunity));
-    alert(JSON.stringify(allTodos));
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <div className="App-intro">
-          <button onClick = { this.listQuery } > GraphQL Query </button> 
-          <button onClick = { this.todoMutation }> GraphQL Mutation </button>
-        </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <div className="App-intro">
+                    <button onClick={this.listQuery}> GraphQL Query </button>
+                    <button onClick={this.todoMutation}>
+                        {" "}
+                        GraphQL Mutation{" "}
+                    </button>
+                </div>
+            </div>
+        );
+    }
 }
 
-window.LOG_LEVEL = 'DEBUG';
+window.LOG_LEVEL = "DEBUG";
 
 export default App;
