@@ -24,7 +24,7 @@
         "new-component": "hygen component new --name ",
         "storybook": "start-storybook -p 9009 -s public",
         "build-storybook": "build-storybook -s public -o dist/storybook",
-        "build:ci": "rm -r dist && yarn build-storybook && yarn build && mv build dist/preview && cp src/index.html dist/"
+        "build:ci": "yarn build-storybook && yarn build && mv build dist/preview && cp src/index.html dist/"
     },
     "eslintConfig": {
         "extends": "react-app"
