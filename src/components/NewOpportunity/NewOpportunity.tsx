@@ -10,9 +10,9 @@ import Heading from "@govuk-react/heading";
 import Details from "@govuk-react/details";
 import Input from "@govuk-react/input";
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+import { H1, H2, H4 } from "@govuk-react/heading";
 
-const WHAT_THERE = "WHATWHATWHAT";
+interface Props extends HTMLAttributes<HTMLElement> {}
 
 const ADD_OPP = gql`
     mutation($name: String!) {
@@ -25,6 +25,7 @@ const ADD_OPP = gql`
 
 export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
     const [opportunityName, setOpportunityName] = useState("");
+    const [newOpportunityName, setNewOpportunityName] = useState("");
 
     const onInputChange = useCallback(
         event => setOpportunityName(event.target.value),
@@ -34,6 +35,23 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
     const onSubmit = (e: Event) => {
         console.log("submitted!");
     };
+
+    function updateSetup(data: any) {
+        const cleanData = data.createOpportunity;
+        setNewOpportunityName(cleanData.id + " " + cleanData.name);
+        newOpp();
+    }
+
+    function newOpp() {
+        if (newOpportunityName !== "") {
+            return (
+                <div>
+                    <h4> {newOpportunityName} </h4>
+                    <h1> Opportunity Details</h1>
+                </div>
+            );
+        }
+    }
 
     return (
         <div className={cx(styles.wrap, className)} {...props}>
@@ -53,7 +71,11 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
 
             <br />
 
-            <Mutation mutation={ADD_OPP} variables={{ name: opportunityName }}>
+            <Mutation
+                mutation={ADD_OPP}
+                variables={{ name: opportunityName }}
+                onCompleted={(data: any) => updateSetup(data)}
+            >
                 {(postMutation: any, { data }: any) => (
                     <form
                         onSubmit={e => {
@@ -67,6 +89,8 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
                     </form>
                 )}
             </Mutation>
+
+            {newOpp()}
         </div>
     );
 };

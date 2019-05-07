@@ -11,10 +11,11 @@ import API, { graphqlOperation } from "@aws-amplify/api";
 import AWSAppSyncClient from "aws-appsync";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
 import { Rehydrated } from "aws-appsync-react";
+
 import { NewOpportunity } from "./components/NewOpportunity";
+import { AllOpportunities } from "./components/AllOpportunities";
 
 import Main from "@govuk-react/main";
-import { AllOpportunities } from "./components/AllOpportunities";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -39,8 +40,8 @@ class App extends Component {
                 <ApolloProvider client={client}>
                     <Rehydrated>
                         <div className="App">
-                            <AllOpportunities />
                             <NewOpportunity />
+                            <AllOpportunities />
                         </div>
                     </Rehydrated>
                 </ApolloProvider>

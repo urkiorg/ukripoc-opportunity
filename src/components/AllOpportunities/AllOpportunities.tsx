@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLElement> {}
 
 const GET_OPP = gql`
     {
-        listOpportunitys(limit: 100) {
+        listOpportunitys {
             items {
                 name
                 description
