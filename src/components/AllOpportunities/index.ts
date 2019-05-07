@@ -1,0 +1,1 @@
+export { AllOpportunities } from "./AllOpportunities";

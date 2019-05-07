@@ -1,0 +1,5 @@
+type Opportunity @model {
+  id: ID!
+  name: String!
+  description: String
+}
