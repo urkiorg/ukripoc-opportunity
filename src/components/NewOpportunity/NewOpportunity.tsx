@@ -1,40 +1,29 @@
 import React, { FC, HTMLAttributes, useState, useCallback } from "react";
-import cx from "classnames";
 import styles from "./NewOpportunity.module.scss";
 import Button from "@govuk-react/button";
-
-import { ApolloProvider, Mutation } from "react-apollo";
-import gql from "graphql-tag";
-
-import Heading from "@govuk-react/heading";
+import { H2, H4 } from "@govuk-react/heading";
+import HintText from "@govuk-react/hint-text";
 import Details from "@govuk-react/details";
 import Input from "@govuk-react/input";
+import { ukriGreen } from "../../theme";
 
-import { H1, H2, H4 } from "@govuk-react/heading";
+interface Props {
+    addOpportunity: (name: string) => void;
+}
 
-interface Props extends HTMLAttributes<HTMLElement> {}
-
-const ADD_OPP = gql`
-    mutation($name: String!) {
-        createOpportunity(input: { name: $name, description: "Today" }) {
-            id
-            name
-        }
-    }
-`;
-
-export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
+export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
     const [opportunityName, setOpportunityName] = useState("");
     const [newOpportunityName, setNewOpportunityName] = useState("");
 
     const onInputChange = useCallback(
-        event => setOpportunityName(event.target.value),
+        event => setOpportunityName(event.currentTarget.value),
         []
     );
 
-    const onSubmit = (e: Event) => {
-        console.log("submitted!");
-    };
+    const onButtonClick = useCallback(() => {
+        addOpportunity(opportunityName);
+        setOpportunityName("");
+    }, [opportunityName]);
 
     function updateSetup(data: any) {
         const cleanData = data.createOpportunity;
@@ -54,9 +43,13 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
     }
 
     return (
-        <div className={cx(styles.wrap, className)} {...props}>
-            <Heading>New opportunity</Heading>
-
+        <div className={styles.wrap}>
+            <H2 textColour={ukriGreen}>New opportunity</H2>
+            <H4>Opportunity name</H4>
+            <HintText>
+                This name will be used to identify the opportunity internally
+                and publicly.
+            </HintText>
             <Details summary="How should I name my opportunity?">
                 Give your opportunity a name that will help potential applicants
                 understand what the opportunity is about. You don't need to add
@@ -65,32 +58,11 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
                 input.
             </Details>
 
-            <Input onKeyUp={(e: Event) => onInputChange(e)} />
+            <Input value={opportunityName} onChange={onInputChange} mb={7} />
 
-            <br />
-
-            <br />
-
-            <Mutation
-                mutation={ADD_OPP}
-                variables={{ name: opportunityName }}
-                onCompleted={(data: any) => updateSetup(data)}
-            >
-                {(postMutation: any, { data }: any) => (
-                    <form
-                        onSubmit={e => {
-                            e.preventDefault();
-                            postMutation({
-                                variables: { name: opportunityName }
-                            });
-                        }}
-                    >
-                        <Button type="submit">Create opportunity</Button>
-                    </form>
-                )}
-            </Mutation>
-
-            {newOpp()}
+            <Button buttonColour={ukriGreen} onClick={onButtonClick}>
+                Create opportunity
+            </Button>
         </div>
     );
 };

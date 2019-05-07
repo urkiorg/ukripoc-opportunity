@@ -6,16 +6,16 @@ import Amplify from "aws-amplify";
 import Auth from "@aws-amplify/auth";
 
 import config from "./aws-exports";
-import API, { graphqlOperation } from "@aws-amplify/api";
 
 import AWSAppSyncClient from "aws-appsync";
-import { ApolloProvider, Query, Mutation } from "react-apollo";
+import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { Rehydrated } from "aws-appsync-react";
 
-import { NewOpportunity } from "./components/NewOpportunity";
 import { AllOpportunities } from "./components/AllOpportunities";
 
 import Main from "@govuk-react/main";
+import { NewOpportunityPage } from "./components/NewOpportunityPage";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -38,12 +38,14 @@ class App extends Component {
         return (
             <Main>
                 <ApolloProvider client={client}>
-                    <Rehydrated>
-                        <div className="App">
-                            <NewOpportunity />
-                            <AllOpportunities />
-                        </div>
-                    </Rehydrated>
+                    <ApolloHooksProvider client={client}>
+                        <Rehydrated>
+                            <div className="App">
+                                <AllOpportunities />
+                                <NewOpportunityPage />
+                            </div>
+                        </Rehydrated>
+                    </ApolloHooksProvider>
                 </ApolloProvider>
             </Main>
         );
