@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, useState, useCallback } from "react";
+import React, { FC, useState, useCallback } from "react";
 import styles from "./NewOpportunity.module.scss";
 import Button from "@govuk-react/button";
 import { H2, H4 } from "@govuk-react/heading";
@@ -13,7 +13,6 @@ interface Props {
 
 export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
     const [opportunityName, setOpportunityName] = useState("");
-    const [newOpportunityName, setNewOpportunityName] = useState("");
 
     const onInputChange = useCallback(
         event => setOpportunityName(event.currentTarget.value),
@@ -23,24 +22,7 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
     const onButtonClick = useCallback(() => {
         addOpportunity(opportunityName);
         setOpportunityName("");
-    }, [opportunityName]);
-
-    function updateSetup(data: any) {
-        const cleanData = data.createOpportunity;
-        setNewOpportunityName(cleanData.id + " " + cleanData.name);
-        newOpp();
-    }
-
-    function newOpp() {
-        if (newOpportunityName !== "") {
-            return (
-                <div>
-                    <h4> {newOpportunityName} </h4>
-                    <h1> Opportunity Details</h1>
-                </div>
-            );
-        }
-    }
+    }, [opportunityName, addOpportunity]);
 
     return (
         <div className={styles.wrap}>
