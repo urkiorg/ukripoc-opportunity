@@ -11,11 +11,10 @@ import API, { graphqlOperation } from "@aws-amplify/api";
 import AWSAppSyncClient from "aws-appsync";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
 import { Rehydrated } from "aws-appsync-react";
-import { gql } from "apollo-boost";
 import { NewOpportunity } from "./components/NewOpportunity";
 
 import Main from "@govuk-react/main";
-import Table from "@govuk-react/table";
+import { AllOpportunities } from "./components/AllOpportunities";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -29,22 +28,10 @@ const client = new AWSAppSyncClient({
 
 Amplify.configure(config);
 
-API.configure(config);
+// API.configure(config);
 
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
-
-const GET_OPP = gql`
-    {
-        listOpportunitys {
-            items {
-                name
-                description
-            }
-        }
-    }
-`;
-
 class App extends Component {
     render() {
         return (
@@ -52,28 +39,8 @@ class App extends Component {
                 <ApolloProvider client={client}>
                     <Rehydrated>
                         <div className="App">
+                            <AllOpportunities />
                             <NewOpportunity />
-
-                            <Query query={GET_OPP}>
-                                {({ loading, error, data }) => {
-                                    if (loading) return "Loading...";
-                                    if (error) return `Error! ${error.message}`;
-                                    return (
-                                        <div>
-                                            {data.listOpportunitys.items.map(
-                                                (opportunity, i) => (
-                                                    <li key={i}>
-                                                        {opportunity.name} /
-                                                        {
-                                                            opportunity.description
-                                                        }
-                                                    </li>
-                                                )
-                                            )}
-                                        </div>
-                                    );
-                                }}
-                            </Query>
                         </div>
                     </Rehydrated>
                 </ApolloProvider>

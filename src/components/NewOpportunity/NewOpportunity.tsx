@@ -21,21 +21,6 @@ const ADD_OPP = gql`
             name
         }
     }
-
-    # mutation($name: string!) {
-    #     createOpportunity(name: $name) {
-    #         id
-    #         name
-    #     }
-    # }
-
-    # works - just without var
-    #     mutation CreateOpportunity {
-    #     createOpportunity(input: { name: "HEEEEY", description: "Today" }) {
-    #         id
-    #         name
-    #     }
-    # }
 `;
 
 export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
@@ -62,7 +47,7 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
                 input.
             </Details>
 
-            <Input onKeyPress={(e: Event) => onInputChange(e)} />
+            <Input onKeyUp={(e: Event) => onInputChange(e)} />
 
             <br />
 
@@ -74,7 +59,7 @@ export const NewOpportunity: FC<Props> = ({ className, ...props }) => {
                         onSubmit={e => {
                             e.preventDefault();
                             postMutation({
-                                variables: { type: opportunityName }
+                                variables: { name: opportunityName }
                             });
                         }}
                     >
