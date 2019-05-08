@@ -3,4 +3,27 @@ type Opportunity @model {
   id: ID!
   name: String!
   description: String
+  funders: [Funder] @connection(name: "OpportunityFunders")
+  teammembers: [TeamMember] @connection(name: "OpportunityTeamMembers")
+  type: OpportunityType @connection(name: "OpportunityTypes")
+}
+
+type Funder @model {
+  id: ID!
+  name: String!
+  opportunities: Opportunity @connection(name: "OpportunityFunders")
+}
+
+type TeamMember @model {
+  id: ID!
+  name: String!
+  role: String
+  opportunity: Opportunity @connection(name: "OpportunityTeamMembers")
+}
+
+type OpportunityType @model {
+  id: ID!
+  name: String!
+  description: String!
+  opportunities: Opportunity @connection(name: "OpportunityTypes")
 }
