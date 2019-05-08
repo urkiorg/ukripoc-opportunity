@@ -12,9 +12,10 @@ export const NewOpportunityPage: FC = () => {
     const addOpportunity = useCallback(
         (name: string) => {
             console.log("Add opportunity", name);
-            addOpportunityMutation({
+            const fee = addOpportunityMutation({
                 variables: { input: { name, description: "Today" } }
             });
+            console.log(fee);
         },
         [addOpportunityMutation]
     );
