@@ -10,8 +10,8 @@ interface Props extends HTMLAttributes<HTMLElement> {
 
 }
 
-export const <%= comp %>: FC<Props> = ({ className, ...props }) => (
-  <div className={cx(styles.wrap, className)} {...props}>
+export const <%= comp %>: FC<Props> = ({ ...props }) => (
+  <div {...props}>
     {props.children}
   </div>
 );
