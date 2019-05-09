@@ -7,6 +7,9 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { Rehydrated } from "aws-appsync-react";
 import Main from "@govuk-react/main";
+
+import { Router, Link, RouteComponentProps } from "@reach/router";
+
 import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
 
@@ -35,13 +38,34 @@ export const App: FC = () => (
         <ApolloHooksProvider client={client as any}>
             <Rehydrated>
                 <Main>
-                    <AllOpportunities />
-                    <NewOpportunityPage />
+                    <Router>
+                        <RouterPage
+                            path="/all"
+                            pageComponent={<AllOpportunities />}
+                        />
+                        <RouterPage
+                            path="/new"
+                            pageComponent={<NewOpportunityPage />}
+                        />
+                    </Router>
+                    <nav className="primary-nav">
+                        <Link to="/all">
+                            <span aria-label="all"> All </span>
+                        </Link>
+                        <br />
+                        <Link to="/new">
+                            <span aria-label="add"> New </span>
+                        </Link>
+                    </nav>
                 </Main>
             </Rehydrated>
         </ApolloHooksProvider>
     </ApolloProvider>
 );
+
+const RouterPage = (
+    props: { pageComponent: JSX.Element } & RouteComponentProps
+) => props.pageComponent;
 
 (window as any).LOG_LEVEL = "DEBUG";
 
