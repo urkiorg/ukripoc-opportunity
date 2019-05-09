@@ -1,6 +1,4 @@
 import React, { FC, HTMLAttributes } from "react";
-import cx from "classnames";
-import styles from "./AllOpportunities.module.scss";
 
 import { Query } from "react-apollo";
 
@@ -21,8 +19,8 @@ const GET_OPP = gql`
     }
 `;
 
-export const AllOpportunities: FC<Props> = ({ className, ...props }) => (
-    <div className={cx(styles.wrap, className)} {...props}>
+export const AllOpportunities: FC<Props> = ({ ...props }) => (
+    <div>
         <Query query={GET_OPP}>
             {({ loading, error, data, refetch }: any) => {
                 if (loading) return "Loading...";

@@ -1,5 +1,4 @@
 import React, { FC, HTMLAttributes, useState, Children } from "react";
-import cx from "classnames";
 
 import Details from "@govuk-react/details";
 
@@ -8,21 +7,15 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { getOpportunity } from "../../graphql/queries";
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+interface Props extends HTMLAttributes<HTMLElement> {
+    opportunityId: String;
+}
 
 const GET_OPP = gql(getOpportunity);
 
-const CURRENT_ID = "1e1c361a-b478-4e78-ad2d-aaf2b49841d9";
-
-const what = (ex: any) => {
-    console.log(self);
-};
-
-what("self");
-
-export const SetupOpportunity: FC<Props> = ({ className, ...props }) => (
+export const SetupOpportunity: FC<Props> = ({ ...props }) => (
     <div>
-        <Query query={GET_OPP} variables={{ id: CURRENT_ID }}>
+        <Query query={GET_OPP} variables={{ id: props.opportunityId }}>
             {({ loading, error, data, refetch }: any) => {
                 if (loading) return "Loading...";
                 if (error) return `Error! ${error.message}`;
