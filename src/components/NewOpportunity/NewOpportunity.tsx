@@ -22,7 +22,6 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
 
     const onButtonClick = useCallback(() => {
         const newOpportunity = addOpportunity(opportunityName);
-        console.log(newOpportunity);
         setOpportunityName("");
     }, [opportunityName, addOpportunity]);
 
