@@ -6,6 +6,7 @@ import HintText from "@govuk-react/hint-text";
 import Details from "@govuk-react/details";
 import Input from "@govuk-react/input";
 import { ukriGreen } from "../../theme";
+import { navigate } from "@reach/router";
 
 interface Props {
     addOpportunity: (name: string) => void;
@@ -20,7 +21,8 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
     );
 
     const onButtonClick = useCallback(() => {
-        addOpportunity(opportunityName);
+        const newOpportunity = addOpportunity(opportunityName);
+        console.log(newOpportunity);
         setOpportunityName("");
     }, [opportunityName, addOpportunity]);
 

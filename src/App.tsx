@@ -9,10 +9,12 @@ import { Rehydrated } from "aws-appsync-react";
 import Main from "@govuk-react/main";
 
 import { Router, Link, RouteComponentProps } from "@reach/router";
+import { Route } from "./components/Route";
 
 import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
-import { SetupOpportunity } from "./components/SetupOpportunity";
+
+import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 
 import config from "./aws-exports";
 
@@ -40,12 +42,12 @@ export const App: FC = (props: any) => (
             <Rehydrated>
                 <Main>
                     <Router>
-                        <AllOpportunities {...props} path="/all" />
+                        <Route component={AllOpportunities} path="/all" />
 
-                        <NewOpportunityPage {...props} path="/new" />
+                        <Route component={NewOpportunityPage} path="/new" />
 
-                        <SetupOpportunity
-                            {...props}
+                        <Route
+                            component={SetupOpportunityPage}
                             path="/setup/:opportunityId"
                         />
                     </Router>
