@@ -1,0 +1,32 @@
+{
+    "paths": [
+        {
+            "name": "/publish-opportunity",
+            "lambdaFunction": "publishOpportunityLambda",
+            "privacy": {
+                "private": true,
+                "auth": ["/POST"]
+            }
+        }
+    ],
+    "resourceName": "publishOpportunity",
+    "apiName": "publishOpportunity",
+    "functionArns": [
+        {
+            "lambdaFunction": "publishOpportunityLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "ukri-staging-20190508142639-authRole",
+        "unAuthRoleName": "ukri-staging-20190508142639-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "publishOpportunityLambda",
+            "attributes": ["Name", "Arn"]
+        }
+    ]
+}
