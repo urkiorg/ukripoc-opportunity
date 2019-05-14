@@ -20,9 +20,8 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         return (
             <>
                 <h3>
-                    {" "}
-                    {opportunity.getOpportunity!.id} /{" "}
-                    {opportunity.getOpportunity!.name}{" "}
+                    {opportunity.getOpportunity!.id} /
+                    {opportunity.getOpportunity!.name}
                 </h3>
                 <h1>Opportunity setup</h1>
 
