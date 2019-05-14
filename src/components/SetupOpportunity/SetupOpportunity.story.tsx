@@ -13,15 +13,19 @@ const opportunity: GetOpportunityQuery = {
             nextToken: null,
             __typename: "ModelFunderConnection"
         },
+        fundersComplete: null,
         teammembers: {
             items: [],
             nextToken: null,
             __typename: "ModelTeamMemberConnection"
         },
+        teammembersComplete: null,
         type: null,
+        typeComplete: null,
         __typename: "Opportunity"
     }
 };
+
 storiesOf("Components|SetupOpportunity", module).add("Default", () => (
     <SetupOpportunity opportunity={opportunity} />
 ));
