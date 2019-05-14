@@ -37,5 +37,5 @@ See the Amplify CLI docs for more details on available commands. If you change t
 
 The project uses Amplify Console for CI/CD. It builds the site preview and Storybook on push for the develop and master branches. You can view the builds here:
 
--   [develop](https://develop.d3dx8vaq8f7njk.amplifyapp.com/)
--   [master](https://master.d3dx8vaq8f7njk.amplifyapp.com/)
+-   [develop](https://develop.d3562686bv95v2.amplifyapp.com/)
+-   [master](https://master.d3562686bv95v2.amplifyapp.com/)
