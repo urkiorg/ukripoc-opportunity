@@ -1,11 +1,11 @@
 import React, { FC, HTMLAttributes } from "react";
-import cx from "classnames";
-import styles from "./SetupFundersPage.module.scss";
+
+import gql from "graphql-tag";
+import { useQuery } from "react-apollo-hooks";
+import { getOpportunity } from "../../graphql/queries";
+
 import fundersList from "../../fixtures/funders.json";
 import { SetupFunders } from "../SetupFunders";
-import { getOpportunity } from "../../graphql/queries";
-import { useQuery } from "react-apollo-hooks";
-import gql from "graphql-tag";
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 

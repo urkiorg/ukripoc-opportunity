@@ -1,15 +1,14 @@
 import React, { FC, HTMLAttributes } from "react";
 import cx from "classnames";
-import styles from "./SetupFunders.module.scss";
 
 import Checkbox from "@govuk-react/checkbox";
-
 import Button from "@govuk-react/button";
-import { ListOpportunitysQuery } from "../../API";
+
+import { GetOpportunityQuery } from "../../API";
 
 interface Props {
     funders: any;
-    opportunity: ListOpportunitysQuery;
+    opportunity: GetOpportunityQuery;
 }
 
 function fundersList(funders: any) {
