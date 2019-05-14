@@ -58,6 +58,7 @@
         "@types/react": "^16.8.17",
         "@types/react-dom": "^16.8.4",
         "@types/react-test-renderer": "^16.8.1",
+        "@types/storybook__addon-actions": "^3.4.2",
         "@types/storybook__react": "^4.0.1",
         "babel-loader": "^8.0.5",
         "classnames": "^2.2.6",
