@@ -15,11 +15,15 @@ interface Props {
 }
 
 export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
-    if (opportunity) {
+    if (opportunity.getOpportunity) {
         console.log(JSON.stringify(opportunity));
         return (
             <>
-                <h3> {"hello"} </h3>
+                <h3>
+                    {" "}
+                    {opportunity.getOpportunity!.id} /{" "}
+                    {opportunity.getOpportunity!.name}{" "}
+                </h3>
                 <h1>Opportunity setup</h1>
 
                 <h2>Settings</h2>

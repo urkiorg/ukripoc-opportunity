@@ -6,12 +6,11 @@ import SetupOpportunity from "../SetupOpportunity/SetupOpportunity";
 
 const GET_OPP = gql(getOpportunity);
 
-export const SetupOpportunityPage: FC = () => {
-    const id = "675c0700-09c3-4b1c-9292-71f96ef0567e";
-
+export const SetupOpportunityPage: FC = (props: any) => {
+    const opportunityId = props.opportunityId;
     const { data, loading, error } = useQuery(GET_OPP, {
         variables: {
-            id: id
+            id: opportunityId
         }
     });
 
