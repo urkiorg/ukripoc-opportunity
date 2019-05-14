@@ -1,0 +1,12 @@
+[
+    { "name": "AHRC" },
+    { "name": "BBSRC" },
+    { "name": "EPSRC" },
+    { "name": "Innovate UK" },
+    { "name": "MRC" },
+    { "name": "NERC" },
+    { "name": "Research England" },
+    { "name": "STFC" },
+    { "name": "UKRI" },
+    { "name": "Other" }
+]
