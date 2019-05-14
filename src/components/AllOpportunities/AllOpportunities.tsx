@@ -20,7 +20,7 @@ const GET_OPP = gql`
 `;
 
 export const AllOpportunities: FC<Props> = ({ ...props }) => (
-    <div {...props}>
+    <div>
         <Query query={GET_OPP}>
             {({ loading, error, data, refetch }: any) => {
                 if (loading) return "Loading...";
