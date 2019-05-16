@@ -27,7 +27,6 @@ export const SetupFunders: FC<Props> = ({
     fundersChanged,
     currentOpportunity
 }) => {
-    console.log(currentOpportunity);
     const selected =
         (currentOpportunity.getOpportunity &&
             currentOpportunity.getOpportunity.funders) ||

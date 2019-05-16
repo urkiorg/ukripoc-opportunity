@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, useCallback } from "react";
+import React, { FC, HTMLAttributes, useCallback, Props } from "react";
 
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "react-apollo-hooks";
@@ -9,10 +9,8 @@ import { SetupFunders } from "../SetupFunders";
 import { getOpportunity } from "../../graphql/queries";
 import { updateOpportunity } from "../../graphql/mutations";
 
-import { navigate } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import { UpdateOpportunityMutationVariables } from "../../API";
-
-interface Props extends HTMLAttributes<HTMLElement> {}
 
 const GET_OPPORTUNITY = gql(getOpportunity);
 
@@ -20,6 +18,8 @@ const UPDATE_OPPORTUNITY = gql(updateOpportunity);
 
 export const SetupFundersPage: FC = (props: any) => {
     //fetch
+
+    console.log(props);
     const opportunityId = props.opportunityId;
     console.log(opportunityId);
     const { data, loading, error } = useQuery(GET_OPPORTUNITY, {
@@ -36,7 +36,7 @@ export const SetupFundersPage: FC = (props: any) => {
     >(UPDATE_OPPORTUNITY);
 
     const addFunder = useCallback(
-        async (name: any) => {
+        async (name: Array<string>) => {
             const result = await addFunderMutation({
                 variables: {
                     input: {
@@ -50,8 +50,8 @@ export const SetupFundersPage: FC = (props: any) => {
         [addFunderMutation]
     );
 
-    const updateOpportunity = useCallback(async (opportunity: any) => {
-        const result = addFunder(opportunity);
+    const updateOpportunity = useCallback(async (funderList: Array<string>) => {
+        const result = addFunder(funderList);
     }, []);
 
     return (
