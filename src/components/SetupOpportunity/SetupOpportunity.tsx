@@ -31,7 +31,10 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
             <h1>Opportunity setup</h1>
 
             <Link to={linkToFunders}>
-                <span aria-label="Funders"> Funders </span>
+                <span aria-label="Funders"> Funders </span>{" "}
+                {opportunity.getOpportunity.fundersComplete
+                    ? "Done"
+                    : "Not Done"}
             </Link>
             <h2>Settings</h2>
 

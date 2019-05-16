@@ -41,11 +41,14 @@ export const SetupFundersPage: FC = (props: any) => {
                 variables: {
                     input: {
                         id: opportunityId,
-                        funders: name
+                        funders: name,
+                        fundersComplete: true
                     }
                 }
             });
             const { data, loading, error } = result;
+
+            navigate(`/setup/${opportunityId}`);
         },
         [addFunderMutation]
     );
