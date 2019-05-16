@@ -7,25 +7,22 @@ import funders from "../../fixtures/funders.json";
 import { SetupFunders } from "../SetupFunders";
 
 import { getOpportunity } from "../../graphql/queries";
-import { createFunder } from "../../graphql/mutations";
+import { updateOpportunity } from "../../graphql/mutations";
 
 import { navigate } from "@reach/router";
-import {
-    UpdateOpportunityMutationVariables,
-    CreateFunderMutationVariables
-} from "../../API";
+import { UpdateOpportunityMutationVariables } from "../../API";
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
-const GET_OPP = gql(getOpportunity);
+const GET_OPPORTUNITY = gql(getOpportunity);
 
-const CREATE_FUNDER = gql(createFunder);
+const UPDATE_OPPORTUNITY = gql(updateOpportunity);
 
 export const SetupFundersPage: FC = (props: any) => {
     //fetch
     const opportunityId = props.opportunityId;
     console.log(opportunityId);
-    const { data, loading, error } = useQuery(GET_OPP, {
+    const { data, loading, error } = useQuery(GET_OPPORTUNITY, {
         variables: {
             id: opportunityId
         }
@@ -33,37 +30,29 @@ export const SetupFundersPage: FC = (props: any) => {
 
     const opportunity = data;
 
-    const addFunderMutation = useMutation<{}, CreateFunderMutationVariables>(
-        CREATE_FUNDER
-    );
+    const addFunderMutation = useMutation<
+        {},
+        UpdateOpportunityMutationVariables
+    >(UPDATE_OPPORTUNITY);
+
     const addFunder = useCallback(
-        async (name: string) => {
+        async (name: any) => {
             const result = await addFunderMutation({
                 variables: {
                     input: {
-                        name: name,
-                        funderOpportunitiesId: opportunityId
+                        id: opportunityId,
+                        funders: name
                     }
                 }
             });
-
             const { data, loading, error } = result;
-
-            console.log(result);
         },
         [addFunderMutation]
     );
 
-    const updateOpportunity = useCallback(
-        async (opportunity: any) => {
-            const result = addFunder(opportunity);
-        },
-        [hello]
-    );
-
-    function hello() {
-        console.log(111);
-    }
+    const updateOpportunity = useCallback(async (opportunity: any) => {
+        const result = addFunder(opportunity);
+    }, []);
 
     return (
         <SetupFunders

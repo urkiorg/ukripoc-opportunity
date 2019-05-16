@@ -30,16 +30,13 @@ export const SetupFunders: FC<Props> = ({
     console.log(currentOpportunity);
     const selected =
         (currentOpportunity.getOpportunity &&
-            currentOpportunity.getOpportunity.funders &&
-            currentOpportunity.getOpportunity.funders.items) ||
+            currentOpportunity.getOpportunity.funders) ||
         [];
 
     const [funderList, setFunderList] = useState(
         funders.reduce(
             (prev, next) => {
-                prev[next.name] = !!selected.find(
-                    f => !!f && f.name === next.name
-                );
+                prev[next.name] = !!selected.find(f => !!f && f === next.name);
                 return prev;
             },
             {} as { [key: string]: boolean }
