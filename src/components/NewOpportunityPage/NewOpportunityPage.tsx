@@ -13,7 +13,9 @@ export const NewOpportunityPage: FC = () => {
     const addOpportunity = useCallback(
         async (name: string) => {
             const result = await addOpportunityMutation({
-                variables: { input: { name, description: "Today" } }
+                variables: {
+                    input: { name, description: "Today" }
+                }
             });
 
             const { data, loading, error } = result;

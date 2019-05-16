@@ -1,49 +1,51 @@
-import React, { FC, HTMLAttributes } from "react";
+import React, { FC, HTMLAttributes, useCallback, useState } from "react";
 import cx from "classnames";
 
 import Checkbox from "@govuk-react/checkbox";
 import Button from "@govuk-react/button";
 
-import { GetOpportunityQuery } from "../../API";
+import { GetOpportunityQuery, UpdateOpportunityMutation } from "../../API";
 
 interface Props {
     funders: any;
-    opportunity: GetOpportunityQuery;
+    opportunityLoaded: any;
+    updateOpportunity: any;
+    // opportunityLoaded: GetOpportunityQuery;
+    // updateOpportunity: (opportunity: string) => void;
 }
 
-function checkBoxMapping(
-    funder: any,
-    opportunity: GetOpportunityQuery,
-    i: String
-) {
-    console.log(opportunity.getOpportunity!.funders!.items);
+export const SetupFunders: FC<Props> = ({
+    funders,
+    updateOpportunity,
+    opportunityLoaded
+}) => {
+    const [opportunity, setOpportunity] = useState([]);
 
-    // const isChecked = opportunity.getOpportunity!.funders!.items!.find(
-    //     funder.name
-    // );
+    function checkBoxMapping(funder: any, i: String) {
+        const funderName = funder.name;
+        return (
+            <Checkbox key={i} onClick={() => setOpportunity(funderName)}>
+                {funder.name}
+            </Checkbox>
+        );
+    }
 
-    // console.log(isChecked);
+    function fundersList(funders: any) {
+        return funders.map((funder: any, i: String) =>
+            checkBoxMapping(funder, i)
+        );
+    }
 
-    return <Checkbox key={i}>{funder.name}</Checkbox>;
-}
+    const save = useCallback(() => {
+        console.log(opportunity);
+        const newOpportunity = updateOpportunity(opportunity);
+    }, [opportunity, updateOpportunity]);
 
-function fundersList(funders: any, opportunity: GetOpportunityQuery) {
-    return funders.map((funder: any, i: String) =>
-        checkBoxMapping(funder, opportunity, i)
-    );
-}
-
-function save(opportunity: GetOpportunityQuery) {
-    console.log(opportunity);
-    console.log("SAVE IT!");
-}
-
-export const SetupFunders: FC<Props> = ({ funders, opportunity }) => {
     return (
         <div>
             <h1> Funders </h1>
-            {fundersList(funders, opportunity)}
-            <Button onClick={() => save(opportunity)}> Done </Button>
+            {fundersList(funders)}
+            <Button onClick={() => save()}> Done </Button>
         </div>
     );
 };

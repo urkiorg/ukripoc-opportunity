@@ -76,7 +76,7 @@ export const App: FC = (props: any) => (
                             <span aria-label="Setup"> Setup </span>
                         </Link>
                         <br />
-                        <Link to="/setup/675c0700-09c3-4b1c-9292-71f96ef0567e/funders">
+                        <Link to="/setup/b96adabb-66f7-45c0-a8b7-4d2137848e1e/funders">
                             <span aria-label="Setup"> Funders </span>
                         </Link>
                     </nav>
