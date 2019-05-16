@@ -9,11 +9,7 @@ const opportunity: GetOpportunityQuery = {
         id: "675c0700-09c3-4b1c-9292-71f96ef0567e",
         name: "New opp",
         description: "Today",
-        funders: {
-            items: [],
-            nextToken: null,
-            __typename: "ModelFunderConnection"
-        },
+        funders: ["Other"],
         fundersComplete: null,
         teammembers: {
             items: [],
