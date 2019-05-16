@@ -24,6 +24,7 @@ const CREATE_FUNDER = gql(createFunder);
 export const SetupFundersPage: FC = (props: any) => {
     //fetch
     const opportunityId = props.opportunityId;
+    console.log(opportunityId);
     const { data, loading, error } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
@@ -55,16 +56,7 @@ export const SetupFundersPage: FC = (props: any) => {
 
     const updateOpportunity = useCallback(
         async (opportunity: any) => {
-            //each of the funders
-
-            //if in current ignore //touch in array
-
-            //if not selected then delete from array
-
-            //if not found then just add it...
             const result = addFunder(opportunity);
-
-            console.log(result);
         },
         [hello]
     );
@@ -76,8 +68,8 @@ export const SetupFundersPage: FC = (props: any) => {
     return (
         <SetupFunders
             funders={funders}
-            opportunityLoaded={opportunity}
-            updateOpportunity={updateOpportunity}
+            currentOpportunity={opportunity}
+            fundersChanged={updateOpportunity}
         />
     );
 };

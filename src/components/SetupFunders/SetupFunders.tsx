@@ -1,4 +1,10 @@
-import React, { FC, HTMLAttributes, useCallback, useState } from "react";
+import React, {
+    FC,
+    HTMLAttributes,
+    useCallback,
+    useState,
+    SyntheticEvent
+} from "react";
 import cx from "classnames";
 
 import Checkbox from "@govuk-react/checkbox";
@@ -6,46 +12,76 @@ import Button from "@govuk-react/button";
 
 import { GetOpportunityQuery, UpdateOpportunityMutation } from "../../API";
 
+interface Funder {
+    name: string;
+}
+
 interface Props {
-    funders: any;
-    opportunityLoaded: any;
-    updateOpportunity: any;
-    // opportunityLoaded: GetOpportunityQuery;
-    // updateOpportunity: (opportunity: string) => void;
+    funders: Funder[];
+    currentOpportunity: GetOpportunityQuery;
+    fundersChanged: (funder: string[]) => void;
 }
 
 export const SetupFunders: FC<Props> = ({
     funders,
-    updateOpportunity,
-    opportunityLoaded
+    fundersChanged,
+    currentOpportunity
 }) => {
-    const [opportunity, setOpportunity] = useState([]);
+    console.log(currentOpportunity);
+    const selected =
+        (currentOpportunity.getOpportunity &&
+            currentOpportunity.getOpportunity.funders &&
+            currentOpportunity.getOpportunity.funders.items) ||
+        [];
 
-    function checkBoxMapping(funder: any, i: String) {
-        const funderName = funder.name;
-        return (
-            <Checkbox key={i} onClick={() => setOpportunity(funderName)}>
-                {funder.name}
-            </Checkbox>
-        );
-    }
+    const [funderList, setFunderList] = useState(
+        funders.reduce(
+            (prev, next) => {
+                prev[next.name] = !!selected.find(
+                    f => !!f && f.name === next.name
+                );
+                return prev;
+            },
+            {} as { [key: string]: boolean }
+        )
+    );
 
-    function fundersList(funders: any) {
-        return funders.map((funder: any, i: String) =>
-            checkBoxMapping(funder, i)
-        );
-    }
+    const updateFunderStatus = useCallback(
+        (funder: string, state: boolean) => {
+            setFunderList(list => {
+                const newList = { ...list };
+                newList[funder] = state;
+                return newList;
+            });
+        },
+        [setFunderList]
+    );
 
     const save = useCallback(() => {
-        console.log(opportunity);
-        const newOpportunity = updateOpportunity(opportunity);
-    }, [opportunity, updateOpportunity]);
+        fundersChanged(
+            Object.keys(funderList).filter(funder => funderList[funder])
+        );
+    }, [funderList, fundersChanged]);
 
     return (
         <div>
-            <h1> Funders </h1>
-            {fundersList(funders)}
-            <Button onClick={() => save()}> Done </Button>
+            <h1>Funders</h1>
+            {funders.map(funder => (
+                <Checkbox
+                    key={funder.name}
+                    checked={funderList[funder.name]}
+                    onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                        console.log(event.currentTarget);
+                        updateFunderStatus(
+                            funder.name,
+                            event.currentTarget.checked
+                        );
+                    }}
+                >
+                    {funder.name}
+                </Checkbox>
+            ))}
+            <Button onClick={save}>Done</Button>
         </div>
     );
 };
