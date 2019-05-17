@@ -92,7 +92,7 @@ app.use(function(req, res, next) {
 
 // 1. get listing id from post
 // 2. get listing from DynamoDb
-// 3. add full listing to SNS
+// 3. add listing in format provided in full-event.json to SNS
 // 4. add `lastPublished` to listing in DynamoDb
 
 app.post("/opportunity-listing/publish", async (req, res) => {
