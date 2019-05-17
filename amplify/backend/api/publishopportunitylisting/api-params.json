@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/opportunity-listing/publish",
+            "lambdaFunction": "publishopportunitylisting",
+            "privacy": {
+                "private": true,
+                "auth": []
+            }
+        }
+    ],
+    "resourceName": "publishopportunitylisting",
+    "apiName": "publishopportunitylisting",
+    "functionArns": [
+        {
+            "lambdaFunction": "publishopportunitylisting"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "ukri-sunyadev-20190517103832-authRole",
+        "unAuthRoleName": "ukri-sunyadev-20190517103832-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "publishopportunitylisting",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

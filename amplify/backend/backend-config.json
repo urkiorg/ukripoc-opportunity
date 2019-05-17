@@ -20,13 +20,13 @@
 				"securityType": "API_KEY"
 			}
 		},
-		"publishOpportunity": {
+		"publishopportunitylisting": {
 			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "publishOpportunityLambda",
+					"resourceName": "publishopportunitylisting",
 					"attributes": [
 						"Name",
 						"Arn"
@@ -36,7 +36,7 @@
 		}
 	},
 	"function": {
-		"publishOpportunityLambda": {
+		"publishopportunitylisting": {
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true,
