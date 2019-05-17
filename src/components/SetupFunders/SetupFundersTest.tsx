@@ -24,16 +24,16 @@ const opportunity: GetOpportunityQuery = {
     }
 };
 
-// describe("SetupFunders", () =>
-//     it("renders correctly", () => {
-//         const tree = renderer
-//             .create(
-//                 <SetupFunders
-//                     funders={fundersList}
-//                     opportunity={opportunity}
-//                     updateOpportunity={() => {}}
-//                 />
-//             )
-//             .toJSON();
-//         expect(tree).toMatchSnapshot();
-//     }));
+describe("SetupFunders", () =>
+    it("renders correctly", () => {
+        const tree = renderer
+            .create(
+                <SetupFunders
+                    funders={fundersList}
+                    currentOpportunity={opportunity}
+                    fundersChanged={() => {}}
+                />
+            )
+            .toJSON();
+        expect(tree).toMatchSnapshot();
+    }));

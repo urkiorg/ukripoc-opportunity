@@ -23,10 +23,10 @@ const opportunity: GetOpportunityQuery = {
     }
 };
 
-// storiesOf("Components|SetupFunders", module).add("Default", () => (
-//     // <SetupFunders
-//     //     funders={fundersList}
-//     //     opportunity={opportunity}
-//     //     updateOpportunity={() => {}}
-//     // />
-// ));
+storiesOf("Components|SetupFunders", module).add("Default", () => (
+    <SetupFunders
+        funders={fundersList}
+        currentOpportunity={opportunity}
+        fundersChanged={() => {}}
+    />
+));
