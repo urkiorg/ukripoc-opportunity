@@ -71,10 +71,6 @@ export const App: FC = (props: any) => (
                         <Link to="/new">
                             <span aria-label="New"> New </span>
                         </Link>
-                        <br />
-                        <Link to="/setup/675c0700-09c3-4b1c-9292-71f96ef0567e">
-                            <span aria-label="Setup"> Setup </span>
-                        </Link>
                     </nav>
                 </Main>
             </Rehydrated>
