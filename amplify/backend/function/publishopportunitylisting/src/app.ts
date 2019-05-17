@@ -24,20 +24,27 @@ const getListing = async (
     listingId: string,
     env: string
 ) => {
-    const client = new AWS.DynamoDB.DocumentClient();
+    const client = new AWS.DynamoDB.DocumentClient({
+        region: "eu-west-1"
+    });
 
     const TableName = getDBTableName(env, apiId, "Opportunity");
-    console.log({ TableName });
+    // const now = new Date().toISOString();
 
-    const now = new Date().toISOString();
-
-    // let { id, name, description, openDate, closeDate, funders } = event;
-
-    let { Item } = await client
-        .get({ TableName, Key: { opportunityId } })
+    let result = await client
+        .get({ TableName, Key: { id: opportunityId } })
         .promise();
 
-    // if (!Item) {
+    const Item: Opportunity | undefined = result.Item as any;
+
+    if (Item && Item.websiteListings && Item.websiteListings.length) {
+        return Item.websiteListings.filter(listing => {
+            return listing.description === listingId;
+        });
+    }
+
+    return [];
+
     //     console.log("New item");
     //     Item = {
     //         __typename: "Opportunity",
@@ -92,12 +99,10 @@ app.post("/opportunity-listing/publish", async (req, res) => {
     try {
         // Add your code here
         // const sns = new AWS.SNS();
-        console.log(req.body);
 
         const { listingId, opportunityId } = req.body;
         const env = process.env.env;
-        const apiId = api.frontdoor.output.GraphQLAPIIdOutput;
-        console.log({ listingId, opportunityId, env });
+        const apiId = api.ukri.output.GraphQLAPIIdOutput;
 
         if (!env || !listingId) {
             console.error("There is no environment or listing id");
@@ -105,12 +110,13 @@ app.post("/opportunity-listing/publish", async (req, res) => {
         }
 
         const fullListing = await getListing(
-            apiID,
+            apiId,
             opportunityId,
             listingId,
             env
         );
-        return true;
+
+        console.log({ fullListing });
 
         // sns.publish(
         //     {

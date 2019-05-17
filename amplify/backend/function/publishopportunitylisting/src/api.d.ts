@@ -1,4 +1,4 @@
-interface OpportunityUpdateEvent {
+interface Opportunity {
     id: string;
     name: string;
     description: string;
