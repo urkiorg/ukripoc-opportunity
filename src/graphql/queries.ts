@@ -13,6 +13,7 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
       }
       nextToken
     }
+    fundersComplete
     teammembers {
       items {
         id
@@ -21,6 +22,7 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
       }
       nextToken
     }
+    teammembersComplete
     type {
       id
       name
@@ -29,8 +31,12 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
+    typeComplete
   }
 }
 `;
@@ -47,14 +53,17 @@ export const listOpportunitys = `query ListOpportunitys(
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
     nextToken
   }
@@ -71,14 +80,17 @@ export const getFunder = `query GetFunder($id: ID!) {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -96,6 +108,9 @@ export const listFunders = `query ListFunders(
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
     nextToken
@@ -114,14 +129,17 @@ export const getTeamMember = `query GetTeamMember($id: ID!) {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -140,6 +158,9 @@ export const listTeamMembers = `query ListTeamMembers(
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
     nextToken
@@ -158,14 +179,17 @@ export const getOpportunityType = `query GetOpportunityType($id: ID!) {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -184,6 +208,9 @@ export const listOpportunityTypes = `query ListOpportunityTypes(
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
     nextToken

@@ -13,6 +13,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
       }
       nextToken
     }
+    fundersComplete
     teammembers {
       items {
         id
@@ -21,6 +22,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
       }
       nextToken
     }
+    teammembersComplete
     type {
       id
       name
@@ -29,8 +31,12 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
+    typeComplete
   }
 }
 `;
@@ -46,6 +52,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
       }
       nextToken
     }
+    fundersComplete
     teammembers {
       items {
         id
@@ -54,6 +61,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
       }
       nextToken
     }
+    teammembersComplete
     type {
       id
       name
@@ -62,8 +70,12 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
+    typeComplete
   }
 }
 `;
@@ -79,6 +91,7 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
       }
       nextToken
     }
+    fundersComplete
     teammembers {
       items {
         id
@@ -87,6 +100,7 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
       }
       nextToken
     }
+    teammembersComplete
     type {
       id
       name
@@ -95,8 +109,12 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
         id
         name
         description
+        fundersComplete
+        teammembersComplete
+        typeComplete
       }
     }
+    typeComplete
   }
 }
 `;
@@ -111,14 +129,17 @@ export const onCreateFunder = `subscription OnCreateFunder {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -134,14 +155,17 @@ export const onUpdateFunder = `subscription OnUpdateFunder {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -157,14 +181,17 @@ export const onDeleteFunder = `subscription OnDeleteFunder {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -181,14 +208,17 @@ export const onCreateTeamMember = `subscription OnCreateTeamMember {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -205,14 +235,17 @@ export const onUpdateTeamMember = `subscription OnUpdateTeamMember {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -229,14 +262,17 @@ export const onDeleteTeamMember = `subscription OnDeleteTeamMember {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -253,14 +289,17 @@ export const onCreateOpportunityType = `subscription OnCreateOpportunityType {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -277,14 +316,17 @@ export const onUpdateOpportunityType = `subscription OnUpdateOpportunityType {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
@@ -301,14 +343,17 @@ export const onDeleteOpportunityType = `subscription OnDeleteOpportunityType {
       funders {
         nextToken
       }
+      fundersComplete
       teammembers {
         nextToken
       }
+      teammembersComplete
       type {
         id
         name
         description
       }
+      typeComplete
     }
   }
 }
