@@ -1,6 +1,7 @@
 import React from "react";
-import renderer from "react-test-renderer";
-import { SetupOpportunity } from "./index";
+import { storiesOf } from "@storybook/react";
+import { SetupFunders } from "./index";
+import fundersList from "../../fixtures/funders.json";
 import { GetOpportunityQuery } from "../../API";
 
 const opportunity: GetOpportunityQuery = {
@@ -22,10 +23,10 @@ const opportunity: GetOpportunityQuery = {
     }
 };
 
-describe("SetupOpportunity", () =>
-    it("renders correctly", () => {
-        const tree = renderer
-            .create(<SetupOpportunity opportunity={opportunity} />)
-            .toJSON();
-        expect(tree).toMatchSnapshot();
-    }));
+storiesOf("Components|SetupFunders", module).add("Default", () => (
+    <SetupFunders
+        funders={fundersList}
+        currentOpportunity={opportunity}
+        fundersChanged={() => {}}
+    />
+));

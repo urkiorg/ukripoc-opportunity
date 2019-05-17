@@ -17,6 +17,7 @@ import { NewOpportunityPage } from "./components/NewOpportunityPage";
 import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 
 import config from "./aws-exports";
+import { SetupFundersPage } from "./components/SetupFundersPage";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -49,6 +50,16 @@ export const App: FC = (props: any) => (
                         <Route
                             component={SetupOpportunityPage}
                             path="/setup/:opportunityId"
+                        />
+
+                        <Route
+                            component={SetupOpportunityPage}
+                            path="/setup/:opportunityId"
+                        />
+
+                        <Route
+                            component={SetupFundersPage}
+                            path="/setup/:opportunityId/funders"
                         />
                     </Router>
 
