@@ -15,7 +15,6 @@ import { GetOpportunityQuery, UpdateOpportunityMutation } from "../../API";
 interface Funder {
     name: string;
 }
-
 interface Props {
     funders: Funder[];
     currentOpportunity: GetOpportunityQuery;
@@ -67,7 +66,6 @@ export const SetupFunders: FC<Props> = ({
                     key={funder.name}
                     checked={funderList[funder.name]}
                     onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-                        console.log(event.currentTarget);
                         updateFunderStatus(
                             funder.name,
                             event.currentTarget.checked

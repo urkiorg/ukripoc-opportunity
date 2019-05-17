@@ -36,7 +36,7 @@ export const SetupFundersPage: FC = (props: any) => {
     >(UPDATE_OPPORTUNITY);
 
     const addFunder = useCallback(
-        async (name: Array<string>) => {
+        async (name: string[]) => {
             const result = await addFunderMutation({
                 variables: {
                     input: {
@@ -53,7 +53,7 @@ export const SetupFundersPage: FC = (props: any) => {
         [addFunderMutation]
     );
 
-    const updateOpportunity = useCallback(async (funderList: Array<string>) => {
+    const updateOpportunity = useCallback(async (funderList: string[]) => {
         const result = addFunder(funderList);
     }, []);
 
