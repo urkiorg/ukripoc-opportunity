@@ -43,7 +43,7 @@
             "UnauthRoleName": "ukri-sunyadev-20190517103832-unauthRole",
             "StackName": "ukri-sunyadev-20190517103832",
             "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-sunyadev-20190517103832/8923e5a0-7887-11e9-b459-0673c4cbbe82"
-            ,
+        },
         "categories": {
             "auth": {
                 "cognito686849a5": {}
