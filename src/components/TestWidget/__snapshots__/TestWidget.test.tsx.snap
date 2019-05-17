@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestWidget renders correctly 1`] = `
+<div>
+  <div
+    className="sc-bdVaJa cSBzFD"
+  >
+    <h1
+      className="sc-bwzfXH cDtZmt"
+    >
+      Application complete
+    </h1>
+    <div
+      className="sc-htpNat leRNHM"
+    >
+      Your reference number
+      <br />
+      <strong>
+        HDJ2123F
+      </strong>
+      <p>
+        <button
+          className="sc-bxivhb hQDbuJ"
+          disabled={false}
+        >
+          Hooray!
+        </button>
+      </p>
+    </div>
+  </div>
+</div>
+`;

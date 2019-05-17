@@ -1,7 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { SetupOpportunity } from "./index";
+import { SetupFunders } from "./index";
+import fundersList from "../../fixtures/funders.json";
 import { GetOpportunityQuery } from "../../API";
+import { updateOpportunity } from "../../graphql/mutations";
 
 const opportunity: GetOpportunityQuery = {
     getOpportunity: {
@@ -22,10 +24,16 @@ const opportunity: GetOpportunityQuery = {
     }
 };
 
-describe("SetupOpportunity", () =>
+describe("SetupFunders", () =>
     it("renders correctly", () => {
         const tree = renderer
-            .create(<SetupOpportunity opportunity={opportunity} />)
+            .create(
+                <SetupFunders
+                    funders={fundersList}
+                    currentOpportunity={opportunity}
+                    fundersChanged={() => {}}
+                />
+            )
             .toJSON();
         expect(tree).toMatchSnapshot();
     }));
