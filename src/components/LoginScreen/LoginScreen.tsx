@@ -6,6 +6,7 @@ import Checkbox from '@govuk-react/checkbox';
 import Button from '@govuk-react/button';
 import LabelText from '@govuk-react/label-text';
 import styles from "./LoginScreen.module.scss";
+import { Auth } from "aws-amplify";
 
 interface Props {
 }
@@ -29,20 +30,28 @@ export const LoginScreen: FC<Props> = ({}) => {
         setPersistedLogin(!persistedLogin);
     }
 
-    const login = () => {
-        console.log("Make request");
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+
+        try {
+            Auth.signIn(username, password);
+        } catch(error) {
+            console.log("Error!")
+        }
     }
 
     return (
         <div>
             <H3>Welcome</H3>
             <H2 textColour={ukriGreen}>Please log in</H2>
-            <LabelText>Username</LabelText>
-            <Input className={styles.input} value={username} onChange={onInputChangeUsername} />
-            <LabelText>Password</LabelText>
-            <Input className={styles.input} value={password} onChange={onInputChangePassword} />
-            <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox>
-            <Button buttonColour={ukriGreen} onClick={login}>Login</Button>
+            <form onSubmit={handleSubmit}>
+                <LabelText>Username</LabelText>
+                <Input className={styles.input} value={username} onChange={onInputChangeUsername} />
+                <LabelText>Password</LabelText>
+                <Input type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
+                <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox>
+                <Button type="submit" buttonColour={ukriGreen}>Login</Button>
+            </form>
         </div>
     );
 };

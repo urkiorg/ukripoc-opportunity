@@ -32,5 +32,22 @@
                 "cognito686849a5": {}
             }
         }
+    },
+    "iveydev": {
+        "awscloudformation": {
+            "AuthRoleName": "ukri-iveydev-20190514163915-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-iveydev-20190514163915-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-iveydev-20190514163915-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukri-iveydev-20190514163915-deployment",
+            "UnauthRoleName": "ukri-iveydev-20190514163915-unauthRole",
+            "StackName": "ukri-iveydev-20190514163915",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-iveydev-20190514163915/6dea0f10-765e-11e9-bbd1-0a4189c8dbd8"
+        },
+        "categories": {
+            "auth": {
+                "cognito686849a5": {}
+            }
+        }
     }
 }
