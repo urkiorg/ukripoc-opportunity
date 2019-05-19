@@ -46,7 +46,9 @@
         },
         "categories": {
             "auth": {
-                "cognito686849a5": {}
+                "cognito686849a5": {
+                    "hostedUIProviderCreds": "[]"
+                }
             }
         }
     }
