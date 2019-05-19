@@ -30,13 +30,17 @@ export const LoginScreen: FC<Props> = ({}) => {
         setPersistedLogin(!persistedLogin);
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
-            Auth.signIn(username, password);
+            const user = await Auth.signIn(username, password);
+            setLoading(false);
+            console.log("user loged in!: ",user)
         } catch(error) {
-            console.log("Error!")
+            console.log("Error!", error)
+            setLoading(false);
         }
     }
 

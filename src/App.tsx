@@ -14,6 +14,7 @@ import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
 
 import config from "./aws-exports";
+import { LoginScreen } from "./components/LoginScreen";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -27,7 +28,13 @@ const client = new AWSAppSyncClient({
 
 Amplify.configure(config);
 
-// API.configure(config);
+const logout = () => {
+    try {
+        Auth.signOut();
+    } catch(error) {
+        console.log("Error!", error)
+    }
+}
 
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
@@ -47,6 +54,10 @@ export const App: FC = () => (
                             path="/new"
                             pageComponent={<NewOpportunityPage />}
                         />
+                        <RouterPage
+                            path="/login"
+                            pageComponent={<LoginScreen />}
+                        />
                     </Router>
                     <nav className="primary-nav">
                         <Link to="/all">
@@ -56,6 +67,12 @@ export const App: FC = () => (
                         <Link to="/new">
                             <span aria-label="add"> New </span>
                         </Link>
+                        <br />
+                        <Link to="/login">
+                            <span aria-label="add"> Login </span>
+                        </Link>
+                        <br />
+                            <span onClick={logout}>logout</span>
                     </nav>
                 </Main>
             </Rehydrated>
