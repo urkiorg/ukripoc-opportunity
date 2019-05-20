@@ -18,10 +18,9 @@ interface Opportunity {
     openDate?: string;
     closeDate?: string;
     websiteListings?: WebsiteListing[];
-    teammembers?: [TeamMember];
+    teammembers?: TeamMember[];
     teammembersComplete?: boolean;
-    // Not sure what this is ... yet
-    type?: any;
+    type?: OpportunityType;
     typeComplete?: boolean;
 }
 
@@ -36,5 +35,10 @@ interface TeamMember {
     id: string;
     name: string;
     role?: string;
-    opportunity?: Opportunity;
+}
+
+interface OpportunityType {
+    id: string;
+    name: string;
+    description: string;
 }

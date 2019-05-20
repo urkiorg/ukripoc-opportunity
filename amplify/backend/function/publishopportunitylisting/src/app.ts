@@ -21,7 +21,7 @@ export const getDBTableName = (env: string, apiId: string, type: string) =>
 export const getSNSARNName = (
     partition: string,
     service: string,
-    region: string = "eu-west-1",
+    region: string = AWS.config.region as string,
     accountId: string,
     topicName: string
 ): string => `arn:${partition}:${service}:${region}:${accountId}:${topicName}`;
@@ -147,12 +147,14 @@ app.use(function(req, res, next) {
 
 app.post("/opportunity-listing/publish", async (req, res) => {
     try {
-        const { listingId, opportunityId } = req.body;
+        const { listingId, opportunityId, description } = req.body;
         const env = process.env.env;
         const apiId = api.ukri.output.GraphQLAPIIdOutput;
 
-        if (!env || !listingId) {
-            console.error("There is no environment or listing id");
+        if (!env || !listingId || !opportunityId) {
+            console.error(
+                "An environment, listing id and opportunity id must be set"
+            );
             return res.status(404).json({});
         }
 
@@ -179,6 +181,13 @@ app.post("/opportunity-listing/publish", async (req, res) => {
         const listing = listingArr[0];
 
         listing.lastPublished = now;
+        console.log({ description, now });
+
+        if (description) {
+            listing.description = description;
+        }
+
+        // write new data to DB
         setListingLastPublished(client, TableName, opportunity, listing);
 
         const message: ListingEvent = {
