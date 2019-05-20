@@ -32,6 +32,15 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -66,6 +75,15 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -100,6 +118,15 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -124,6 +151,9 @@ export const createTeamMember = `mutation CreateTeamMember($input: CreateTeamMem
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -149,6 +179,9 @@ export const updateTeamMember = `mutation UpdateTeamMember($input: UpdateTeamMem
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -174,6 +207,9 @@ export const deleteTeamMember = `mutation DeleteTeamMember($input: DeleteTeamMem
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -199,6 +235,9 @@ export const createOpportunityType = `mutation CreateOpportunityType($input: Cre
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -224,6 +263,9 @@ export const updateOpportunityType = `mutation UpdateOpportunityType($input: Upd
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -249,6 +291,96 @@ export const deleteOpportunityType = `mutation DeleteOpportunityType($input: Del
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createWebsiteListing = `mutation CreateWebsiteListing($input: CreateWebsiteListingInput!) {
+  createWebsiteListing(input: $input) {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateWebsiteListing = `mutation UpdateWebsiteListing($input: UpdateWebsiteListingInput!) {
+  updateWebsiteListing(input: $input) {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteWebsiteListing = `mutation DeleteWebsiteListing($input: DeleteWebsiteListingInput!) {
+  deleteWebsiteListing(input: $input) {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }

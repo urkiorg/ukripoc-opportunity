@@ -63,6 +63,26 @@ export type DeleteOpportunityTypeInput = {
   id?: string | null,
 };
 
+export type CreateWebsiteListingInput = {
+  id?: string | null,
+  rank: number,
+  lastPublished?: string | null,
+  description?: string | null,
+  websiteListingOpportunityId?: string | null,
+};
+
+export type UpdateWebsiteListingInput = {
+  id: string,
+  rank?: number | null,
+  lastPublished?: string | null,
+  description?: string | null,
+  websiteListingOpportunityId?: string | null,
+};
+
+export type DeleteWebsiteListingInput = {
+  id?: string | null,
+};
+
 export type ModelOpportunityFilterInput = {
   id?: ModelIDFilterInput | null,
   name?: ModelStringFilterInput | null,
@@ -125,6 +145,28 @@ export type ModelOpportunityTypeFilterInput = {
   not?: ModelOpportunityTypeFilterInput | null,
 };
 
+export type ModelWebsiteListingFilterInput = {
+  id?: ModelIDFilterInput | null,
+  rank?: ModelIntFilterInput | null,
+  lastPublished?: ModelStringFilterInput | null,
+  description?: ModelStringFilterInput | null,
+  and?: Array< ModelWebsiteListingFilterInput | null > | null,
+  or?: Array< ModelWebsiteListingFilterInput | null > | null,
+  not?: ModelWebsiteListingFilterInput | null,
+};
+
+export type ModelIntFilterInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  contains?: number | null,
+  notContains?: number | null,
+  between?: Array< number | null > | null,
+};
+
 export type CreateOpportunityMutationVariables = {
   input: CreateOpportunityInput,
 };
@@ -165,6 +207,17 @@ export type CreateOpportunityMutation = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -208,6 +261,17 @@ export type UpdateOpportunityMutation = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -251,6 +315,17 @@ export type DeleteOpportunityMutation = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -283,6 +358,10 @@ export type CreateTeamMemberMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -316,6 +395,10 @@ export type UpdateTeamMemberMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -349,6 +432,10 @@ export type DeleteTeamMemberMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -382,6 +469,10 @@ export type CreateOpportunityTypeMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -415,6 +506,10 @@ export type UpdateOpportunityTypeMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -448,6 +543,124 @@ export type DeleteOpportunityTypeMutation = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type CreateWebsiteListingMutationVariables = {
+  input: CreateWebsiteListingInput,
+};
+
+export type CreateWebsiteListingMutation = {
+  createWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type UpdateWebsiteListingMutationVariables = {
+  input: UpdateWebsiteListingInput,
+};
+
+export type UpdateWebsiteListingMutation = {
+  updateWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type DeleteWebsiteListingMutationVariables = {
+  input: DeleteWebsiteListingInput,
+};
+
+export type DeleteWebsiteListingMutation = {
+  deleteWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -492,6 +705,17 @@ export type GetOpportunityQuery = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -523,6 +747,10 @@ export type ListOpportunitysQuery = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -557,6 +785,10 @@ export type GetTeamMemberQuery = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -619,6 +851,10 @@ export type GetOpportunityTypeQuery = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -638,6 +874,74 @@ export type ListOpportunityTypesQuery = {
       name: string,
       description: string,
       opportunities:  {
+        __typename: "Opportunity",
+        id: string,
+        name: string,
+        description: string | null,
+        funders: Array< string | null > | null,
+        fundersComplete: boolean | null,
+        teammembersComplete: boolean | null,
+        typeComplete: boolean | null,
+      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetWebsiteListingQueryVariables = {
+  id: string,
+};
+
+export type GetWebsiteListingQuery = {
+  getWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type ListWebsiteListingsQueryVariables = {
+  filter?: ModelWebsiteListingFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListWebsiteListingsQuery = {
+  listWebsiteListings:  {
+    __typename: "ModelWebsiteListingConnection",
+    items:  Array< {
+      __typename: "WebsiteListing",
+      id: string,
+      rank: number,
+      lastPublished: string | null,
+      description: string | null,
+      opportunity:  {
         __typename: "Opportunity",
         id: string,
         name: string,
@@ -688,6 +992,17 @@ export type OnCreateOpportunitySubscription = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -727,6 +1042,17 @@ export type OnUpdateOpportunitySubscription = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -766,6 +1092,17 @@ export type OnDeleteOpportunitySubscription = {
       } | null,
     } | null,
     typeComplete: boolean | null,
+    websiteListings:  {
+      __typename: "ModelWebsiteListingConnection",
+      items:  Array< {
+        __typename: "WebsiteListing",
+        id: string,
+        rank: number,
+        lastPublished: string | null,
+        description: string | null,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -794,6 +1131,10 @@ export type OnCreateTeamMemberSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -823,6 +1164,10 @@ export type OnUpdateTeamMemberSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -852,6 +1197,10 @@ export type OnDeleteTeamMemberSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -881,6 +1230,10 @@ export type OnCreateOpportunityTypeSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -910,6 +1263,10 @@ export type OnUpdateOpportunityTypeSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -939,6 +1296,112 @@ export type OnDeleteOpportunityTypeSubscription = {
         description: string,
       } | null,
       typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type OnCreateWebsiteListingSubscription = {
+  onCreateWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateWebsiteListingSubscription = {
+  onUpdateWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteWebsiteListingSubscription = {
+  onDeleteWebsiteListing:  {
+    __typename: "WebsiteListing",
+    id: string,
+    rank: number,
+    lastPublished: string | null,
+    description: string | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      name: string,
+      description: string | null,
+      funders: Array< string | null > | null,
+      fundersComplete: boolean | null,
+      teammembers:  {
+        __typename: "ModelTeamMemberConnection",
+        nextToken: string | null,
+      } | null,
+      teammembersComplete: boolean | null,
+      type:  {
+        __typename: "OpportunityType",
+        id: string,
+        name: string,
+        description: string,
+      } | null,
+      typeComplete: boolean | null,
+      websiteListings:  {
+        __typename: "ModelWebsiteListingConnection",
+        nextToken: string | null,
+      } | null,
     } | null,
   } | null,
 };

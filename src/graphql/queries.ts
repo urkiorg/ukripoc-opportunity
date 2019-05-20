@@ -32,6 +32,15 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -57,6 +66,9 @@ export const listOpportunitys = `query ListOpportunitys(
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
     nextToken
   }
@@ -83,6 +95,9 @@ export const getTeamMember = `query GetTeamMember($id: ID!) {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -132,6 +147,9 @@ export const getOpportunityType = `query GetOpportunityType($id: ID!) {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -147,6 +165,60 @@ export const listOpportunityTypes = `query ListOpportunityTypes(
       name
       description
       opportunities {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getWebsiteListing = `query GetWebsiteListing($id: ID!) {
+  getWebsiteListing(id: $id) {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listWebsiteListings = `query ListWebsiteListings(
+  $filter: ModelWebsiteListingFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listWebsiteListings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      rank
+      lastPublished
+      description
+      opportunity {
         id
         name
         description
