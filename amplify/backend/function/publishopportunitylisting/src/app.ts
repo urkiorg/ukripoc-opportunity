@@ -18,67 +18,117 @@ AWS.config.region = "eu-west-1";
 export const getDBTableName = (env: string, apiId: string, type: string) =>
     `${type}-${apiId}-${env}`;
 
-const getListing = async (
-    apiId: string,
-    opportunityId: string,
-    listingId: string,
-    env: string
+export const getSNSARNName = (
+    partition: string,
+    service: string,
+    region: string = "eu-west-1",
+    accountId: string,
+    topicName: string
+): string => `arn:${partition}:${service}:${region}:${accountId}:${topicName}`;
+
+const setListingLastPublished = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityRecord: Opportunity,
+    listing: WebsiteListing
 ) => {
-    const client = new AWS.DynamoDB.DocumentClient({
-        region: "eu-west-1"
-    });
+    const opportunityListings = opportunityRecord.websiteListings
+        ? opportunityRecord.websiteListings.reduce(
+              (acc, current) => {
+                  if (current.id === listing.id) {
+                      return [...acc, listing];
+                  } else {
+                      return [...acc, current];
+                  }
+              },
+              [] as WebsiteListing[]
+          )
+        : undefined;
 
-    const TableName = getDBTableName(env, apiId, "Opportunity");
-    // const now = new Date().toISOString();
+    if (!opportunityListings) {
+        return;
+    }
 
+    opportunityRecord.websiteListings = opportunityListings;
+
+    await client
+        .put({
+            TableName,
+            Item: {
+                ...opportunityRecord
+            }
+        })
+        .promise();
+};
+
+const getListing = (
+    opportunityRecord: Opportunity,
+    listingId: string
+): WebsiteListing[] => {
+    if (
+        opportunityRecord &&
+        opportunityRecord.websiteListings &&
+        opportunityRecord.websiteListings.length
+    ) {
+        return opportunityRecord.websiteListings.filter(listing => {
+            return listing.id === listingId;
+        });
+    }
+    return [];
+};
+
+const getOpportunity = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<Opportunity> => {
     let result = await client
         .get({ TableName, Key: { id: opportunityId } })
         .promise();
 
-    const Item: Opportunity | undefined = result.Item as any;
+    return result.Item as any;
+};
 
-    if (Item && Item.websiteListings && Item.websiteListings.length) {
-        return Item.websiteListings.filter(listing => {
-            return listing.description === listingId;
-        });
-    }
+const postSNSMessage = async (
+    topicName: string,
+    accountId: string,
+    message: any
+): Promise<AWS.SNS.PublishResponse> => {
+    const sns = new AWS.SNS();
 
-    return [];
+    return new Promise((resolve, reject) => {
+        sns.publish(
+            {
+                TopicArn: getSNSARNName(
+                    "aws",
+                    "sns",
+                    undefined,
+                    accountId,
+                    topicName
+                ),
+                Message: JSON.stringify(message)
+            },
+            function(err, data) {
+                if (err) {
+                    console.error(err.stack);
+                    reject("Could not push to SNS");
+                }
+                console.log("push sent");
+                console.log(data);
 
-    //     console.log("New item");
-    //     Item = {
-    //         __typename: "Opportunity",
-    //         createdAt: now,
-    //         updatedAt: now
-    //     };
-    // } else {
-    //     console.log("Updated item");
-
-    //     Item.updatedAt = now;
-    // }
-
-    // await client
-    //     .put({
-    //         TableName,
-    //         Item: {
-    //             ...Item,
-    //             id,
-    //             name,
-    //             description,
-    //             openDate,
-    //             closeDate,
-    //             funders
-    //         }
-    //     })
-    //     .promise();
-
-    // context.done(undefined, "Success");
+                resolve(data);
+            }
+        );
+    });
 };
 
 // declare a new express app
 const app = express();
 app.use(bodyParser.json());
-// app.use(awsServerlessExpressMiddleware.eventContext());
+
+if (process.env && process.env.env && process.env.env !== "sunyadev") {
+    app.use(awsServerlessExpressMiddleware.eventContext());
+}
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -90,16 +140,13 @@ app.use(function(req, res, next) {
     next();
 });
 
-// 1. get listing id from post
+// 1. get listing id, opportunity id from post
 // 2. get listing from DynamoDb
 // 3. add listing in format provided in full-event.json to SNS
 // 4. add `lastPublished` to listing in DynamoDb
 
 app.post("/opportunity-listing/publish", async (req, res) => {
     try {
-        // Add your code here
-        // const sns = new AWS.SNS();
-
         const { listingId, opportunityId } = req.body;
         const env = process.env.env;
         const apiId = api.ukri.output.GraphQLAPIIdOutput;
@@ -109,36 +156,62 @@ app.post("/opportunity-listing/publish", async (req, res) => {
             return res.status(404).json({});
         }
 
-        const fullListing = await getListing(
-            apiId,
-            opportunityId,
-            listingId,
-            env
+        const client = new AWS.DynamoDB.DocumentClient({
+            region: "eu-west-1"
+        });
+
+        const TableName = getDBTableName(env, apiId, "Opportunity");
+        const opportunity = await getOpportunity(
+            client,
+            TableName,
+            opportunityId
+        );
+        const listingArr = getListing(opportunity, listingId);
+        const now = new Date().toISOString();
+
+        if (!listingArr.length) {
+            console.error(
+                `The listing, ${listingId} is not part of the opportunity, ${opportunityId}`
+            );
+
+            throw new Error(`The listing couldn't be found in the opportunity`);
+        }
+        const listing = listingArr[0];
+
+        listing.lastPublished = now;
+        setListingLastPublished(client, TableName, opportunity, listing);
+
+        const message: ListingEvent = {
+            id: listing.id,
+            opportunityId: opportunity.id,
+            name: opportunity.name,
+            description: listing.description ? listing.description : undefined,
+            funders: opportunity.funders,
+            openDate: opportunity.openDate ? opportunity.openDate : undefined,
+            closeDate: opportunity.closeDate
+                ? opportunity.closeDate
+                : undefined,
+            lastPublished: listing.lastPublished
+        };
+
+        const post = await postSNSMessage(
+            "OpportunityListingUpdate",
+            "475991803334",
+            message
         );
 
-        console.log({ fullListing });
-
-        // sns.publish(
-        //     {
-        //         Message: fullListing,
-
-        //         // @todo CF template for this
-        //         TopicArn: "TOPIC_ARN"
-        //     },
-        //     function(err, data) {
-        //         if (err) {
-        //             console.log(err.stack);
-        //             return;
-        //         }
-        //         console.log("push sent");
-        //         console.log(data);
-        //         res.json({
-        //             success: "post call succeed!",
-        //             url: req.url,
-        //             body: req.body
-        //         });
-        //     }
-        // );
+        if (post) {
+            res.json({
+                success: "Website listing success.",
+                url: req.url,
+                body: req.body
+            });
+        } else {
+            console.error(
+                "There was an error processing the listing publish event: "
+            );
+            return res.status(404).json({});
+        }
     } catch (error) {
         console.error(
             "There was an error processing the listing publish event: ",

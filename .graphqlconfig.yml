@@ -1,6 +1,7 @@
 projects:
   ukri:
-    schemaPath: src/graphql/schema.json
+    schemaPath: >-
+      amplify/backend/function/publishopportunitylisting/src/src/graphql/schema.json
     includes:
       - src/graphql/**/*.ts
     excludes:

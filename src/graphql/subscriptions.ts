@@ -32,6 +32,15 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -66,6 +75,15 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -100,6 +118,15 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
       }
     }
     typeComplete
+    websiteListings {
+      items {
+        id
+        rank
+        lastPublished
+        description
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -124,6 +151,9 @@ export const onCreateTeamMember = `subscription OnCreateTeamMember {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -149,6 +179,9 @@ export const onUpdateTeamMember = `subscription OnUpdateTeamMember {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -174,6 +207,9 @@ export const onDeleteTeamMember = `subscription OnDeleteTeamMember {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -199,6 +235,9 @@ export const onCreateOpportunityType = `subscription OnCreateOpportunityType {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -224,6 +263,9 @@ export const onUpdateOpportunityType = `subscription OnUpdateOpportunityType {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
@@ -249,6 +291,96 @@ export const onDeleteOpportunityType = `subscription OnDeleteOpportunityType {
         description
       }
       typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onCreateWebsiteListing = `subscription OnCreateWebsiteListing {
+  onCreateWebsiteListing {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdateWebsiteListing = `subscription OnUpdateWebsiteListing {
+  onUpdateWebsiteListing {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeleteWebsiteListing = `subscription OnDeleteWebsiteListing {
+  onDeleteWebsiteListing {
+    id
+    rank
+    lastPublished
+    description
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
     }
   }
 }
