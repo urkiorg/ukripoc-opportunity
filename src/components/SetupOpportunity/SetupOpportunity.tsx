@@ -10,6 +10,7 @@ import Details from "@govuk-react/details";
 import { getOpportunity } from "../../graphql/queries";
 import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
+import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -47,6 +48,10 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
+
+            <WorkflowComponentAdd
+                opportunityId={opportunity.getOpportunity.id}
+            />
         </>
     );
 };

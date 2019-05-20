@@ -19,6 +19,8 @@ import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 import config from "./aws-exports";
 import { SetupFundersPage } from "./components/SetupFundersPage";
 
+import { WebsiteListingPage } from "./components/WebsiteListingPage";
+
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
     region: config.aws_appsync_region,
@@ -60,6 +62,11 @@ export const App: FC = (props: any) => (
                         <Route
                             component={SetupFundersPage}
                             path="/setup/:opportunityId/funders"
+                        />
+
+                        <Route
+                            component={WebsiteListingPage}
+                            path="/component/website-listing/:id"
                         />
                     </Router>
 

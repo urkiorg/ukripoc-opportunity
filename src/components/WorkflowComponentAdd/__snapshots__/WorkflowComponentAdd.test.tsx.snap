@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WorkflowComponentAdd renders correctly 1`] = `
+<div>
+  <p>
+     Add workflow component
+  </p>
+  <label
+    className="sc-bdVaJa kJhFvF"
+    name="group1"
+  >
+    <span
+      className="sc-bwzfXH lbxcXc"
+    />
+    <select
+      className="sc-ifAKCX kDzsBS"
+    >
+      <option
+        value="0"
+      >
+        Website Listing
+      </option>
+    </select>
+  </label>
+  <button
+    className="sc-EHOje hEaLol"
+    disabled={false}
+  >
+     Save 
+  </button>
+</div>
+`;
