@@ -8,6 +8,7 @@ type Opportunity @model {
     teammembersComplete: Boolean
     type: OpportunityType @connection(name: "OpportunityTypes")
     typeComplete: Boolean
+    websiteListings: [WebsiteListing] @connection(name: "WebsiteListing")
 }
 
 type TeamMember @model {
@@ -22,4 +23,11 @@ type OpportunityType @model {
     name: String!
     description: String!
     opportunities: Opportunity @connection(name: "OpportunityTypes")
+}
+
+type WebsiteListing @model {
+    id: ID!
+    rank: Number!
+    lastPublished: String
+    description: String
 }
