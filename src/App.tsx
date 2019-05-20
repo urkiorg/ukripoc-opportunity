@@ -66,7 +66,7 @@ export const App: FC = (props: any) => (
 
                         <Route
                             component={WebsiteListingPage}
-                            path="/component/website-listing/:id"
+                            path="/component/WebsiteListing/:id"
                         />
                     </Router>
 

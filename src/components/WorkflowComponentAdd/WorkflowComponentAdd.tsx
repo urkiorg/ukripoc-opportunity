@@ -8,7 +8,7 @@ import { navigate } from "@reach/router";
 
 import { useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import { getOpportunity } from "../../graphql/queries";
+import { createWebsiteListing } from "../../graphql/mutations";
 
 // interface Props {
 //     addOpportunityWorkFlowComponent: (id: string) => void;
@@ -18,28 +18,36 @@ interface Props {
     opportunityId: string;
 }
 
-const CREATE_WORKFLOW_COMPONENT = gql(getOpportunity);
+const CREATE_WEBSITE_LISTING = gql(createWebsiteListing);
 
 export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
-    const addOpportunityMutation = useMutation(CREATE_WORKFLOW_COMPONENT);
+    //if its a website component....
+    const createWebsiteListingMutation = useMutation(CREATE_WEBSITE_LISTING);
 
     const onButtonClick = useCallback(
         async (name: string) => {
-            const opportunityId = 1;
-
-            const result = await addOpportunityMutation({
+            //if website component
+            const result = await createWebsiteListingMutation({
                 variables: {
-                    input: { opportunity: opportunityId }
+                    input: {
+                        websiteListingOpportunityId: opportunityId,
+                        rank: 1
+                    }
                 }
             });
+            //end if
 
             const { data, loading, error } = result;
 
             if (data) {
-                navigate(`/setup/${data.createOpportunity.id}`);
+                navigate(
+                    `/component/${data.createWebsiteListing.__typename}/${
+                        data.createWebsiteListing.id
+                    }`
+                );
             }
         },
-        [addOpportunityMutation]
+        [createWebsiteListingMutation]
     );
 
     return (
