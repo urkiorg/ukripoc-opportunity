@@ -20,8 +20,6 @@ export const LoginScreen: FC<Props> = (props) => {
     const [persistedLogin, setPersistedLogin] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    console.log(props);
-
     const onInputChangeUsername = (e: any) => {
         setUsername(e.target.value);
     }
