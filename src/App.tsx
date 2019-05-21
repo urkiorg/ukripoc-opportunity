@@ -47,7 +47,10 @@ export const App: FC = (props: any) => (
                     <Router>
                         <Route component={AllOpportunities} path="/all" />
 
-                        <Route component={NewOpportunityPage} path="/new" />
+                        <Route
+                            component={NewOpportunityPage}
+                            path="/opportunity"
+                        />
 
                         <Route
                             component={SetupOpportunityPage}
