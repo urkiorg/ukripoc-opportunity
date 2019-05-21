@@ -87,12 +87,12 @@ export const LoginScreen: FC<Props> = (props) => {
             <form onSubmit={handleSubmit}>
                 <LabelText>Username</LabelText>
                 { usernameWarning && <ErrorText>"Please enter your username."</ErrorText> }
-                <Input error={error} className={styles.input} value={username} onChange={onInputChangeUsername} />
+                <Input error={error || usernameWarning} type="email" className={styles.input} value={username} onChange={onInputChangeUsername} />
                 <LabelText>Password</LabelText>
                 { passwordWarning && <ErrorText>"Please enter your password."</ErrorText> }
-                <Input error={error} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
-                <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox>
-                <Button onClick={handleSubmit} buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
+                <Input error={error || usernameWarning} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
+                {/* <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox> */}
+                <Button disabled={loading} onClick={handleSubmit} buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
             </form>
         </div>
     );
