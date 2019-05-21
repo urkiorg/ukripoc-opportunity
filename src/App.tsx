@@ -18,6 +18,10 @@ import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 
 import config from "./aws-exports";
 import { SetupFundersPage } from "./components/SetupFundersPage";
+import { UkriHeader } from "./components/UkriHeader";
+import { UkriFooter } from "./components/UkriFooter";
+
+import "./assets/fonts/stylesheet.css";
 
 import { WebsiteListingPage } from "./components/WebsiteListingPage";
 
@@ -43,11 +47,15 @@ export const App: FC = (props: any) => (
     <ApolloProvider client={client as any}>
         <ApolloHooksProvider client={client as any}>
             <Rehydrated>
+                <UkriHeader />
                 <Main>
                     <Router>
                         <Route component={AllOpportunities} path="/all" />
 
-                        <Route component={NewOpportunityPage} path="/new" />
+                        <Route
+                            component={NewOpportunityPage}
+                            path="/opportunity"
+                        />
 
                         <Route
                             component={SetupOpportunityPage}
@@ -69,17 +77,8 @@ export const App: FC = (props: any) => (
                             path="/component/WebsiteListing/:id"
                         />
                     </Router>
-
-                    <nav className="primary-nav">
-                        <Link to="/all">
-                            <span aria-label="All"> All </span>
-                        </Link>
-                        <br />
-                        <Link to="/new">
-                            <span aria-label="New"> New </span>
-                        </Link>
-                    </nav>
                 </Main>
+                <UkriFooter />
             </Rehydrated>
         </ApolloHooksProvider>
     </ApolloProvider>

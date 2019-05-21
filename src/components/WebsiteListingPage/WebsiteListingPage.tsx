@@ -26,21 +26,22 @@ export const WebsiteListingPage: FC<Props> = (props: Props) => {
     });
 
     const updateWebsiteListing = useCallback(
-        async (name: string) => {
-            console.log(name);
+        async (description: string) => {
             const result = await updateWebsiteListingMutation({
                 variables: {
-                    input: { id: props.id, description: name }
+                    input: { id: props.id, description: description }
                 }
             });
 
             const { data, loading, error } = result;
 
-            console.log(data);
+            const payLoad = {
+                listingId: props.id,
+                opportunityId: data.updateWebsiteListing.opportunity.id,
+                description: description
+            };
 
-            // if (data) {
-            //     navigate(`/setup/${data.createOpportunity.id}`);
-            // }
+            console.log(payLoad);
         },
         [updateWebsiteListingMutation]
     );

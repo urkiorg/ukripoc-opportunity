@@ -62,6 +62,7 @@
         "@types/react-test-renderer": "^16.8.1",
         "@types/storybook__addon-actions": "^3.4.2",
         "@types/storybook__react": "^4.0.1",
+        "@types/styled-components": "^4.1.15",
         "babel-loader": "^8.0.5",
         "classnames": "^2.2.6",
         "eslint": "^5.16.0",

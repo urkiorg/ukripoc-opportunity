@@ -11,6 +11,9 @@ import { getOpportunity } from "../../graphql/queries";
 import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
+import { Title } from "../../theme";
+
+import SectionBreak from "@govuk-react/section-break";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -25,18 +28,15 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
 
     return (
         <>
-            <h3>
-                {opportunity.getOpportunity.id} /
-                {opportunity.getOpportunity.name}
-            </h3>
-            <h1>Opportunity setup</h1>
+            <h3>{opportunity.getOpportunity.name}</h3>
+            <Title>Opportunity setup</Title>
 
             <Link to={linkToFunders}>
-                <span aria-label="Funders"> Funders </span>{" "}
-                {opportunity.getOpportunity.fundersComplete
-                    ? "Done"
-                    : "Not Done"}
+                <span aria-label="Funders"> Funders </span>
             </Link>
+
+            {opportunity.getOpportunity.fundersComplete ? "Done" : "Not Done"}
+
             <h2>Settings</h2>
 
             <h3> Workflow </h3>
@@ -49,9 +49,11 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 published externally.
             </Details>
 
+            <SectionBreak />
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}
             />
+            <SectionBreak />
         </>
     );
 };

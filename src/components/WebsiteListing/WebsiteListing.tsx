@@ -10,6 +10,11 @@ import { ukriGreen } from "../../theme";
 import { GetWebsiteListingQuery } from "../../API";
 import { Link } from "@reach/router";
 
+import GridRow from "@govuk-react/grid-row";
+import GridCol from "@govuk-react/grid-col";
+import Label from "@govuk-react/label";
+import SectionBreak from "@govuk-react/section-break";
+
 interface Props {
     updateWebsiteListing: (name: string) => void;
     websiteListing: GetWebsiteListingQuery;
@@ -25,11 +30,15 @@ export const WebsiteListing: FC<Props> = ({
             ? websiteListing.getWebsiteListing.description
             : "";
 
+    const opportunityName =
+        websiteListing.getWebsiteListing &&
+        websiteListing.getWebsiteListing.opportunity
+            ? websiteListing.getWebsiteListing.opportunity.name
+            : "";
+
     const [listingDescription, setlistingDescription] = useState(
         defaultListingDescription
     );
-
-    console.log(listingDescription);
 
     const onButtonClick = useCallback(() => {
         updateWebsiteListing(listingDescription);
@@ -37,12 +46,14 @@ export const WebsiteListing: FC<Props> = ({
 
     const onInputChange = useCallback(
         event => setlistingDescription(event.target.value),
-        []
+        [listingDescription]
     );
+
+    console.log("The loaded in value is: ", defaultListingDescription);
 
     return (
         <div className={styles.wrap}>
-            <H4> {websiteListing.getWebsiteListing!.opportunity!.name}</H4>
+            <H4> {opportunityName}</H4>
             <H2 textColour={ukriGreen}>Website listing</H2>
             <Details summary="About this workflow component">
                 The public website component allows you to define the
@@ -54,15 +65,32 @@ export const WebsiteListing: FC<Props> = ({
             <p>Open date: Unavailable (set in the Application component)</p>
             <p>Close date: Unavailable (set in the Application component)</p>
             <b> High level summary </b>
-            <textarea
-                name="HLS"
-                onChange={onInputChange}
-                defaultValue={defaultListingDescription}
+
+            <TextArea
+                mb={3}
+                input={{
+                    onChange: onInputChange,
+                    value: defaultListingDescription
+                }}
+                meta={{
+                    name: "hls",
+                    active: true,
+                    initial: defaultListingDescription
+                }}
             />
 
-            <Button buttonColour={ukriGreen} onClick={onButtonClick}>
-                Publish
-            </Button>
+            <GridRow>
+                <GridCol setWidth="70%">
+                    <Button buttonColour={ukriGreen} onClick={onButtonClick}>
+                        Publish
+                    </Button>
+                </GridCol>
+                <GridCol>
+                    <Button onClick={onButtonClick}>
+                        Save and return without publishing
+                    </Button>
+                </GridCol>
+            </GridRow>
         </div>
     );
 };

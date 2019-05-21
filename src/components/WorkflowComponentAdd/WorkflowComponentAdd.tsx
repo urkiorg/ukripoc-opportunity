@@ -10,6 +10,9 @@ import { useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import { createWebsiteListing } from "../../graphql/mutations";
 
+import GridRow from "@govuk-react/grid-row";
+import GridCol from "@govuk-react/grid-col";
+
 // interface Props {
 //     addOpportunityWorkFlowComponent: (id: string) => void;
 // }
@@ -54,11 +57,16 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
         <div>
             <p> Add workflow component</p>
 
-            <Select name="group1">
-                <option value="0">Website Listing</option>
-            </Select>
-
-            <Button onClick={onButtonClick}> Save </Button>
+            <GridRow>
+                <GridCol setWidth="70%">
+                    <Select name="group1">
+                        <option value="0">Website Listing</option>
+                    </Select>
+                </GridCol>
+                <GridCol>
+                    <Button onClick={onButtonClick}> Add </Button>
+                </GridCol>
+            </GridRow>
         </div>
     );
 };
