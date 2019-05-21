@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Amplify from "aws-amplify";
 import Auth from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
@@ -39,50 +39,62 @@ const logout = () => {
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
 
-export const App: FC = () => (
-    // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
-    <ApolloProvider client={client as any}>
-        <ApolloHooksProvider client={client as any}>
-            <Rehydrated>
-                <Main>
-                    <Authenticator hideDefault={true}>
-                        <AuthController>
-                            <Router>
-                                <RouterPage
-                                    path="/all"
-                                    pageComponent={<AllOpportunities />}
-                                />
-                                <RouterPage
-                                    path="/new"
-                                    pageComponent={<NewOpportunityPage />}
-                                />
-                                <RouterPage
-                                    path="/login"
-                                    pageComponent={<LoginScreen />}
-                                />
-                            </Router>
-                            <nav className="primary-nav">
-                                <Link to="/all">
-                                    <span aria-label="all"> All </span>
-                                </Link>
-                                <br />
-                                <Link to="/new">
-                                    <span aria-label="add"> New </span>
-                                </Link>
-                                <br />
-                                <Link to="/login">
-                                    <span aria-label="add"> Login </span>
-                                </Link>
-                                <br />
-                                    <span onClick={logout}>logout</span>
-                            </nav>
-                        </AuthController>
-                    </Authenticator>
-                </Main>
-            </Rehydrated>
-        </ApolloHooksProvider>
-    </ApolloProvider>
-);
+export const App: FC = () => {
+    const [logedIn, setLogin] = useState(false);
+
+    const handleAuthStateChange = (state: any) => {
+        if (state === 'signedIn') {
+           setLogin(true);
+        } else {
+            setLogin(false);
+        }
+    }
+
+    return (
+        // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
+        <ApolloProvider client={client as any}>
+            <ApolloHooksProvider client={client as any}>
+                <Rehydrated>
+                    <Main>
+                        <Authenticator hideDefault={true}  onStateChange={handleAuthStateChange}>
+                            <AuthController logedIn={logedIn}>
+                                <Router>
+                                    <RouterPage
+                                        path="/all"
+                                        pageComponent={<AllOpportunities />}
+                                    />
+                                    <RouterPage
+                                        path="/new"
+                                        pageComponent={<NewOpportunityPage />}
+                                    />
+                                    <RouterPage
+                                        path="/login"
+                                        pageComponent={<LoginScreen />}
+                                    />
+                                </Router>
+                                <nav className="primary-nav">
+                                    <Link to="/all">
+                                        <span aria-label="all"> All </span>
+                                    </Link>
+                                    <br />
+                                    <Link to="/new">
+                                        <span aria-label="add"> New </span>
+                                    </Link>
+                                    <br />
+                                    <Link to="/login">
+                                        <span aria-label="add"> Login </span>
+                                    </Link>
+                                    <br />
+                                        <span onClick={logout}>logout</span>
+                                </nav>
+                            </AuthController>
+                        </Authenticator>
+                    </Main>
+                </Rehydrated>
+            </ApolloHooksProvider>
+        </ApolloProvider>
+    );
+}
 
 const RouterPage = (
     props: { pageComponent: JSX.Element } & RouteComponentProps
