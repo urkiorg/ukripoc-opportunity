@@ -18,6 +18,10 @@ import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 
 import config from "./aws-exports";
 import { SetupFundersPage } from "./components/SetupFundersPage";
+import { UkriHeader } from "./components/UkriHeader";
+import { UkriFooter } from "./components/UkriFooter";
+
+import "./assets/fonts/stylesheet.css";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -41,11 +45,15 @@ export const App: FC = (props: any) => (
     <ApolloProvider client={client as any}>
         <ApolloHooksProvider client={client as any}>
             <Rehydrated>
+                <UkriHeader />
                 <Main>
                     <Router>
                         <Route component={AllOpportunities} path="/all" />
 
-                        <Route component={NewOpportunityPage} path="/new" />
+                        <Route
+                            component={NewOpportunityPage}
+                            path="/opportunity"
+                        />
 
                         <Route
                             component={SetupOpportunityPage}
@@ -62,21 +70,8 @@ export const App: FC = (props: any) => (
                             path="/setup/:opportunityId/funders"
                         />
                     </Router>
-
-                    <nav className="primary-nav">
-                        <Link to="/all">
-                            <span aria-label="All"> All </span>
-                        </Link>
-                        <br />
-                        <Link to="/new">
-                            <span aria-label="New"> New </span>
-                        </Link>
-                        <br />
-                        <Link to="/setup/675c0700-09c3-4b1c-9292-71f96ef0567e">
-                            <span aria-label="Setup"> Setup </span>
-                        </Link>
-                    </nav>
                 </Main>
+                <UkriFooter />
             </Rehydrated>
         </ApolloHooksProvider>
     </ApolloProvider>

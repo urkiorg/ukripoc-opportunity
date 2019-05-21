@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "nta";
+    src: url("./OpenSans-Light-webfont.woff") format("woff");
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: "nta";
+    src: url("./OpenSans-Regular-webfont.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "nta";
+    src: url("./OpenSans-Bold-webfont.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+}
