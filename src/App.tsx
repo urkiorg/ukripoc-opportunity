@@ -40,13 +40,13 @@ const logout = () => {
 Auth.configure(config);
 
 export const App: FC = () => {
-    const [logedIn, setLogin] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const handleAuthStateChange = (state: any) => {
         if (state === 'signedIn') {
-           setLogin(true);
+            setLoggedIn(true);
         } else {
-            setLogin(false);
+            setLoggedIn(false);
         }
     }
 
@@ -56,8 +56,11 @@ export const App: FC = () => {
             <ApolloHooksProvider client={client as any}>
                 <Rehydrated>
                     <Main>
-                        <Authenticator hideDefault={true}  onStateChange={handleAuthStateChange}>
-                            <AuthController logedIn={logedIn}>
+                        <Authenticator
+                            authState="signIn"
+                            hideDefault={true}  
+                            onStateChange={handleAuthStateChange}>
+                            <AuthController loggedIn={loggedIn}>
                                 <Router>
                                     <RouterPage
                                         path="/all"
