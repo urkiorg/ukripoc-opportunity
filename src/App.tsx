@@ -19,6 +19,9 @@ import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 import config from "./aws-exports";
 import { SetupFundersPage } from "./components/SetupFundersPage";
 import { UkriHeader } from "./components/UkriHeader";
+import { UkriFooter } from "./components/UkriFooter";
+
+import "./assets/fonts/stylesheet.css";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -68,6 +71,7 @@ export const App: FC = (props: any) => (
                         />
                     </Router>
                 </Main>
+                <UkriFooter />
             </Rehydrated>
         </ApolloHooksProvider>
     </ApolloProvider>
