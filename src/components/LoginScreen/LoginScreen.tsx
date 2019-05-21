@@ -7,6 +7,7 @@ import Button from '@govuk-react/button';
 import LabelText from '@govuk-react/label-text';
 import styles from "./LoginScreen.module.scss";
 import { Auth } from "aws-amplify";
+import { navigate } from "@reach/router";
 
 interface Props {
     override?: string;
@@ -38,9 +39,9 @@ export const LoginScreen: FC<Props> = (props) => {
         setLoading(true);
 
         try {
-            const user = await Auth.signIn(username, password);
+            await Auth.signIn(username, password);
             setLoading(false);
-            console.log("user loged in!: ",user)
+            navigate(`/`)
         } catch(error) {
             console.log("Error!", error)
             setLoading(false);
