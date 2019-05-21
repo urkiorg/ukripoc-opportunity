@@ -42,7 +42,8 @@ export const LoginScreen: FC<Props> = (props) => {
             await Auth.signIn(username, password);
             setLoading(false);
             setError(false)
-            navigate(`/`)
+            navigate(`/`);
+            window.location.reload();
         } catch(error) {
             setError(true)
             setLoading(false);
