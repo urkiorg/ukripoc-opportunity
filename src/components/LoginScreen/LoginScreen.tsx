@@ -1,14 +1,13 @@
 import React, { FC, useState } from "react";
-import { H2, H3 } from "@govuk-react/heading";
-import { ukriGreen } from "../../theme";
+import { ukriGreen, Title } from "../../theme";
 import Input from "@govuk-react/input";
-import Checkbox from '@govuk-react/checkbox';
 import Button from '@govuk-react/button';
 import LabelText from '@govuk-react/label-text';
 import ErrorSummary from '@govuk-react/error-summary';
 import { navigate } from "@reach/router";
 import ErrorText from '@govuk-react/error-text';
 import { Auth } from "aws-amplify";
+import Caption from '@govuk-react/caption';
 
 import styles from "./LoginScreen.module.scss";
 
@@ -82,8 +81,8 @@ export const LoginScreen: FC<Props> = (props) => {
                     description={"Your email/password combination doesn't seem to work."}
                     />
             }
-            <H3>Welcome</H3>
-            <H2 textColour={ukriGreen}>Please log in</H2>
+            <Caption>Welcome</Caption>
+            <Title>Please log in</Title>
             <form onSubmit={handleSubmit}>
                 <LabelText>Username</LabelText>
                 { usernameWarning && <ErrorText>"Please enter your username."</ErrorText> }
@@ -91,7 +90,6 @@ export const LoginScreen: FC<Props> = (props) => {
                 <LabelText>Password</LabelText>
                 { passwordWarning && <ErrorText>"Please enter your password."</ErrorText> }
                 <Input error={error || usernameWarning} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
-                {/* <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox> */}
                 <Button disabled={loading} onClick={handleSubmit} buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
             </form>
         </div>

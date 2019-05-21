@@ -1,3 +1,4 @@
 {
-    "AppSyncApiName": "ukri"
+    "AppSyncApiName": "ukri",
+    "APIKeyExpirationEpoch": "-1"
 }

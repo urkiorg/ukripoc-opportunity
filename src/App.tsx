@@ -35,13 +35,15 @@ const client = new AWSAppSyncClient({
 
 Amplify.configure(config);
 
-const logout = () => {
-    try {
-        Auth.signOut();
-    } catch(error) {
-        console.log("Error!", error)
-    }
-}
+// Use on logout button
+// const logout = () => {
+//     try {
+//         setLoggedIn(false);
+//         Auth.signOut();
+//     } catch(error) {
+//         console.log("Error!", error)
+//     }
+// }    
 
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
@@ -116,4 +118,4 @@ export const App: FC = (props: any) => {
 
 (window as any).LOG_LEVEL = "DEBUG";
 
-export default (App);
+export default App;
