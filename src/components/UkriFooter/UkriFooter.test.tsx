@@ -1,11 +1,11 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { AllOpportunities } from "./index";
+import { UkriFooter } from "./index";
 
-describe("AllOpportunities", () => (
+describe("UkriFooter", () => {
     it("renders correctly", () => {
-        const tree = renderer.create(<AllOpportunities />).toJSON();
+        const tree = renderer.create(<UkriFooter />).toJSON();
         expect(tree).toMatchSnapshot();
     })
-));
+});
 

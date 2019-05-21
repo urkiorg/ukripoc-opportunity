@@ -6,13 +6,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -31,6 +25,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
@@ -45,13 +40,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -70,6 +59,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
@@ -84,13 +74,7 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -109,90 +93,13 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
       }
     }
     typeComplete
-  }
-}
-`;
-export const onCreateFunder = `subscription OnCreateFunder {
-  onCreateFunder {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
-  }
-}
-`;
-export const onUpdateFunder = `subscription OnUpdateFunder {
-  onUpdateFunder {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
-  }
-}
-`;
-export const onDeleteFunder = `subscription OnDeleteFunder {
-  onDeleteFunder {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
   }
 }
 `;
@@ -205,9 +112,7 @@ export const onCreateTeamMember = `subscription OnCreateTeamMember {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -232,9 +137,7 @@ export const onUpdateTeamMember = `subscription OnUpdateTeamMember {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -259,9 +162,7 @@ export const onDeleteTeamMember = `subscription OnDeleteTeamMember {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -286,9 +187,7 @@ export const onCreateOpportunityType = `subscription OnCreateOpportunityType {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -313,9 +212,7 @@ export const onUpdateOpportunityType = `subscription OnUpdateOpportunityType {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -340,9 +237,7 @@ export const onDeleteOpportunityType = `subscription OnDeleteOpportunityType {
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken

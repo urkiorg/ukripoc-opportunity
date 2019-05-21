@@ -6,13 +6,7 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -31,6 +25,7 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
@@ -45,13 +40,7 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -70,6 +59,7 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
@@ -84,13 +74,7 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
     id
     name
     description
-    funders {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
+    funders
     fundersComplete
     teammembers {
       items {
@@ -109,90 +93,13 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
         id
         name
         description
+        funders
         fundersComplete
         teammembersComplete
         typeComplete
       }
     }
     typeComplete
-  }
-}
-`;
-export const createFunder = `mutation CreateFunder($input: CreateFunderInput!) {
-  createFunder(input: $input) {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
-  }
-}
-`;
-export const updateFunder = `mutation UpdateFunder($input: UpdateFunderInput!) {
-  updateFunder(input: $input) {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
-  }
-}
-`;
-export const deleteFunder = `mutation DeleteFunder($input: DeleteFunderInput!) {
-  deleteFunder(input: $input) {
-    id
-    name
-    opportunities {
-      id
-      name
-      description
-      funders {
-        nextToken
-      }
-      fundersComplete
-      teammembers {
-        nextToken
-      }
-      teammembersComplete
-      type {
-        id
-        name
-        description
-      }
-      typeComplete
-    }
   }
 }
 `;
@@ -205,9 +112,7 @@ export const createTeamMember = `mutation CreateTeamMember($input: CreateTeamMem
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -232,9 +137,7 @@ export const updateTeamMember = `mutation UpdateTeamMember($input: UpdateTeamMem
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -259,9 +162,7 @@ export const deleteTeamMember = `mutation DeleteTeamMember($input: DeleteTeamMem
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -286,9 +187,7 @@ export const createOpportunityType = `mutation CreateOpportunityType($input: Cre
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -313,9 +212,7 @@ export const updateOpportunityType = `mutation UpdateOpportunityType($input: Upd
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken
@@ -340,9 +237,7 @@ export const deleteOpportunityType = `mutation DeleteOpportunityType($input: Del
       id
       name
       description
-      funders {
-        nextToken
-      }
+      funders
       fundersComplete
       teammembers {
         nextToken

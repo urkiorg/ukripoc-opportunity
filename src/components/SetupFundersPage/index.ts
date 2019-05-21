@@ -1,0 +1,1 @@
+export { SetupFundersPage } from "./SetupFundersPage";

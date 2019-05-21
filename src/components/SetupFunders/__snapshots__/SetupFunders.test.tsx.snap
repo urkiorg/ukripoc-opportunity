@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SetupFunders renders correctly 1`] = `
+<div>
+  <h1>
+    Funders
+  </h1>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      AHRC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      BBSRC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      EPSRC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      Innovate UK
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      MRC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      NERC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      Research England
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      STFC
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={false}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      UKRI
+    </span>
+  </label>
+  <label
+    className="sc-bwzfXH kZZPar"
+  >
+    <input
+      checked={true}
+      className="sc-htpNat bZWrQc"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="sc-bxivhb ckQlQp"
+    >
+      Other
+    </span>
+  </label>
+  <button
+    className="sc-EHOje hEaLol"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Done
+  </button>
+</div>
+`;

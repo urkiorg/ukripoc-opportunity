@@ -7,14 +7,21 @@ import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { Rehydrated } from "aws-appsync-react";
 import Main from "@govuk-react/main";
 import { Router, Link, RouteComponentProps } from "@reach/router";
+import { Route } from "./components/Route";
 import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
+import { SetupOpportunityPage } from "./components/SetupOpportunityPage";
 import config from "./aws-exports";
+import { SetupFundersPage } from "./components/SetupFundersPage";
+import { UkriHeader } from "./components/UkriHeader";
+import { UkriFooter } from "./components/UkriFooter";
 import { LoginScreen } from "./components/LoginScreen";
 import { AuthController } from "./components/AuthController";
 
 // @ts-ignore
 import { Authenticator } from 'aws-amplify-react';
+
+import "./assets/fonts/stylesheet.css";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -39,7 +46,7 @@ const logout = () => {
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
 
-export const App: FC = () => {
+export const App: FC = (props: any) => {
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -63,57 +70,49 @@ export const App: FC = () => {
     }
 
     return (
-        // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
-        <ApolloProvider client={client as any}>
-            <ApolloHooksProvider client={client as any}>
-                <Rehydrated>
-                    <Main>
-                        <Authenticator
-                            authState="signIn"
-                            hideDefault={true}  
-                            onStateChange={handleAuthStateChange}>
-                            <AuthController loggedIn={loggedIn}>
-                                <Router>
-                                    <RouterPage
-                                        path="/all"
-                                        pageComponent={<AllOpportunities />}
-                                    />
-                                    <RouterPage
-                                        path="/new"
-                                        pageComponent={<NewOpportunityPage />}
-                                    />
-                                    <RouterPage
-                                        path="/login"
-                                        pageComponent={<LoginScreen />}
-                                    />
-                                </Router>
-                                <nav className="primary-nav">
-                                    <Link to="/all">
-                                        <span aria-label="all"> All </span>
-                                    </Link>
-                                    <br />
-                                    <Link to="/new">
-                                        <span aria-label="add"> New </span>
-                                    </Link>
-                                    <br />
-                                    <Link to="/login">
-                                        <span aria-label="add"> Login </span>
-                                    </Link>
-                                    <br />
-                                        <span onClick={logout}>logout</span>
-                                </nav>
-                            </AuthController>
-                        </Authenticator>
-                    </Main>
-                </Rehydrated>
-            </ApolloHooksProvider>
-        </ApolloProvider>
-    );
-}
+    // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
+    <ApolloProvider client={client as any}>
+        <ApolloHooksProvider client={client as any}>
+            <Rehydrated>
+                <UkriHeader />
+                <Main> 
+                    <Authenticator
+                        authState="signIn"
+                        hideDefault={true}  
+                        onStateChange={handleAuthStateChange}>
+                        <AuthController loggedIn={loggedIn}>
 
-const RouterPage = (
-    props: { pageComponent: JSX.Element } & RouteComponentProps
-) => props.pageComponent;
+                        <Router>
+                            <Route component={AllOpportunities} path="/all" />
+
+                            <Route
+                                component={NewOpportunityPage}
+                                path="/opportunity"
+                            />
+
+                            <Route
+                                component={SetupOpportunityPage}
+                                path="/setup/:opportunityId"
+                            />
+
+                            <Route
+                                component={SetupOpportunityPage}
+                                path="/setup/:opportunityId"
+                            />
+
+                            <Route
+                                component={SetupFundersPage}
+                                path="/setup/:opportunityId/funders"
+                            />
+                        </Router>
+                        </AuthController>
+                    </Authenticator>
+                </Main>
+                <UkriFooter />
+            </Rehydrated>
+        </ApolloHooksProvider>
+    </ApolloProvider>
+)}
 
 (window as any).LOG_LEVEL = "DEBUG";
 
