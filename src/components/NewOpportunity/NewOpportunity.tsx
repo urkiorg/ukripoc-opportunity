@@ -27,7 +27,7 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
 
     return (
         <div className={styles.wrap}>
-            <Title>New opportunity</Title>
+            <Title>New opportunity </Title>
             <H4>Opportunity name</H4>
             <HintText>
                 This name will be used to identify the opportunity internally
