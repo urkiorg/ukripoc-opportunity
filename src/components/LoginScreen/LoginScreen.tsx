@@ -9,14 +9,17 @@ import styles from "./LoginScreen.module.scss";
 import { Auth } from "aws-amplify";
 
 interface Props {
+    override?: string;
 }
 
-export const LoginScreen: FC<Props> = ({}) => {
+export const LoginScreen: FC<Props> = (props) => {
 
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [persistedLogin, setPersistedLogin] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    console.log(props);
 
     const onInputChangeUsername = (e: any) => {
         setUsername(e.target.value);

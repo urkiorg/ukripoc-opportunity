@@ -16,6 +16,8 @@ import { NewOpportunityPage } from "./components/NewOpportunityPage";
 import config from "./aws-exports";
 import { LoginScreen } from "./components/LoginScreen";
 
+import { Authentication } from "./components/Authentication";
+
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
     region: config.aws_appsync_region,
@@ -45,6 +47,7 @@ export const App: FC = () => (
         <ApolloHooksProvider client={client as any}>
             <Rehydrated>
                 <Main>
+                    <Authentication>
                     <Router>
                         <RouterPage
                             path="/all"
@@ -74,6 +77,7 @@ export const App: FC = () => (
                         <br />
                             <span onClick={logout}>logout</span>
                     </nav>
+                    </Authentication>
                 </Main>
             </Rehydrated>
         </ApolloHooksProvider>
@@ -86,4 +90,4 @@ const RouterPage = (
 
 (window as any).LOG_LEVEL = "DEBUG";
 
-export default App;
+export default (App);
