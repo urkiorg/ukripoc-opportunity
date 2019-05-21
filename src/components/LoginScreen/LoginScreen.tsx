@@ -65,7 +65,7 @@ export const LoginScreen: FC<Props> = (props) => {
                 <LabelText>Password</LabelText>
                 <Input  error={error} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
                 <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox>
-                <Button type="submit" buttonColour={ukriGreen}>Login</Button>
+                <Button type="submit" buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
             </form>
         </div>
     );
