@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { LoginScreen } from "../LoginScreen";
 
 interface Props {
-    authState: string;
+    authState?: string;
 }
 
 export const AuthController: FC<Props> = (props) => 
