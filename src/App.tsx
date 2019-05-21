@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Amplify from "aws-amplify";
 import Auth from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
@@ -41,6 +41,18 @@ Auth.configure(config);
 
 export const App: FC = () => {
     const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const checkAuthenticatedUser = async () => {
+            try {
+                await Auth.currentAuthenticatedUser();
+                setLoggedIn(true);
+            } catch {
+                setLoggedIn(false);
+            }
+        }
+        checkAuthenticatedUser();
+    })
 
     const handleAuthStateChange = (state: any) => {
         if (state === 'signedIn') {
