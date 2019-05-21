@@ -7,6 +7,6 @@ export const AuthController = (props: any) => {
         <div>
             { props.authState === "signIn"  && <LoginScreen override={'SignIn'}/> }
             { props.authState === "signedIn" && props.children }
-        </ div>
+        </div>
     )
 }

@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-
 import Amplify from "aws-amplify";
 import Auth from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
@@ -7,16 +6,15 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { Rehydrated } from "aws-appsync-react";
 import Main from "@govuk-react/main";
-
 import { Router, Link, RouteComponentProps } from "@reach/router";
-
 import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
-
 import config from "./aws-exports";
 import { LoginScreen } from "./components/LoginScreen";
+import { AuthController } from "./components/AuthController";
 
-import { Authentication } from "./components/Authentication";
+// @ts-ignore
+import { Authenticator } from 'aws-amplify-react';
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -47,37 +45,39 @@ export const App: FC = () => (
         <ApolloHooksProvider client={client as any}>
             <Rehydrated>
                 <Main>
-                    <Authentication>
-                    <Router>
-                        <RouterPage
-                            path="/all"
-                            pageComponent={<AllOpportunities />}
-                        />
-                        <RouterPage
-                            path="/new"
-                            pageComponent={<NewOpportunityPage />}
-                        />
-                        <RouterPage
-                            path="/login"
-                            pageComponent={<LoginScreen />}
-                        />
-                    </Router>
-                    <nav className="primary-nav">
-                        <Link to="/all">
-                            <span aria-label="all"> All </span>
-                        </Link>
-                        <br />
-                        <Link to="/new">
-                            <span aria-label="add"> New </span>
-                        </Link>
-                        <br />
-                        <Link to="/login">
-                            <span aria-label="add"> Login </span>
-                        </Link>
-                        <br />
-                            <span onClick={logout}>logout</span>
-                    </nav>
-                    </Authentication>
+                    <Authenticator hideDefault={true}>
+                        <AuthController>
+                            <Router>
+                                <RouterPage
+                                    path="/all"
+                                    pageComponent={<AllOpportunities />}
+                                />
+                                <RouterPage
+                                    path="/new"
+                                    pageComponent={<NewOpportunityPage />}
+                                />
+                                <RouterPage
+                                    path="/login"
+                                    pageComponent={<LoginScreen />}
+                                />
+                            </Router>
+                            <nav className="primary-nav">
+                                <Link to="/all">
+                                    <span aria-label="all"> All </span>
+                                </Link>
+                                <br />
+                                <Link to="/new">
+                                    <span aria-label="add"> New </span>
+                                </Link>
+                                <br />
+                                <Link to="/login">
+                                    <span aria-label="add"> Login </span>
+                                </Link>
+                                <br />
+                                    <span onClick={logout}>logout</span>
+                            </nav>
+                        </AuthController>
+                    </Authenticator>
                 </Main>
             </Rehydrated>
         </ApolloHooksProvider>
