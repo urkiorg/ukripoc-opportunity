@@ -6,10 +6,11 @@ import Checkbox from '@govuk-react/checkbox';
 import Button from '@govuk-react/button';
 import LabelText from '@govuk-react/label-text';
 import ErrorSummary from '@govuk-react/error-summary';
-import styles from "./LoginScreen.module.scss";
-import { Auth } from "aws-amplify";
 import { navigate } from "@reach/router";
 import ErrorText from '@govuk-react/error-text';
+import { Auth } from "aws-amplify";
+
+import styles from "./LoginScreen.module.scss";
 
 interface Props {
     override?: string;
