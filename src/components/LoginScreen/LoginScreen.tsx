@@ -9,6 +9,7 @@ import ErrorSummary from '@govuk-react/error-summary';
 import styles from "./LoginScreen.module.scss";
 import { Auth } from "aws-amplify";
 import { navigate } from "@reach/router";
+import ErrorText from '@govuk-react/error-text';
 
 interface Props {
     override?: string;
@@ -16,11 +17,13 @@ interface Props {
 
 export const LoginScreen: FC<Props> = (props) => {
 
-    const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [persistedLogin, setPersistedLogin] = useState(false);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [usernameWarning, setUsernameWarning] = useState(false);
+    const [passwordWarning, setPasswordWarning] = useState(false);
 
     const onInputChangeUsername = (e: any) => {
         setUsername(e.target.value);
@@ -34,18 +37,38 @@ export const LoginScreen: FC<Props> = (props) => {
         setPersistedLogin(!persistedLogin);
     }
 
+    const validateInput = () => {
+        if (username.length === 0) {
+            setUsernameWarning(true)
+        } else {
+            setUsernameWarning(false)
+        }
+
+        if (password.length === 0) {
+            setPasswordWarning(true);
+        } else {
+            setPasswordWarning(false);
+        }
+    }
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setLoading(true);
 
-        try {
-            await Auth.signIn(username, password);
-            setLoading(false);
-            setError(false)
-            navigate(`/`);
-            window.location.reload();
-        } catch(error) {
-            setError(true)
+        validateInput();
+
+        if (password.length > 0 && username.length > 0) {
+            try {
+                await Auth.signIn(username, password);
+                setLoading(false);
+                setError(false)
+                navigate(`/`);
+                window.location.reload();
+            } catch(error) {
+                setError(true)
+                setLoading(false);
+            }
+        } else {
             setLoading(false);
         }
     }
@@ -62,11 +85,13 @@ export const LoginScreen: FC<Props> = (props) => {
             <H2 textColour={ukriGreen}>Please log in</H2>
             <form onSubmit={handleSubmit}>
                 <LabelText>Username</LabelText>
-                <Input  error={error} className={styles.input} value={username} onChange={onInputChangeUsername} />
+                { usernameWarning && <ErrorText>"Please enter your username."</ErrorText> }
+                <Input error={error} className={styles.input} value={username} onChange={onInputChangeUsername} />
                 <LabelText>Password</LabelText>
-                <Input  error={error} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
+                { passwordWarning && <ErrorText>"Please enter your password."</ErrorText> }
+                <Input error={error} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
                 <Checkbox onChange={togglePersistedLogin}>Keep me logged in</Checkbox>
-                <Button type="submit" buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
+                <Button onClick={handleSubmit} buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
             </form>
         </div>
     );
