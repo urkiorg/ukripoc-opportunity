@@ -1,3 +1,10 @@
 {
-    "AppSyncApiName": "ukri"
+    "AppSyncApiName": "ukri",
+    "APIKeyExpirationEpoch": "-1",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito686849a5",
+            "Outputs.UserPoolId"
+        ]
+    }
 }

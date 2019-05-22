@@ -4,12 +4,12 @@ exports[`NewOpportunity renders correctly 1`] = `
 <div
   className="wrap"
 >
-  <h2
-    className="sc-htpNat bpICJA"
-    size="LARGE"
+  <h1
+    className="sc-dnqmqq gNOGeD sc-htpNat XMqkm"
+    size="XLARGE"
   >
     New opportunity
-  </h2>
+  </h1>
   <h4
     className="sc-htpNat ipcdBj"
     size="SMALL"

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import {
     NTA_LIGHT,
     LINE_HEIGHT,
@@ -8,8 +8,11 @@ import {
 } from "@govuk-react/constants";
 import styled from "styled-components";
 import { Link } from "@reach/router";
+import Auth, { CognitoUser } from "@aws-amplify/auth";
 
-export const routes = {
+export const routes: {
+    [key: string]: string;
+} = {
     Home: "/",
     Opportunities: "opportunity",
     Schedule: "/",
@@ -28,7 +31,6 @@ const LogoAnchor = styled("a")`
 const Logo = styled.img`
     width: 122px;
     height: 32px;
-    margin-top: 24px;
 `;
 const TopBannerWrapper = styled("div")(({ color }) => ({
     display: "flex",
@@ -87,6 +89,14 @@ const Centerer = styled("div")`
     }
 `;
 
+const UserDetails = styled.div`
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin-left: auto;
+    margin-top: 5px;
+    margin-right: 0;
+`;
+
 const MainNav = styled("nav")({
     display: "flex",
     flexFlow: "row wrap",
@@ -96,16 +106,17 @@ const MainNav = styled("nav")({
 
 const MainNavItem = styled(Link)`
     display: flex;
+    font-family: ${NTA_LIGHT};
     flex-flow: row wrap;
     justify-content: middle;
     align-items: center;
     border-right: 1px solid #999;
-    padding: 10px 19px;
+    padding: 10px 15px;
     text-decoration: none;
     color: #6a6a6a;
     line-height: 1.2em;
     vertical-align: middle;
-
+    cursor: pointer;
     &:hover {
         text-decoration: underline;
     }
@@ -119,43 +130,65 @@ const MainNavItem = styled(Link)`
     }
 `;
 
-const outputMainNavigation = (routes: {
-    [key: string]: string;
-}): JSX.Element[] => {
-    const menu = [];
-
-    for (const item in routes) {
-        menu.push(
-            <MainNavItem to={routes[item]}>
-                <span>{item}</span>
-            </MainNavItem>
-        );
+const Logout = styled.button`
+    font-size: ${FONT_SIZE.SIZE_14};
+    background: none;
+    border: none;
+    font-family: ${NTA_LIGHT};
+    cursor: pointer;
+    text-decoration: underline;
+    &:hover {
+        text-decoration: none;
     }
+`;
 
-    return menu;
+interface Props {
+    user?: CognitoUser;
+}
+
+export const UkriHeader: FC<Props> = ({ user }) => {
+    const logout = useCallback(() => {
+        try {
+            Auth.signOut();
+        } catch (error) {
+            console.log("Error!", error);
+        }
+    }, []);
+
+    return (
+        <React.Fragment>
+            <TopBannerWrapper>
+                <Centerer>
+                    <LogoSearchWrapper>
+                        <LogoAnchor href={"/"}>
+                            <Logo
+                                src={require("./logo.svg")}
+                                alt="UK Research and Innovation"
+                            />
+                        </LogoAnchor>
+                        <BrandingHeader>Funding service</BrandingHeader>
+                        {user && (
+                            <UserDetails>
+                                {user.getUsername()}{" "}
+                                <Logout onClick={logout}>Logout</Logout>
+                            </UserDetails>
+                        )}
+                    </LogoSearchWrapper>
+                </Centerer>
+            </TopBannerWrapper>
+            <MainNavWrapper>
+                <Centerer style={{ backgroundColor: "#e4e4e4" }}>
+                    <MainNav>
+                        {Object.keys(routes).map(item => (
+                            <MainNavItem to={routes[item]} key={item}>
+                                <span>{item}</span>
+                            </MainNavItem>
+                        ))}
+                    </MainNav>
+                </Centerer>
+            </MainNavWrapper>
+        </React.Fragment>
+    );
 };
-
-export const UkriHeader: FC = ({ ...props }) => (
-    <React.Fragment>
-        <TopBannerWrapper>
-            <Centerer>
-                <LogoSearchWrapper>
-                    <LogoAnchor href={"/"}>
-                        <Logo
-                            src={require("./logo.png")}
-                            alt="UK Research and Innovation"
-                        />
-                    </LogoAnchor>
-                    <BrandingHeader>Funding service</BrandingHeader>
-                </LogoSearchWrapper>
-            </Centerer>
-        </TopBannerWrapper>
-        <MainNavWrapper>
-            <Centerer style={{ backgroundColor: "#e4e4e4" }}>
-                <MainNav>{outputMainNavigation(routes)}</MainNav>
-            </Centerer>
-        </MainNavWrapper>
-    </React.Fragment>
-);
 
 export default UkriHeader;
