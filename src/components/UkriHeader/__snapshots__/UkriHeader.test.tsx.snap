@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UkriHeader renders correctly 1`] = `
+Array [
+  <div
+    className="sc-bxivhb dHIwUl"
+  >
+    <div
+      className="sc-gzVnrw khMnrp"
+    >
+      <div
+        className="sc-EHOje jeQJsq"
+      >
+        <a
+          className="sc-bwzfXH bAYDIe"
+          href="/"
+        >
+          <img
+            alt="UK Research and Innovation"
+            className="sc-htpNat kAtSjw"
+            src={
+              Object {
+                "ReactComponent": Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "render": [Function],
+                },
+                "__esModule": true,
+                "default": "logo.svg",
+              }
+            }
+          />
+        </a>
+        <span
+          className="sc-ifAKCX bWIDbQ"
+        >
+          Funding service
+        </span>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="sc-bZQynM dJQcfU"
+  >
+    <div
+      className="sc-gzVnrw khMnrp"
+      style={
+        Object {
+          "backgroundColor": "#e4e4e4",
+        }
+      }
+    >
+      <nav
+        className="sc-dnqmqq fbOCOb"
+      >
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Home
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="opportunity"
+        >
+          <span>
+            Opportunities
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Schedule
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Reporting
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            User & Organisation
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Award setup
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Award
+          </span>
+        </a>
+        <a
+          className="sc-bdVaJa sc-iwsKbI fGceSi"
+          muted={false}
+          to="/"
+        >
+          <span>
+            Outcomes
+          </span>
+        </a>
+      </nav>
+    </div>
+  </div>,
+]
+`;

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UkriFooter renders correctly 1`] = `
+<div
+  className="sc-bwzfXH iTlVXu"
+>
+  <div
+    className="sc-htpNat jtpwyQ"
+  >
+    <div>
+      <a
+        className="sc-bdVaJa huzbaj"
+        href="/help"
+        muted={false}
+      >
+        Help
+      </a>
+      <a
+        className="sc-bdVaJa huzbaj"
+        href="/help"
+        muted={false}
+      >
+        UKRI public website
+      </a>
+      <a
+        className="sc-bdVaJa huzbaj"
+        href="/terms"
+        muted={false}
+      >
+        Terms and conditions
+      </a>
+    </div>
+  </div>
+</div>
+`;
