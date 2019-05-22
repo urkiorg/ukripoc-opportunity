@@ -8,6 +8,8 @@ import { navigate } from "@reach/router";
 import ErrorText from "@govuk-react/error-text";
 import { Auth } from "aws-amplify";
 import Caption from "@govuk-react/caption";
+import LoadingBox from "@govuk-react/loading-box";
+
 import { CognitoUser } from "@aws-amplify/auth";
 
 interface Props {
@@ -197,37 +199,39 @@ export const LoginScreen: FC<Props> = props => {
                     </Button>
                 </form>
             ) : (
-                <form onSubmit={handleSubmit}>
-                    <LabelText>Username</LabelText>
-                    {usernameWarning && (
-                        <ErrorText>Please enter your username.</ErrorText>
-                    )}
-                    <Input
-                        error={error || usernameWarning}
-                        type="email"
-                        mb={4}
-                        value={username}
-                        onChange={onInputChangeUsername}
-                    />
-                    <LabelText>Password</LabelText>
-                    {passwordWarning && (
-                        <ErrorText>Please enter your password.</ErrorText>
-                    )}
-                    <Input
-                        error={error || usernameWarning}
-                        type="password"
-                        mb={4}
-                        value={password}
-                        onChange={onInputChangePassword}
-                    />
-                    <Button
-                        disabled={loading}
-                        onClick={handleSubmit}
-                        buttonColour={ukriGreen}
-                    >
-                        {loading ? "Please wait" : "Login"}
-                    </Button>
-                </form>
+                <LoadingBox loading={loading}>
+                    <form onSubmit={handleSubmit}>
+                        <LabelText>Username</LabelText>
+                        {usernameWarning && (
+                            <ErrorText>Please enter your username.</ErrorText>
+                        )}
+                        <Input
+                            error={error || usernameWarning}
+                            type="email"
+                            mb={4}
+                            value={username}
+                            onChange={onInputChangeUsername}
+                        />
+                        <LabelText>Password</LabelText>
+                        {passwordWarning && (
+                            <ErrorText>Please enter your password.</ErrorText>
+                        )}
+                        <Input
+                            error={error || usernameWarning}
+                            type="password"
+                            mb={4}
+                            value={password}
+                            onChange={onInputChangePassword}
+                        />
+                        <Button
+                            disabled={loading}
+                            onClick={handleSubmit}
+                            buttonColour={ukriGreen}
+                        >
+                            {loading ? "Please wait" : "Login"}
+                        </Button>
+                    </form>
+                </LoadingBox>
             )}
         </div>
     );
