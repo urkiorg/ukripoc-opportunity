@@ -14,6 +14,7 @@ import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title } from "../../theme";
 
 import SectionBreak from "@govuk-react/section-break";
+import { WorkflowComponentList } from "../WorkflowComponentList";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -25,6 +26,11 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
     }
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
+
+    const listOfListings =
+        opportunity.getOpportunity && opportunity.getOpportunity.websiteListings
+            ? opportunity.getOpportunity.websiteListings
+            : null;
 
     return (
         <>
@@ -48,6 +54,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
+            <WorkflowComponentList websiteListings={listOfListings} />
 
             <SectionBreak />
             <WorkflowComponentAdd
