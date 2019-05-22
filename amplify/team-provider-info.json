@@ -1,38 +1,4 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "ukri-20190430161600-authRole",
-            "UnauthRoleArn": "arn:aws:iam::522536411738:role/ukri-20190430161600-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::522536411738:role/ukri-20190430161600-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "ukri-20190430161600-deployment",
-            "UnauthRoleName": "ukri-20190430161600-unauthRole",
-            "StackName": "ukri-20190430161600",
-            "StackId": "arn:aws:cloudformation:eu-west-1:522536411738:stack/ukri-20190430161600/dcc92830-6b5a-11e9-af0c-0ade9df0c35e"
-        },
-        "categories": {
-            "auth": {
-                "cognito686849a5": {}
-            }
-        }
-    },
-    "staging": {
-        "awscloudformation": {
-            "AuthRoleName": "ukri-staging-20190508142639-authRole",
-            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-staging-20190508142639-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-staging-20190508142639-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "ukri-staging-20190508142639-deployment",
-            "UnauthRoleName": "ukri-staging-20190508142639-unauthRole",
-            "StackName": "ukri-staging-20190508142639",
-            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-staging-20190508142639/ec9fe0b0-7194-11e9-b4ce-02d10c0c2aa0"
-        },
-        "categories": {
-            "auth": {
-                "cognito686849a5": {}
-            }
-        }
-    },
     "iveydev": {
         "awscloudformation": {
             "AuthRoleName": "ukri-iveydev-20190514163915-authRole",
@@ -62,6 +28,44 @@
             "UnauthRoleName": "ukri-dtorchia-20190516204423-unauthRole",
             "StackName": "ukri-dtorchia-20190516204423",
             "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-dtorchia-20190516204423/01f1b400-7813-11e9-8a4a-02c681d3a380"
+        },
+        "categories": {
+            "auth": {
+                "cognito686849a5": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
+        }
+    },
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "ukri-staging-20190522095915-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-staging-20190522095915-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-staging-20190522095915-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukri-staging-20190522095915-deployment",
+            "UnauthRoleName": "ukri-staging-20190522095915-unauthRole",
+            "StackName": "ukri-staging-20190522095915",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-staging-20190522095915/e2d58950-7c6f-11e9-9431-06b1980d26e6"
+        },
+        "categories": {
+            "auth": {
+                "cognito686849a5": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
+        }
+    },
+    "mattdev": {
+        "awscloudformation": {
+            "AuthRoleName": "ukri-mattdev-20190522113836-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-mattdev-20190522113836-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-mattdev-20190522113836-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukri-mattdev-20190522113836-deployment",
+            "UnauthRoleName": "ukri-mattdev-20190522113836-unauthRole",
+            "StackName": "ukri-mattdev-20190522113836",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-mattdev-20190522113836/c158cf90-7c7d-11e9-8746-062647984902"
         },
         "categories": {
             "auth": {

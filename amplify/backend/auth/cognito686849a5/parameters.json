@@ -1,11 +1,4 @@
 {
-    "identityPoolName": "ukri_identitypool_c587f9db",
-    "allowUnauthenticatedIdentities": false,
-    "lambdaLogPolicy": "ukri_lambda_log_policy",
-    "openIdLambdaRoleName": "ukri_openid_lambda_role",
-    "openIdRolePolicy": "ukri_openid_pass_role_policy",
-    "openIdLambdaIAMPolicy": "ukri_openid_lambda_iam_policy",
-    "openIdLogPolicy": "ukri_openid_lambda_log_policy",
     "userPoolName": "cognito686849a5_userpool_b8e5655d",
     "autoVerifiedAttributes": [
         "email"
@@ -23,12 +16,7 @@
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [
-        "Requires Lowercase",
-        "Requires Uppercase",
-        "Requires Numbers",
-        "Requires Symbols"
-    ],
+    "passwordPolicyCharacters": [],
     "requiredAttributes": [
         "email"
     ],
@@ -49,7 +37,12 @@
     "userpoolClientLogPolicy": "cognito686849a5_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognito686849a5_userpoolclient_lambda_iam_policy",
     "userpoolClientSetAttributes": false,
-    "authSelections": "identityPoolAndUserPool",
+    "lambdaLogPolicy": "ukri_lambda_log_policy",
+    "openIdLambdaRoleName": "ukri_openid_lambda_role",
+    "openIdRolePolicy": "ukri_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "ukri_openid_lambda_iam_policy",
+    "openIdLogPolicy": "ukri_openid_lambda_log_policy",
+    "authSelections": "userPoolOnly",
     "resourceName": "cognito686849a5",
     "authRoleName": {
         "Ref": "AuthRoleName"
@@ -70,10 +63,5 @@
         ]
     },
     "useDefault": "manual",
-    "thirdPartyAuth": false,
-    "hostedUI": true,
-    "hostedUIDomainName": "ukri3994eba8-3994eba8",
-    "authProvidersUserPool": [],
-    "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/login/\"]}"
+    "hostedUI": false
 }
