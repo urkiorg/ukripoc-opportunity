@@ -1,6 +1,6 @@
-import React, { FC, useState, useEffect } from "react";
-import Amplify from "aws-amplify";
-import Auth from "@aws-amplify/auth";
+import React, { FC, useState, useEffect, useCallback } from "react";
+import Amplify, { Hub } from "aws-amplify";
+import Auth, { CognitoUser } from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
@@ -20,6 +20,7 @@ import { AuthController } from "./components/AuthController";
 import { Authenticator } from "aws-amplify-react";
 
 import "./assets/fonts/stylesheet.css";
+import { HubCallback } from "@aws-amplify/core/lib/Hub";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -34,60 +35,58 @@ const client = new AWSAppSyncClient({
 
 Amplify.configure(config);
 
-// Use on logout button
-// const logout = () => {
-//     try {
-//         setLoggedIn(false);
-//         Auth.signOut();
-//     } catch(error) {
-//         console.log("Error!", error)
-//     }
-// }
-
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
 
 export const App: FC = (props: any) => {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState<CognitoUser | undefined>(undefined);
 
     useEffect(() => {
         const checkAuthenticatedUser = async () => {
             try {
-                const user = await Auth.currentAuthenticatedUser();
+                const u = await Auth.currentAuthenticatedUser();
                 console.log("user", user);
-                setLoggedIn(true);
+                setUser(u);
             } catch {
-                setLoggedIn(false);
+                setUser(undefined);
             }
         };
         checkAuthenticatedUser();
     });
+    const handleAuthStateChange: HubCallback = useCallback(
+        async data => {
+            const state = data.payload.event;
 
-    const handleAuthStateChange = (state: any) => {
-        if (state === "signedIn") {
-            setLoggedIn(true);
-        } else {
-            setLoggedIn(false);
-        }
-    };
+            console.log("state", state);
+            if (state === "signedIn" || state === "signIn") {
+                const u = await Auth.currentAuthenticatedUser();
+                console.log("user", user);
+                setUser(u);
+            } else {
+                setUser(undefined);
+            }
+        },
+        [setUser]
+    );
+
+    useEffect(() => {
+        Hub.listen("auth", handleAuthStateChange);
+        return () => Hub.remove("auth", handleAuthStateChange);
+    }, [handleAuthStateChange]);
 
     return (
         // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
         <ApolloProvider client={client as any}>
             <ApolloHooksProvider client={client as any}>
                 <Rehydrated>
-                    <UkriHeader />
+                    <UkriHeader user={user} />
                     <Main>
-                        <Authenticator
-                            authState="signIn"
-                            hideDefault={true}
-                            onStateChange={handleAuthStateChange}
-                        >
-                            <AuthController loggedIn={loggedIn}>
+                        <Authenticator authState="signIn" hideDefault={true}>
+                            <AuthController loggedIn={!!user}>
                                 <Router>
                                     <Route
                                         component={AllOpportunities}
-                                        path="/all"
+                                        path="/"
                                     />
 
                                     <Route
