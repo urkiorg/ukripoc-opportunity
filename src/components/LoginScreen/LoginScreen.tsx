@@ -1,47 +1,88 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, FormEvent, useCallback } from "react";
 import { ukriGreen, Title } from "../../theme";
 import Input from "@govuk-react/input";
-import Button from '@govuk-react/button';
-import LabelText from '@govuk-react/label-text';
-import ErrorSummary from '@govuk-react/error-summary';
+import Button from "@govuk-react/button";
+import LabelText from "@govuk-react/label-text";
+import ErrorSummary from "@govuk-react/error-summary";
 import { navigate } from "@reach/router";
-import ErrorText from '@govuk-react/error-text';
+import ErrorText from "@govuk-react/error-text";
 import { Auth } from "aws-amplify";
-import Caption from '@govuk-react/caption';
-
-import styles from "./LoginScreen.module.scss";
+import Caption from "@govuk-react/caption";
+import { CognitoUser } from "@aws-amplify/auth";
 
 interface Props {
     override?: string;
 }
 
-export const LoginScreen: FC<Props> = (props) => {
-
+export const LoginScreen: FC<Props> = props => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [persistedLogin, setPersistedLogin] = useState(false);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [usernameWarning, setUsernameWarning] = useState(false);
     const [passwordWarning, setPasswordWarning] = useState(false);
+    const [mustChangePassword, setMustChangePassword] = useState(false);
+    const [user, setUser] = useState<CognitoUser | undefined>(undefined);
+    const [newPassword, setNewPassword] = useState<string | undefined>(
+        undefined
+    );
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState<
+        string | undefined
+    >(undefined);
+    const [passwordMatchError, setPasswordMatchError] = useState(false);
 
-    const onInputChangeUsername = (e: any) => {
-        setUsername(e.target.value);
-    }
+    const onChangeNewPassword = useCallback(
+        (e: Event) => {
+            const value = (e.target as HTMLInputElement).value;
+            console.log(value, newPasswordConfirm);
+            setNewPassword(value);
+            if (
+                newPasswordConfirm !== undefined &&
+                newPasswordConfirm !== value
+            ) {
+                setPasswordMatchError(true);
+            } else {
+                setPasswordMatchError(false);
+            }
+        },
+        [setNewPassword, newPasswordConfirm]
+    );
 
-    const onInputChangePassword = (e: any) => {
-        setPassword(e.target.value);
-    }
+    const onChangeConfirmPassword = useCallback(
+        (e: Event) => {
+            const value = (e.target as HTMLInputElement).value;
 
-    const togglePersistedLogin = () => {
-        setPersistedLogin(!persistedLogin);
-    }
+            console.log(value, newPassword);
 
-    const validateInput = () => {
+            setNewPasswordConfirm(value);
+            if (value && newPassword !== value) {
+                setPasswordMatchError(true);
+            } else {
+                setPasswordMatchError(false);
+            }
+        },
+        [setNewPasswordConfirm, newPassword]
+    );
+
+    const onInputChangeUsername = useCallback(
+        (e: Event) => {
+            setUsername((e.target as HTMLInputElement).value);
+        },
+        [setUsername]
+    );
+
+    const onInputChangePassword = useCallback(
+        (e: Event) => {
+            setPassword((e.target as HTMLInputElement).value);
+        },
+        [setPassword]
+    );
+
+    const validateInput = useCallback(() => {
         if (username.length === 0) {
-            setUsernameWarning(true)
+            setUsernameWarning(true);
         } else {
-            setUsernameWarning(false)
+            setUsernameWarning(false);
         }
 
         if (password.length === 0) {
@@ -49,49 +90,145 @@ export const LoginScreen: FC<Props> = (props) => {
         } else {
             setPasswordWarning(false);
         }
-    }
+    }, [username, password, setUsernameWarning]);
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        setLoading(true);
-
-        validateInput();
-
-        if (password.length > 0 && username.length > 0) {
+    const changePassword = useCallback(
+        async (e: FormEvent) => {
+            e.preventDefault();
+            if (passwordMatchError || !newPassword || !user) {
+                return;
+            }
             try {
-                await Auth.signIn(username, password);
-                setLoading(false);
-                setError(false)
-                navigate(`/`);
-                window.location.reload();
-            } catch(error) {
-                setError(true)
+                const loggedUser = await Auth.completeNewPassword(
+                    user, // the Cognito User Object
+                    newPassword,
+                    {}
+                );
+                console.log(loggedUser);
+                setMustChangePassword(false);
+                navigate("/");
+            } catch (e) {
+                console.error("Error", e);
+            }
+        },
+        [user, newPassword, passwordMatchError]
+    );
+
+    const handleSubmit = useCallback(
+        async (e: FormEvent) => {
+            e.preventDefault();
+            setLoading(true);
+
+            validateInput();
+
+            if (password.length > 0 && username.length > 0) {
+                try {
+                    const user = await Auth.signIn(username, password);
+                    console.log(user);
+                    setUser(user);
+                    if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
+                        setMustChangePassword(true);
+                    } else {
+                        setLoading(false);
+                        setError(false);
+                        navigate(`/`);
+                    }
+                } catch (error) {
+                    setError(true);
+                    setLoading(false);
+                }
+            } else {
                 setLoading(false);
             }
-        } else {
-            setLoading(false);
-        }
-    }
+        },
+        [username, password]
+    );
 
     return (
         <div>
-            { error &&
+            {error && (
                 <ErrorSummary
-                    heading={"Your sign in was unsuccessful because of the following issues"}
-                    description={"Your email/password combination doesn't seem to work."}
-                    />
-            }
+                    heading={
+                        "Your sign in was unsuccessful because of the following issues"
+                    }
+                    description={
+                        "Your email/password combination doesn't seem to work."
+                    }
+                />
+            )}
             <Caption>Welcome</Caption>
             <Title>Please log in</Title>
-            <form onSubmit={handleSubmit}>
-                <LabelText>Username</LabelText>
-                { usernameWarning && <ErrorText>"Please enter your username."</ErrorText> }
-                <Input error={error || usernameWarning} type="email" className={styles.input} value={username} onChange={onInputChangeUsername} />
-                <LabelText>Password</LabelText>
-                { passwordWarning && <ErrorText>"Please enter your password."</ErrorText> }
-                <Input error={error || usernameWarning} type="password" className={styles.input} value={password} onChange={onInputChangePassword} />
-                <Button disabled={loading} onClick={handleSubmit} buttonColour={ukriGreen}>{loading ? "Please wait" : "Login"}</Button>
-            </form>
+            {mustChangePassword ? (
+                <form onSubmit={changePassword}>
+                    <ErrorSummary
+                        heading={"Please change your password"}
+                        description={
+                            "Your account password must be changed before you use this service. Please choose a new password below."
+                        }
+                    />
+                    <LabelText>New password {newPassword}</LabelText>
+
+                    <Input
+                        key="newpass"
+                        error={passwordMatchError}
+                        type="password"
+                        mb={4}
+                        value={newPassword}
+                        onChange={onChangeNewPassword}
+                    />
+                    <LabelText>Confirm new password</LabelText>
+                    {passwordMatchError && (
+                        <ErrorText>Your passwords don't match.</ErrorText>
+                    )}
+                    <Input
+                        key="conmfirmpass"
+                        error={passwordMatchError}
+                        type="password"
+                        mb={4}
+                        value={newPasswordConfirm}
+                        onChange={onChangeConfirmPassword}
+                    />
+                    <Button
+                        disabled={passwordMatchError || !newPassword}
+                        onClick={changePassword}
+                        buttonColour={ukriGreen}
+                    >
+                        Change password
+                    </Button>
+                </form>
+            ) : (
+                <form onSubmit={handleSubmit}>
+                    <LabelText>Username</LabelText>
+                    {usernameWarning && (
+                        <ErrorText>Please enter your username.</ErrorText>
+                    )}
+                    <Input
+                        error={error || usernameWarning}
+                        type="email"
+                        mb={4}
+                        value={username}
+                        onChange={onInputChangeUsername}
+                    />
+                    <LabelText>Password</LabelText>
+                    {passwordWarning && (
+                        <ErrorText>Please enter your password.</ErrorText>
+                    )}
+                    <Input
+                        error={error || usernameWarning}
+                        type="password"
+                        mb={4}
+                        value={password}
+                        onChange={onInputChangePassword}
+                    />
+                    <Button
+                        disabled={loading}
+                        onClick={handleSubmit}
+                        buttonColour={ukriGreen}
+                    >
+                        {loading ? "Please wait" : "Login"}
+                    </Button>
+                </form>
+            )}
         </div>
     );
 };

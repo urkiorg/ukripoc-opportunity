@@ -15,11 +15,9 @@ import config from "./aws-exports";
 import { SetupFundersPage } from "./components/SetupFundersPage";
 import { UkriHeader } from "./components/UkriHeader";
 import { UkriFooter } from "./components/UkriFooter";
-import { LoginScreen } from "./components/LoginScreen";
 import { AuthController } from "./components/AuthController";
 
-// @ts-ignore
-import { Authenticator } from 'aws-amplify-react';
+import { Authenticator } from "aws-amplify-react";
 
 import "./assets/fonts/stylesheet.css";
 
@@ -27,9 +25,10 @@ const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
     region: config.aws_appsync_region,
     auth: {
-        type: config.aws_appsync_authenticationType as AUTH_TYPE,
-        apiKey: config.aws_appsync_apiKey
-        // jwtToken: async () => token, // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
+        type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+        // apiKey: config.aws_appsync_apiKey
+        jwtToken: async () =>
+            (await Auth.currentSession()).getAccessToken().getJwtToken()
     }
 });
 
@@ -43,7 +42,7 @@ Amplify.configure(config);
 //     } catch(error) {
 //         console.log("Error!", error)
 //     }
-// }    
+// }
 
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
@@ -54,67 +53,72 @@ export const App: FC = (props: any) => {
     useEffect(() => {
         const checkAuthenticatedUser = async () => {
             try {
-                await Auth.currentAuthenticatedUser();
+                const user = await Auth.currentAuthenticatedUser();
+                console.log("user", user);
                 setLoggedIn(true);
             } catch {
                 setLoggedIn(false);
             }
-        }
+        };
         checkAuthenticatedUser();
-    })
+    });
 
     const handleAuthStateChange = (state: any) => {
-        if (state === 'signedIn') {
+        if (state === "signedIn") {
             setLoggedIn(true);
         } else {
             setLoggedIn(false);
         }
-    }
+    };
 
     return (
-    // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
-    <ApolloProvider client={client as any}>
-        <ApolloHooksProvider client={client as any}>
-            <Rehydrated>
-                <UkriHeader />
-                <Main> 
-                    <Authenticator
-                        authState="signIn"
-                        hideDefault={true}  
-                        onStateChange={handleAuthStateChange}>
-                        <AuthController loggedIn={loggedIn}>
+        // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
+        <ApolloProvider client={client as any}>
+            <ApolloHooksProvider client={client as any}>
+                <Rehydrated>
+                    <UkriHeader />
+                    <Main>
+                        <Authenticator
+                            authState="signIn"
+                            hideDefault={true}
+                            onStateChange={handleAuthStateChange}
+                        >
+                            <AuthController loggedIn={loggedIn}>
+                                <Router>
+                                    <Route
+                                        component={AllOpportunities}
+                                        path="/all"
+                                    />
 
-                        <Router>
-                            <Route component={AllOpportunities} path="/all" />
+                                    <Route
+                                        component={NewOpportunityPage}
+                                        path="/opportunity"
+                                    />
 
-                            <Route
-                                component={NewOpportunityPage}
-                                path="/opportunity"
-                            />
+                                    <Route
+                                        component={SetupOpportunityPage}
+                                        path="/setup/:opportunityId"
+                                    />
 
-                            <Route
-                                component={SetupOpportunityPage}
-                                path="/setup/:opportunityId"
-                            />
+                                    <Route
+                                        component={SetupOpportunityPage}
+                                        path="/setup/:opportunityId"
+                                    />
 
-                            <Route
-                                component={SetupOpportunityPage}
-                                path="/setup/:opportunityId"
-                            />
-
-                            <Route
-                                component={SetupFundersPage}
-                                path="/setup/:opportunityId/funders"
-                            />
-                        </Router>
-                        </AuthController>
-                    </Authenticator>
-                </Main>
-                <UkriFooter />
-            </Rehydrated>
-        </ApolloHooksProvider>
-    </ApolloProvider>
-)}
+                                    <Route
+                                        component={SetupFundersPage}
+                                        path="/setup/:opportunityId/funders"
+                                    />
+                                </Router>
+                            </AuthController>
+                        </Authenticator>
+                    </Main>
+                    <UkriFooter />
+                </Rehydrated>
+            </ApolloHooksProvider>
+        </ApolloProvider>
+    );
+};
 
 (window as any).LOG_LEVEL = "DEBUG";
 
