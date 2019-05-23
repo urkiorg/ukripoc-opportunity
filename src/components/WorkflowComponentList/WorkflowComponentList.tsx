@@ -1,6 +1,6 @@
 import React, { FC, HTMLAttributes, useCallback } from "react";
-import cx from "classnames";
-import styles from "./WorkflowComponentList.module.scss";
+
+import styled from "styled-components";
 
 import Details from "@govuk-react/details";
 import { GetWebsiteListingQuery, ListWebsiteListingsQuery } from "../../API";
@@ -10,16 +10,19 @@ import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
 
+import { SettingsListItem } from "../../theme";
+
 interface Props extends HTMLAttributes<HTMLElement> {
+    //todo change from any
     websiteListings?: any;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
-    //todo change from any
-
-    const deleteListingMutation = useMutation(DELETE_LISTING);
+    const deleteListingMutation = useMutation(DELETE_LISTING, {
+        fetchPolicy: "no-cache"
+    });
 
     const deleteListing = useCallback(
         async (id: string) => {
@@ -28,10 +31,7 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
                     input: { id }
                 }
             });
-
             const { data, loading, error } = result;
-
-            console.log({ ...result });
         },
         [deleteListingMutation]
     );
@@ -44,13 +44,13 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
                 websiteListing.id
             }`;
             return (
-                <div>
+                <SettingsListItem>
                     <Link to={listingLink}>{websiteListing.__typename}</Link>
 
                     <button onClick={event => deleteListing(websiteListing.id)}>
                         Delete
                     </button>
-                </div>
+                </SettingsListItem>
             );
         }
     };
