@@ -1,8 +1,12 @@
 {
     "userPoolName": "cognito686849a5_userpool_b8e5655d",
-    "autoVerifiedAttributes": ["email"],
+    "autoVerifiedAttributes": [
+        "email"
+    ],
     "mfaConfiguration": "OFF",
-    "mfaTypes": ["SMS Text Message"],
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
     "roleName": "cognito686849a5_sns-role",
     "roleExternalId": "cognito686849a5_role_external_id",
     "policyName": "cognito686849a5-sns-policy",
@@ -13,12 +17,18 @@
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": ["email"],
+    "requiredAttributes": [
+        "email"
+    ],
     "userpoolClientName": "cognito686849a5_app_client",
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": ["email"],
-    "userpoolClientReadAttributes": ["email"],
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
     "mfaLambdaRole": "cognito686849a5_totp_lambda_role",
     "mfaLambdaLogPolicy": "cognito686849a5_totp_lambda_log_policy",
     "mfaPassRolePolicy": "cognito686849a5_totp_pass_role_policy",
@@ -41,10 +51,16 @@
         "Ref": "UnauthRoleName"
     },
     "authRoleArn": {
-        "Fn::GetAtt": ["AuthRole", "Arn"]
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
     },
     "unauthRoleArn": {
-        "Fn::GetAtt": ["UnauthRole", "Arn"]
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
     },
     "useDefault": "manual",
     "hostedUI": false

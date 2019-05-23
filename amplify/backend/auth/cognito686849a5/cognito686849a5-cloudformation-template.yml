@@ -112,90 +112,6 @@ Parameters:
   openIdLogPolicy:
     Type: String
             
-  userPoolName:
-    Type: String
-                  
-  autoVerifiedAttributes:
-    Type: CommaDelimitedList
-      
-  mfaConfiguration:
-    Type: String
-                  
-  mfaTypes:
-    Type: CommaDelimitedList
-      
-  roleName:
-    Type: String
-            
-  roleExternalId:
-    Type: String
-            
-  policyName:
-    Type: String
-            
-  smsAuthenticationMessage:
-    Type: String
-            
-  smsVerificationMessage:
-    Type: String
-            
-  emailVerificationSubject:
-    Type: String
-            
-  emailVerificationMessage:
-    Type: String
-              
-  defaultPasswordPolicy:
-    Type: String
-              
-  passwordPolicyMinLength:
-    Type: Number
-              
-  passwordPolicyCharacters:
-    Type: CommaDelimitedList
-            
-  requiredAttributes:
-    Type: CommaDelimitedList
-      
-  userpoolClientName:
-    Type: String
-              
-  userpoolClientGenerateSecret:
-    Type: String
-              
-  userpoolClientRefreshTokenValidity:
-    Type: Number
-              
-  userpoolClientWriteAttributes:
-    Type: CommaDelimitedList
-            
-  userpoolClientReadAttributes:
-    Type: CommaDelimitedList
-      
-  mfaLambdaRole:
-    Type: String
-            
-  mfaLambdaLogPolicy:
-    Type: String
-            
-  mfaPassRolePolicy:
-    Type: String
-            
-  mfaLambdaIAMPolicy:
-    Type: String
-            
-  userpoolClientLambdaRole:
-    Type: String
-            
-  userpoolClientLogPolicy:
-    Type: String
-            
-  userpoolClientLambdaPolicy:
-    Type: String
-              
-  userpoolClientSetAttributes:
-    Type: String
-          
   authSelections:
     Type: String
             
@@ -406,27 +322,6 @@ Resources:
   
 
   
-  IdentityPool:
-  # Always created
-    Type: AWS::Cognito::IdentityPool
-    Properties: 
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'ukri_identitypool_c587f9db', !Join ['',['ukri_identitypool_c587f9db', '__', !Ref env]]]
-      
-      CognitoIdentityProviders:
-        - ClientId:  !Ref UserPoolClient
-          ProviderName: !Sub
-            - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref "AWS::Region",  client: !Ref UserPool}
-        - ClientId:  !Ref UserPoolClientWeb
-          ProviderName: !Sub
-            - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref "AWS::Region",  client: !Ref UserPool}
-            
-      AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
-       
-       
-    DependsOn: UserPoolClientInputs 
-    
   
 
   
