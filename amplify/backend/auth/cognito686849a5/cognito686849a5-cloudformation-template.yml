@@ -13,10 +13,88 @@ Parameters:
     Type: String
 
     
-  identityPoolName:
+  userPoolName:
+    Type: String
+                  
+  autoVerifiedAttributes:
+    Type: CommaDelimitedList
+      
+  mfaConfiguration:
+    Type: String
+                  
+  mfaTypes:
+    Type: CommaDelimitedList
+      
+  roleName:
+    Type: String
+            
+  roleExternalId:
+    Type: String
+            
+  policyName:
+    Type: String
+            
+  smsAuthenticationMessage:
+    Type: String
+            
+  smsVerificationMessage:
+    Type: String
+            
+  emailVerificationSubject:
+    Type: String
+            
+  emailVerificationMessage:
     Type: String
               
-  allowUnauthenticatedIdentities:
+  defaultPasswordPolicy:
+    Type: String
+              
+  passwordPolicyMinLength:
+    Type: Number
+              
+  passwordPolicyCharacters:
+    Type: CommaDelimitedList
+            
+  requiredAttributes:
+    Type: CommaDelimitedList
+      
+  userpoolClientName:
+    Type: String
+              
+  userpoolClientGenerateSecret:
+    Type: String
+              
+  userpoolClientRefreshTokenValidity:
+    Type: Number
+              
+  userpoolClientWriteAttributes:
+    Type: CommaDelimitedList
+            
+  userpoolClientReadAttributes:
+    Type: CommaDelimitedList
+      
+  mfaLambdaRole:
+    Type: String
+            
+  mfaLambdaLogPolicy:
+    Type: String
+            
+  mfaPassRolePolicy:
+    Type: String
+            
+  mfaLambdaIAMPolicy:
+    Type: String
+            
+  userpoolClientLambdaRole:
+    Type: String
+            
+  userpoolClientLogPolicy:
+    Type: String
+            
+  userpoolClientLambdaPolicy:
+    Type: String
+              
+  userpoolClientSetAttributes:
     Type: String
           
   lambdaLogPolicy:
@@ -123,7 +201,13 @@ Parameters:
             
   resourceName:
     Type: String
-                                                  
+                                                    
+  useDefault:
+    Type: String
+              
+  hostedUI:
+    Type: String
+        
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -185,10 +269,10 @@ Resources:
       Policies:
         PasswordPolicy:
           MinimumLength: !Ref passwordPolicyMinLength
-          RequireLowercase: true
-          RequireNumbers: true
-          RequireSymbols: true
-          RequireUppercase: true
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: false
           
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
@@ -322,13 +406,6 @@ Resources:
   
 
   
-  
-
-  
-    
-  # BEGIN IDENTITY POOL RESOURCES
-  
-  
   IdentityPool:
   # Always created
     Type: AWS::Cognito::IdentityPool
@@ -351,25 +428,11 @@ Resources:
     DependsOn: UserPoolClientInputs 
     
   
-  IdentityPoolRoleMap:
-  # Created to map Auth and Unauth roles to the identity pool
-  # Depends on Identity Pool for ID ref
-    Type: AWS::Cognito::IdentityPoolRoleAttachment
-    Properties: 
-      IdentityPoolId: !Ref IdentityPool
-      Roles:
-          unauthenticated: !Ref unauthRoleArn
-          authenticated: !Ref authRoleArn
-    DependsOn: IdentityPool
+
   
+    
 
 Outputs :
-  
-  IdentityPoolId:
-    Value: !Ref 'IdentityPool'
-    Description:  Id for the identity pool
-  IdentityPoolName:
-    Value: !GetAtt IdentityPool.Name 
   
   
   

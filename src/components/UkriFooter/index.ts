@@ -1,0 +1,1 @@
+export { UkriFooter } from "./UkriFooter";

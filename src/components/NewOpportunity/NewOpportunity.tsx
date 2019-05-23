@@ -5,7 +5,7 @@ import { H2, H4 } from "@govuk-react/heading";
 import HintText from "@govuk-react/hint-text";
 import Details from "@govuk-react/details";
 import Input from "@govuk-react/input";
-import { ukriGreen } from "../../theme";
+import { ukriGreen, Title } from "../../theme";
 import { navigate } from "@reach/router";
 
 interface Props {
@@ -27,7 +27,7 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
 
     return (
         <div className={styles.wrap}>
-            <H2 textColour={ukriGreen}>New opportunity</H2>
+            <Title>New opportunity</Title>
             <H4>Opportunity name</H4>
             <HintText>
                 This name will be used to identify the opportunity internally
