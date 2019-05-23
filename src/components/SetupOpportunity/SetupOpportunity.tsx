@@ -12,6 +12,9 @@ import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title } from "../../theme";
+import Caption from "@govuk-react/caption";
+import { SettingsListItem } from "../../theme";
+import P from "@govuk-react/paragraph";
 
 import SectionBreak from "@govuk-react/section-break";
 import { WorkflowComponentList } from "../WorkflowComponentList";
@@ -34,19 +37,26 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
 
     return (
         <>
-            <h3>{opportunity.getOpportunity.name}</h3>
+            <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
             <Title>Opportunity setup</Title>
 
-            <Link to={linkToFunders}>
-                <span aria-label="Funders"> Funders </span>
-            </Link>
+            <Caption mb={6} size="XL">
+                Settings
+            </Caption>
 
-            {opportunity.getOpportunity.fundersComplete ? "Done" : "Not Done"}
+            <SettingsListItem>
+                <Link to={linkToFunders}>
+                    <span aria-label="Funders"> Funders </span>
+                </Link>
 
-            <h2>Settings</h2>
+                {opportunity.getOpportunity.fundersComplete
+                    ? "Done"
+                    : "Not Done"}
+            </SettingsListItem>
 
-            <h3> Workflow </h3>
-            <Details summary="How do I create my workflow ?">
+            <Caption mb={3}>Workflow</Caption>
+
+            <Details summary="How do I create my workflow ?" mb={2}>
                 To add a workflow component, just select a component and
                 sub-type to add using the dropdowns. You can re-order your
                 components at any time by dragging and dropping them. Click on a
@@ -56,11 +66,9 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
             </Details>
             <WorkflowComponentList websiteListings={listOfListings} />
 
-            <SectionBreak />
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}
             />
-            <SectionBreak />
         </>
     );
 };
