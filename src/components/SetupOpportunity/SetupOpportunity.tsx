@@ -40,7 +40,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         return <Title>Not found</Title>;
     }
 
-    const listOfListings = opportunity.getOpportunity.websiteListings.items;
+    const websiteListings = opportunity.getOpportunity.websiteListings.items;
 
     return (
         <>
@@ -76,7 +76,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            <WorkflowComponentList websiteListings={listOfListings} />
+            <WorkflowComponentList websiteListings={websiteListings} />
 
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}

@@ -9,11 +9,18 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
 import { SettingsListItem, FauxLink } from "../../theme";
-import { CreateWebsiteListingInput } from "../../API";
+import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
 
+interface WebsiteListingItem {
+    description: string;
+    id: string;
+    lastPublished: string;
+    rank: number;
+    __typename: string;
+}
 interface Props extends HTMLAttributes<HTMLElement> {
     //todo change from any
-    websiteListings?: any;
+    websiteListings?: Array<WebsiteListingItem>;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
@@ -35,16 +42,13 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         [deleteListingMutation]
     );
 
-    if (props.websiteListings && !props.websiteListings.items) {
-        return <div> Not here </div>;
-    }
-
     //could be websiteListing / Application
     const renderListItem = () => {
-        console.log(props.websiteListings.item);
-
-        const websiteListing = props.websiteListings.items[0] || null;
+        const websiteListing = props.websiteListings
+            ? props.websiteListings[0]
+            : null;
         if (websiteListing) {
+            console.log(websiteListing);
             const listingLink = `/component/WebsiteListing/${
                 websiteListing.id
             }`;
@@ -57,13 +61,13 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
                             </Link>
                         </GridCol>
                         <GridCol>
-                            <FauxLink
+                            <button
                                 onClick={event =>
                                     deleteListing(websiteListing.id)
                                 }
                             >
                                 Delete
-                            </FauxLink>
+                            </button>
                         </GridCol>
                     </GridRow>
                 </SettingsListItem>
