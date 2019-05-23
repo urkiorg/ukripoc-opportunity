@@ -8,19 +8,19 @@ import { useMutation } from "react-apollo-hooks";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
-import { SettingsListItem, FauxLink } from "../../theme";
+import { SettingsListItem, FauxLink, Title } from "../../theme";
 import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
 
-interface WebsiteListingItem {
-    description: string;
+interface WebsiteListing {
     id: string;
-    lastPublished: string;
     rank: number;
+    lastPublished?: string;
+    description?: string;
     __typename: string;
 }
 interface Props extends HTMLAttributes<HTMLElement> {
     //todo change from any
-    websiteListings?: Array<WebsiteListingItem>;
+    websiteListings?: WebsiteListing[];
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
@@ -42,6 +42,9 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         [deleteListingMutation]
     );
 
+    if (!props.websiteListings) {
+        return <Title> Not Found </Title>;
+    }
     //could be websiteListing / Application
     const renderListItem = () => {
         const websiteListing = props.websiteListings
