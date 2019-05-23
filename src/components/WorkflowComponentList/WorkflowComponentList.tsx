@@ -1,11 +1,6 @@
 import React, { FC, HTMLAttributes, useCallback } from "react";
 
-import styled from "styled-components";
-
-import Details from "@govuk-react/details";
-import { GetWebsiteListingQuery, ListWebsiteListingsQuery } from "../../API";
 import { Link } from "@reach/router";
-import { Button } from "react-native";
 import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";

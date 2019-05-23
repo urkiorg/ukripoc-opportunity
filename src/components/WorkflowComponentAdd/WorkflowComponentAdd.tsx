@@ -1,6 +1,4 @@
-import React, { FC, HTMLAttributes, useCallback } from "react";
-import cx from "classnames";
-import styles from "./WorkflowComponentAdd.module.scss";
+import React, { FC, useCallback } from "react";
 
 import Select from "@govuk-react/select";
 import Button from "@govuk-react/button";
@@ -12,10 +10,6 @@ import { createWebsiteListing } from "../../graphql/mutations";
 
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
-
-// interface Props {
-//     addOpportunityWorkFlowComponent: (id: string) => void;
-// }
 
 interface Props {
     opportunityId: string;
@@ -50,7 +44,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
                 );
             }
         },
-        [createWebsiteListingMutation]
+        [createWebsiteListingMutation, opportunityId]
     );
 
     return (

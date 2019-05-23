@@ -1,22 +1,19 @@
 import React, { FC, useState, useCallback } from "react";
 import styles from "./WebsiteListing.module.scss";
-import Button from "@govuk-react/button";
 
-import { H2, H4 } from "@govuk-react/heading";
+import Button from "@govuk-react/button";
 import P from "@govuk-react/paragraph";
 import Details from "@govuk-react/details";
 import TextArea from "@govuk-react/text-area";
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
-
-import { ukriGreen, Title } from "../../theme";
-import { GetWebsiteListingQuery } from "../../API";
-import { Link } from "@reach/router";
-
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
-import Label from "@govuk-react/label";
 import SectionBreak from "@govuk-react/section-break";
+
+import { ukriGreen, Title } from "../../theme";
+
+import { GetWebsiteListingQuery } from "../../API";
 
 interface Props {
     updateWebsiteListing: (name: string) => void;
@@ -33,6 +30,7 @@ export const WebsiteListing: FC<Props> = ({
         websiteListing.getWebsiteListing.description
             ? websiteListing.getWebsiteListing.description
             : "";
+
     const [listingDescription, setlistingDescription] = useState(
         defaultListingDescription
     );
@@ -41,13 +39,9 @@ export const WebsiteListing: FC<Props> = ({
         updateWebsiteListing(listingDescription);
     }, [listingDescription, updateWebsiteListing]);
 
-    const onInputChange = useCallback(
-        event => {
-            console.log(event.target.value);
-            setlistingDescription(event.target.value);
-        },
-        [listingDescription]
-    );
+    const onInputChange = useCallback(event => {
+        setlistingDescription(event.target.value);
+    }, []);
 
     if (!websiteListing || !websiteListing.getWebsiteListing) {
         return <Title>Not found</Title>;
@@ -64,8 +58,6 @@ export const WebsiteListing: FC<Props> = ({
         websiteListing.getWebsiteListing.opportunity
             ? websiteListing.getWebsiteListing.opportunity.id
             : "";
-
-    console.log("The loaded in value is: ", defaultListingDescription);
 
     const linkBack = `/setup/${opportunityId}`;
 

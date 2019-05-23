@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "react-apollo-hooks";
 import { updateWebsiteListing } from "../../graphql/mutations";
 import { WebsiteListing } from "../WebsiteListing/index";
 import { navigate, RouterProps } from "@reach/router";
-import { getWebsiteListing, getOpportunity } from "../../graphql/queries";
+import { getWebsiteListing } from "../../graphql/queries";
 import {
     GetWebsiteListingQuery,
     UpdateWebsiteListingMutation
@@ -13,8 +13,6 @@ import {
 const UPDATE_WEBSITE_LISTING = gql(updateWebsiteListing);
 
 const GET_LISTING = gql(getWebsiteListing);
-
-const GET_OPPORTUNITY = gql(getOpportunity);
 
 interface Props extends RouterProps {
     id?: string;
@@ -57,7 +55,7 @@ export const WebsiteListingPage: FC<Props> = (props: Props) => {
                 navigate(`/setup/${data.updateWebsiteListing.opportunity.id}`);
             }
         },
-        [updateWebsiteListingMutation]
+        [updateWebsiteListingMutation, props.id]
     );
 
     return (
