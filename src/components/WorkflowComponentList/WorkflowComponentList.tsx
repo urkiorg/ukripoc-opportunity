@@ -20,12 +20,13 @@ interface WebsiteListing {
 }
 interface Props extends HTMLAttributes<HTMLElement> {
     //todo change from any
-    websiteListings?: WebsiteListing[];
+    websiteListings: any;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
+    console.log(props.websiteListings);
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
@@ -47,9 +48,8 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     }
     //could be websiteListing / Application
     const renderListItem = () => {
-        const websiteListing = props.websiteListings
-            ? props.websiteListings[0]
-            : null;
+        const websiteListing = props.websiteListings;
+
         if (websiteListing) {
             console.log(websiteListing);
             const listingLink = `/component/WebsiteListing/${

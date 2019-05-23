@@ -40,8 +40,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         return <Title>Not found</Title>;
     }
 
-    const websiteListings =
-        opportunity.getOpportunity.websiteListings.items || null;
+    const websiteListings = opportunity.getOpportunity.websiteListings.items[0];
 
     return (
         <>
