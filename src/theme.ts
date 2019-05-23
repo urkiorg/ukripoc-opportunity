@@ -15,3 +15,11 @@ export const SettingsListItem = styled.div`
     padding: 0 15px;
     margin-bottom: 30px;
 `;
+
+export const FauxLink = styled.button`
+    text-decoration: underline;
+    background-color: inherit;
+    border: none;
+    font-size: 14px;
+    color: blue;
+`;

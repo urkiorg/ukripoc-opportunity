@@ -5,7 +5,11 @@ import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
 
-import { SettingsListItem } from "../../theme";
+import GridRow from "@govuk-react/grid-row";
+import GridCol from "@govuk-react/grid-col";
+
+import { SettingsListItem, FauxLink } from "../../theme";
+import { CreateWebsiteListingInput } from "../../API";
 
 interface Props extends HTMLAttributes<HTMLElement> {
     //todo change from any
@@ -31,8 +35,14 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         [deleteListingMutation]
     );
 
+    if (props.websiteListings && !props.websiteListings.items) {
+        return <div> Not here </div>;
+    }
+
     //could be websiteListing / Application
     const renderListItem = () => {
+        console.log(props.websiteListings.item);
+
         const websiteListing = props.websiteListings.items[0] || null;
         if (websiteListing) {
             const listingLink = `/component/WebsiteListing/${
@@ -40,11 +50,22 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
             }`;
             return (
                 <SettingsListItem>
-                    <Link to={listingLink}>{websiteListing.__typename}</Link>
-
-                    <button onClick={event => deleteListing(websiteListing.id)}>
-                        Delete
-                    </button>
+                    <GridRow>
+                        <GridCol setWidth="90%">
+                            <Link to={listingLink}>
+                                {websiteListing.__typename}
+                            </Link>
+                        </GridCol>
+                        <GridCol>
+                            <FauxLink
+                                onClick={event =>
+                                    deleteListing(websiteListing.id)
+                                }
+                            >
+                                Delete
+                            </FauxLink>
+                        </GridCol>
+                    </GridRow>
                 </SettingsListItem>
             );
         }

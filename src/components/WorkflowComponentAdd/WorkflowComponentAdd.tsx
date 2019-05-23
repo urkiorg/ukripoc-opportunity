@@ -35,7 +35,6 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
             //end if
 
             const { data, loading, error } = result;
-
             if (data) {
                 navigate(
                     `/component/${data.createWebsiteListing.__typename}/${
@@ -50,9 +49,8 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
     return (
         <div>
             <p> Add workflow component</p>
-
             <GridRow>
-                <GridCol setWidth="70%">
+                <GridCol setWidth="90%">
                     <Select name="group1">
                         <option value="0">Website Listing</option>
                     </Select>
@@ -64,9 +62,5 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
         </div>
     );
 };
-
-// export const WorkflowComponentAdd: FC<Props> = ({ ...props }) => (
-
-// );
 
 export default WorkflowComponentAdd;

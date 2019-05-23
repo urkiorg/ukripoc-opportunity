@@ -15,6 +15,8 @@ import { Title } from "../../theme";
 import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
 import P from "@govuk-react/paragraph";
+import GridRow from "@govuk-react/grid-row";
+import GridCol from "@govuk-react/grid-col";
 
 import SectionBreak from "@govuk-react/section-break";
 import { WorkflowComponentList } from "../WorkflowComponentList";
@@ -30,10 +32,15 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
 
-    const listOfListings =
-        opportunity.getOpportunity && opportunity.getOpportunity.websiteListings
-            ? opportunity.getOpportunity.websiteListings
-            : null;
+    if (
+        !opportunity.getOpportunity ||
+        !opportunity.getOpportunity.websiteListings ||
+        !opportunity.getOpportunity.websiteListings.items
+    ) {
+        return <Title>Not found</Title>;
+    }
+
+    const listOfListings = opportunity.getOpportunity.websiteListings.items;
 
     return (
         <>
@@ -45,13 +52,18 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
             </Caption>
 
             <SettingsListItem>
-                <Link to={linkToFunders}>
-                    <span aria-label="Funders"> Funders </span>
-                </Link>
-
-                {opportunity.getOpportunity.fundersComplete
-                    ? "Done"
-                    : "Not Done"}
+                <GridRow>
+                    <GridCol setWidth="90%">
+                        <Link to={linkToFunders}>
+                            <span aria-label="Funders"> Funders </span>
+                        </Link>
+                    </GridCol>
+                    <GridCol>
+                        {opportunity.getOpportunity.fundersComplete
+                            ? "Done"
+                            : "Not Done"}
+                    </GridCol>
+                </GridRow>
             </SettingsListItem>
 
             <Caption mb={3}>Workflow</Caption>
