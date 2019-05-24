@@ -73,16 +73,17 @@
             }
         }
     },
+
     "develop": {
         "awscloudformation": {
-            "AuthRoleName": "ukri-develop-20190522150319-authRole",
-            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-develop-20190522150319-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-develop-20190522150319-authRole",
+            "AuthRoleName": "ukri-develop-20190524095630-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-develop-20190524095630-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-develop-20190524095630-authRole",
             "Region": "eu-west-1",
-            "DeploymentBucketName": "ukri-develop-20190522150319-deployment",
-            "UnauthRoleName": "ukri-develop-20190522150319-unauthRole",
-            "StackName": "ukri-develop-20190522150319",
-            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-develop-20190522150319/5aae9730-7c9a-11e9-9499-0ad40b996c20"
+            "DeploymentBucketName": "ukri-develop-20190524095630-deployment",
+            "UnauthRoleName": "ukri-develop-20190524095630-unauthRole",
+            "StackName": "ukri-develop-20190524095630",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-develop-20190524095630/d29b4910-7e01-11e9-9f63-061c3112010a"
         },
         "categories": {
             "auth": {

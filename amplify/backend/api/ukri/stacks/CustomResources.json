@@ -31,7 +31,24 @@
             "Type": "AWS::SNS::Topic",
             "Properties": {
                 "DisplayName": "OpportunityListingUpdate",
-                "TopicName": "OpportunityListingUpdate"
+                "TopicName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "OpportunityListingUpdate",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "OpportunityListingUpdate",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                }
             }
         }
     },
@@ -46,6 +63,14 @@
                         "NONE"
                     ]
                 }
+            ]
+        },
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
             ]
         },
         "AlwaysFalse": {
