@@ -11,7 +11,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import SectionBreak from "@govuk-react/section-break";
 
-import { ukriGreen, Title } from "../../theme";
+import { ukriGreen, Title, FauxLink } from "../../theme";
 
 import { GetWebsiteListingQuery } from "../../API";
 
@@ -110,15 +110,9 @@ export const WebsiteListing: FC<Props> = ({
                     </Button>
                 </GridCol>
                 <GridCol setWidth="90%">
-                    <Button
-                        onClick={onButtonClick}
-                        buttonColour="#fff"
-                        buttonHoverColour="#fff"
-                        buttonShadowColour="#fff"
-                        buttonTextColour="blue"
-                    >
+                    <FauxLink onClick={onButtonClick}>
                         Save and return without publishing
-                    </Button>
+                    </FauxLink>
                 </GridCol>
             </GridRow>
         </div>

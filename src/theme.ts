@@ -20,6 +20,7 @@ export const FauxLink = styled.button`
     text-decoration: underline;
     background-color: inherit;
     border: none;
-    font-size: 14px;
+    font-size: 20px;
     color: blue;
+    line-height: 20px;
 `;

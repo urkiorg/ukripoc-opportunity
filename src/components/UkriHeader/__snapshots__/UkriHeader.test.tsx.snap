@@ -3,21 +3,21 @@
 exports[`UkriHeader renders correctly 1`] = `
 Array [
   <div
-    className="sc-bxivhb dHIwUl"
+    className="sc-htpNat dPcZRk"
   >
     <div
-      className="sc-gzVnrw khMnrp"
+      className="sc-bZQynM cavRvu"
     >
       <div
-        className="sc-EHOje jeQJsq"
+        className="sc-ifAKCX dAMALV"
       >
         <a
-          className="sc-bwzfXH bAYDIe"
+          className="sc-bdVaJa kwKwSe"
           href="/"
         >
           <img
             alt="UK Research and Innovation"
-            className="sc-htpNat kAtSjw"
+            className="sc-bwzfXH dYfCK"
             src={
               Object {
                 "ReactComponent": Object {
@@ -31,7 +31,7 @@ Array [
           />
         </a>
         <span
-          className="sc-ifAKCX bWIDbQ"
+          className="sc-bxivhb bpARL"
         >
           Funding service
         </span>
@@ -39,10 +39,10 @@ Array [
     </div>
   </div>,
   <div
-    className="sc-bZQynM dJQcfU"
+    className="sc-EHOje etgbYq"
   >
     <div
-      className="sc-gzVnrw khMnrp"
+      className="sc-bZQynM cavRvu"
       style={
         Object {
           "backgroundColor": "#e4e4e4",
@@ -50,75 +50,82 @@ Array [
       }
     >
       <nav
-        className="sc-dnqmqq fbOCOb"
+        className="sc-htoDjs buUxVa"
       >
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Home
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="opportunity"
+          className="sc-dnqmqq hKKvXN"
+          href="/opportunity"
+          onClick={[Function]}
         >
           <span>
             Opportunities
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Schedule
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Reporting
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             User & Organisation
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Award setup
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Award
           </span>
         </a>
         <a
-          className="sc-bdVaJa sc-iwsKbI fGceSi"
-          muted={false}
-          to="/"
+          aria-current="page"
+          className="sc-dnqmqq hKKvXN"
+          href="/"
+          onClick={[Function]}
         >
           <span>
             Outcomes

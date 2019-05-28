@@ -10,23 +10,17 @@ import GridCol from "@govuk-react/grid-col";
 
 import { SettingsListItem, FauxLink, Title } from "../../theme";
 import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
+import { WebsiteListing } from "../../types";
 
-interface WebsiteListing {
-    id: string;
-    rank: number;
-    lastPublished?: string;
-    description?: string;
-    __typename: string;
-}
-interface Props extends HTMLAttributes<HTMLElement> {
-    //todo change from any
-    websiteListings: any;
+interface Props {
+    websiteListings: (WebsiteListing | null)[] | null;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     console.log(props.websiteListings);
+
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
@@ -47,21 +41,25 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         return <Title> Not Found </Title>;
     }
     //could be websiteListing / Application
-    const renderListItem = () => {
-        const websiteListing = props.websiteListings;
+    const renderListItem = (): (JSX.Element | null)[] | undefined => {
+        const websiteListings = props.websiteListings;
 
-        if (websiteListing) {
-            console.log(websiteListing);
+        if (!websiteListings || !websiteListings.length) {
+            return;
+        }
+
+        return websiteListings.map(websiteListing => {
+            if (!websiteListing) {
+                return null;
+            }
             const listingLink = `/component/WebsiteListing/${
                 websiteListing.id
             }`;
             return (
-                <SettingsListItem>
+                <SettingsListItem key={websiteListing.id}>
                     <GridRow>
                         <GridCol setWidth="90%">
-                            <Link to={listingLink}>
-                                {websiteListing.__typename}
-                            </Link>
+                            <Link to={listingLink}>Website Listing</Link>
                         </GridCol>
                         <GridCol>
                             <button
@@ -75,7 +73,7 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
                     </GridRow>
                 </SettingsListItem>
             );
-        }
+        });
     };
 
     return <div>{renderListItem()}</div>;
