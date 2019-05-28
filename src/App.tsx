@@ -47,14 +47,15 @@ export const App: FC = (props: any) => {
         const checkAuthenticatedUser = async () => {
             try {
                 const u = await Auth.currentAuthenticatedUser();
-                console.log("user", user);
+                console.log("user", u);
                 setUser(u);
             } catch {
                 setUser(undefined);
             }
         };
         checkAuthenticatedUser();
-    });
+    }, [setUser]);
+
     const handleAuthStateChange: HubCallback = useCallback(
         async data => {
             const state = data.payload.event;
@@ -62,7 +63,7 @@ export const App: FC = (props: any) => {
             console.log("state", state);
             if (state === "signedIn" || state === "signIn") {
                 const u = await Auth.currentAuthenticatedUser();
-                console.log("user", user);
+                console.log("user", u);
                 setUser(u);
             } else {
                 setUser(undefined);

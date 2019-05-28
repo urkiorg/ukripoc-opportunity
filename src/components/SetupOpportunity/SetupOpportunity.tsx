@@ -20,6 +20,7 @@ import GridCol from "@govuk-react/grid-col";
 
 import SectionBreak from "@govuk-react/section-break";
 import { WorkflowComponentList } from "../WorkflowComponentList";
+import { WebsiteListing } from "../../types";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -32,16 +33,13 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
 
-    if (
-        !opportunity.getOpportunity ||
-        !opportunity.getOpportunity.websiteListings ||
-        !opportunity.getOpportunity.websiteListings.items
-    ) {
-        return <Title>Not found</Title>;
-    }
+    const hasWebsiteListings =
+        opportunity.getOpportunity &&
+        opportunity.getOpportunity.websiteListings &&
+        opportunity.getOpportunity.websiteListings.items;
 
-    const websiteListings = opportunity.getOpportunity.websiteListings.items[0];
-
+    const websiteListings = opportunity.getOpportunity.websiteListings!.items;
+    console.log(websiteListings);
     return (
         <>
             <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
@@ -76,7 +74,9 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            <WorkflowComponentList websiteListings={websiteListings} />
+            <WorkflowComponentList
+                websiteListings={hasWebsiteListings ? websiteListings : null}
+            />
 
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}

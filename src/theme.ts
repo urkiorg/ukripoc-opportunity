@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { H1 } from "@govuk-react/heading";
+import { NTA_LIGHT } from "@govuk-react/constants";
 
 export const ukriGreen = "rgba(0, 130, 118, 1)";
 
@@ -16,10 +17,12 @@ export const SettingsListItem = styled.div`
     margin-bottom: 30px;
 `;
 
-export const FauxLink = styled.button`
+export const LinkButton = styled.button`
+    font-family: ${NTA_LIGHT};
     text-decoration: underline;
     background-color: inherit;
     border: none;
-    font-size: 14px;
-    color: blue;
+    font-size: 20px;
+    color: #005ea5;
+    line-height: 35px;
 `;
