@@ -11,7 +11,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import SectionBreak from "@govuk-react/section-break";
 
-import { ukriGreen, Title, FauxLink } from "../../theme";
+import { ukriGreen, Title, LinkButton } from "../../theme";
 
 import { GetWebsiteListingQuery } from "../../API";
 
@@ -110,9 +110,9 @@ export const WebsiteListing: FC<Props> = ({
                     </Button>
                 </GridCol>
                 <GridCol setWidth="90%">
-                    <FauxLink onClick={onButtonClick}>
+                    <LinkButton onClick={onButtonClick}>
                         Save and return without publishing
-                    </FauxLink>
+                    </LinkButton>
                 </GridCol>
             </GridRow>
         </div>

@@ -8,7 +8,7 @@ import { useMutation } from "react-apollo-hooks";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
-import { SettingsListItem, FauxLink, Title } from "../../theme";
+import { SettingsListItem, LinkButton, Title } from "../../theme";
 import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
 import { WebsiteListing } from "../../types";
 

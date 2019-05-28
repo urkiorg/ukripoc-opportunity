@@ -16,7 +16,7 @@ export const SettingsListItem = styled.div`
     margin-bottom: 30px;
 `;
 
-export const FauxLink = styled.button`
+export const LinkButton = styled.button`
     text-decoration: underline;
     background-color: inherit;
     border: none;
