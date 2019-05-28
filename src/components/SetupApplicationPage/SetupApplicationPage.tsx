@@ -18,7 +18,6 @@ export const SetupApplicationPage: FC = (props: any) => {
     //fetch
 
     const application = "";
-    console.log(props);
     const opportunityId = props.opportunityId;
     console.log(opportunityId);
     const { data, loading, error } = useQuery(GET_OPPORTUNITY, {
@@ -59,8 +58,6 @@ export const SetupApplicationPage: FC = (props: any) => {
     return (
         <SetupApplication
             application={application}
-            currentOpportunity={opportunity}
-            applicationChanged={updateOpportunity}
         />
     );
 };
