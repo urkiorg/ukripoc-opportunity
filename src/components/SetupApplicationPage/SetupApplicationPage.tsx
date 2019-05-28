@@ -1,65 +1,40 @@
-import React, { FC, HTMLAttributes, useCallback, Props } from "react";
+import React, { FC, HTMLAttributes, useCallback } from "react";
 
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "react-apollo-hooks";
 
-import { getOpportunity } from "../../graphql/queries";
-import { updateOpportunity } from "../../graphql/mutations";
+import { getApplication } from "../../graphql/queries";
+import { updateApplication } from "../../graphql/mutations";
 
-import { navigate, RouteComponentProps } from "@reach/router";
-import { UpdateOpportunityMutationVariables } from "../../API";
+import { navigate, RouteComponentProps, RouterProps } from "@reach/router";
+import {
+    UpdateOpportunityMutationVariables,
+    GetApplicationQuery
+} from "../../API";
 import { SetupApplication } from "../SetupApplication";
 
-const GET_OPPORTUNITY = gql(getOpportunity);
+interface Props extends RouterProps {
+    id?: string;
+}
 
-const UPDATE_OPPORTUNITY = gql(updateOpportunity);
+const GET_APPLICATION = gql(getApplication);
 
-export const SetupApplicationPage: FC = (props: any) => {
-    //fetch
+const UPDATE_APPLICATION = gql(updateApplication);
 
-    const application = "";
-    const opportunityId = props.opportunityId;
-    console.log(opportunityId);
-    const { data, loading, error } = useQuery(GET_OPPORTUNITY, {
-        variables: {
-            id: opportunityId
+export const SetupApplicationPage: FC<Props> = (props: Props) => {
+    const { data, loading, error } = useQuery<GetApplicationQuery>(
+        GET_APPLICATION,
+        {
+            variables: {
+                id: props.id
+            },
+            fetchPolicy: "cache-and-network"
         }
-    });
-
-    const opportunity = data;
-
-    const addApplicationMutation = useMutation<
-        {},
-        UpdateOpportunityMutationVariables
-    >(UPDATE_OPPORTUNITY);
-
-    const addApplication = useCallback(
-        async (name: string[]) => {
-            const result = await addApplicationMutation({
-                variables: {
-                    input: {
-                        id: opportunityId,
-                        funders: name,
-                        fundersComplete: true
-                    }
-                }
-            });
-            const { data, loading, error } = result;
-
-            navigate(`/setup/${opportunityId}`);
-        },
-        [addApplicationMutation]
     );
 
-    const updateOpportunity = useCallback(async (funderList: string[]) => {
-        const result = addApplication(funderList);
-    }, []);
+    const application = data;
 
-    return (
-        <SetupApplication
-            application={application}
-        />
-    );
+    return <SetupApplication application={application} />;
 };
 
 export default SetupApplicationPage;

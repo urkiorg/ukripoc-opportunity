@@ -23,6 +23,7 @@ import "./assets/fonts/stylesheet.css";
 import { HubCallback } from "@aws-amplify/core/lib/Hub";
 
 import { WebsiteListingPage } from "./components/WebsiteListingPage";
+import { SetupApplicationPage } from "./components/SetupApplicationPage";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -108,6 +109,11 @@ export const App: FC = (props: any) => {
                                     <Route
                                         component={SetupFundersPage}
                                         path="/setup/:opportunityId/funders"
+                                    />
+
+                                    <Route
+                                        component={SetupApplicationPage}
+                                        path="/component/application/:id"
                                     />
                                 </Router>
                             </AuthController>
