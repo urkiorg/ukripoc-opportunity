@@ -41,6 +41,15 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
       }
       nextToken
     }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -81,6 +90,15 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
         rank
         lastPublished
         description
+      }
+      nextToken
+    }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
       }
       nextToken
     }
@@ -127,6 +145,15 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
       }
       nextToken
     }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -152,6 +179,9 @@ export const createTeamMember = `mutation CreateTeamMember($input: CreateTeamMem
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -182,6 +212,9 @@ export const updateTeamMember = `mutation UpdateTeamMember($input: UpdateTeamMem
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -208,6 +241,9 @@ export const deleteTeamMember = `mutation DeleteTeamMember($input: DeleteTeamMem
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -238,6 +274,9 @@ export const createOpportunityType = `mutation CreateOpportunityType($input: Cre
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -266,6 +305,9 @@ export const updateOpportunityType = `mutation UpdateOpportunityType($input: Upd
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -292,6 +334,9 @@ export const deleteOpportunityType = `mutation DeleteOpportunityType($input: Del
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -323,6 +368,9 @@ export const createWebsiteListing = `mutation CreateWebsiteListing($input: Creat
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -352,6 +400,9 @@ export const updateWebsiteListing = `mutation UpdateWebsiteListing($input: Updat
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -379,6 +430,225 @@ export const deleteWebsiteListing = `mutation DeleteWebsiteListing($input: Delet
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createApplication = `mutation CreateApplication($input: CreateApplicationInput!) {
+  createApplication(input: $input) {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateApplication = `mutation UpdateApplication($input: UpdateApplicationInput!) {
+  updateApplication(input: $input) {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteApplication = `mutation DeleteApplication($input: DeleteApplicationInput!) {
+  deleteApplication(input: $input) {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createApplicationQuestion = `mutation CreateApplicationQuestion($input: CreateApplicationQuestionInput!) {
+  createApplicationQuestion(input: $input) {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateApplicationQuestion = `mutation UpdateApplicationQuestion($input: UpdateApplicationQuestionInput!) {
+  updateApplicationQuestion(input: $input) {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteApplicationQuestion = `mutation DeleteApplicationQuestion($input: DeleteApplicationQuestionInput!) {
+  deleteApplicationQuestion(input: $input) {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
         nextToken
       }
     }

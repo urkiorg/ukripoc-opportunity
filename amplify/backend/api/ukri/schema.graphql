@@ -9,6 +9,7 @@ type Opportunity @model {
     type: OpportunityType @connection(name: "OpportunityTypes")
     typeComplete: Boolean
     websiteListings: [WebsiteListing] @connection(name: "WebsiteListing")
+    application: [Application] @connection(name: "Application")
 }
 
 type TeamMember @model {
@@ -31,4 +32,24 @@ type WebsiteListing @model {
     lastPublished: String
     description: String
     opportunity: Opportunity @connection(name: "WebsiteListing")
+}
+
+type Application @model {
+    id: ID!
+    rank: Int!
+    openApplication: String
+    closeApplication: String
+    opportunity: Opportunity @connection(name: "Application")
+    applicationQuestions: [ApplicationQuestion]
+        @connection(name: "ApplicationQuestion")
+}
+
+type ApplicationQuestion @model {
+    id: ID!
+    heading: String
+    title: String
+    subtitle: String
+    notes: String
+    wordLimit: Int
+    application: Application @connection(name: "ApplicationQuestion")
 }
