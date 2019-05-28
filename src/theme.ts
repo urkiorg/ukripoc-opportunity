@@ -21,6 +21,6 @@ export const LinkButton = styled.button`
     background-color: inherit;
     border: none;
     font-size: 20px;
-    color: blue;
-    line-height: 20px;
+    color: #005ea5;
+    line-height: 35px;
 `;
