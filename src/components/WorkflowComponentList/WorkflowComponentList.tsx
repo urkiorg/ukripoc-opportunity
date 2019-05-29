@@ -1,16 +1,13 @@
-import React, { FC, HTMLAttributes, useCallback } from "react";
+import React, { FC, useCallback } from "react";
 
-import { Link } from "@reach/router";
 import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
 
-import GridRow from "@govuk-react/grid-row";
-import GridCol from "@govuk-react/grid-col";
-
-import { SettingsListItem, LinkButton, Title } from "../../theme";
-import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
+import { Title } from "../../theme";
 import { WebsiteListing } from "../../types";
+import { WorkflowComponentItem } from "../WorkflowComponentItem";
+import { Draggable } from "react-beautiful-dnd";
 
 interface Application {
     __typename: string;
@@ -23,6 +20,9 @@ interface Application {
 interface Props {
     websiteListings: (WebsiteListing | null)[] | null;
     applications: (Application | null)[] | null;
+    droppableProps: any;
+    placeholder: any;
+    innerRef: any;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
@@ -39,7 +39,6 @@ function typeNameToUrl(name: string) {
 }
 
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
-    console.log(props.websiteListings);
 
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
@@ -56,56 +55,50 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         },
         [deleteListingMutation]
     );
-
-    function renderWebsiteListings() {
-        if (!props.websiteListings) {
-            return <div />;
-        }
-    }
-
-    if (!props.websiteListings) {
-        return <Title> Not Found </Title>;
-    }
+    
     //could be websiteListing / Application
     const renderListItem = () => {
-        const websiteListings = props.websiteListings!;
-        const applications = props.applications!;
-
+        const websiteListings = props.websiteListings || [];
+        const applications = props.applications || [];
         const mergedComponents = [...websiteListings, ...applications];
 
         if (mergedComponents && mergedComponents.length) {
             console.log("got length");
 
-            return mergedComponents.map(component => {
-                if (!component) {
-                    return <div />;
-                }
-
-                const niceName = typeNameToUrl(component.__typename);
-                const listingLink = `/component/${niceName}/${component.id}`;
-                return (
-                    <SettingsListItem key={component.id}>
-                        <GridRow>
-                            <GridCol setWidth="90%">
-                                <Link to={listingLink}>{niceName}</Link>
-                            </GridCol>
-                            <GridCol>
-                                <button
-                                    onClick={event =>
-                                        deleteListing(component.id)
-                                    }
-                                >
-                                    Delete
-                                </button>
-                            </GridCol>
-                        </GridRow>
-                    </SettingsListItem>
+            return mergedComponents.map((component, index) =>
+                    component ?
+                    <Draggable
+                        key={component.id}
+                        draggableId={component.id} 
+                        index={index} >
+                        {(provided: any) => 
+                            <WorkflowComponentItem
+                                innerRef={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                component={component} 
+                                deleteListing={deleteListing}
+                            />
+                        }
+                    </Draggable>
+                    :
+                    <div key={index} />
                 );
-            });
+            };
         }
-    };
 
-    return <div>{renderListItem()}</div>;
+    return (
+        <div ref={props.innerRef}>
+            {
+                !props.websiteListings ?
+                    <Title> Not Found </Title>
+                    :
+                    <div>
+                        { renderListItem() }
+                        { props.placeholder }
+                    </div>
+            }
+        </div>);
 };
 
 export default WorkflowComponentList;

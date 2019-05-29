@@ -7,20 +7,17 @@ import React, {
 } from "react";
 
 import Details from "@govuk-react/details";
-import { getOpportunity } from "../../graphql/queries";
-import { GetOpportunityQuery, GetApplicationQuery } from "../../API";
+import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title } from "../../theme";
 import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
-import P from "@govuk-react/paragraph";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
-import SectionBreak from "@govuk-react/section-break";
 import { WorkflowComponentList } from "../WorkflowComponentList";
-import { WebsiteListing } from "../../types";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -45,6 +42,11 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
     const websiteListings = opportunity.getOpportunity.websiteListings!.items;
     const applications = opportunity.getOpportunity.application!.items;
     console.log(websiteListings);
+
+    const handleOnDragEnd = () => {
+        // Update index
+    }
+
     return (
         <>
             <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
@@ -79,10 +81,18 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            <WorkflowComponentList
-                websiteListings={hasWebsiteListings ? websiteListings : null}
-                applications={hasApplications ? applications : null}
-            />
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+                <Droppable droppableId="workflowList">
+                    {(provided: any) =>
+                        <WorkflowComponentList
+                            innerRef={provided.innerRef}
+                            {...provided.droppableProps}
+                            placeholder={provided.placeholder}
+                            websiteListings={hasWebsiteListings ? websiteListings : null}
+                            applications={hasApplications ? applications : null}
+                        />}
+                </Droppable>
+            </DragDropContext>
 
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}
