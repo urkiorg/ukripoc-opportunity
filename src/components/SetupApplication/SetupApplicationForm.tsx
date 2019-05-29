@@ -138,7 +138,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
 
     function validateYear(value: string) {
         const intValue = parseInt(value);
-        console.log(intValue);
         if (!value || isNaN(intValue) || intValue > 2040 || intValue < 2019) {
             return "Incorrect";
         }
@@ -168,16 +167,15 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
 
     return (
         <form onSubmit={event => handleSubmit(event)}>
-            {!isValidForm ? (
-                <ErrorSummary
-                    heading={"There is a problem"}
-                    description={
-                        "The dates you have entered do not seem correct..."
-                    }
-                />
-            ) : (
-                ""
-            )}
+            {!isValidForm
+                ? // <ErrorSummary
+                  //     heading={"There is a problem"}
+                  //     description={
+                  //         "The dates you have entered do not seem correct..."
+                  //     }
+                  // />
+                  ""
+                : ""}
 
             <H5 mb={1}> Open application </H5>
             <Caption size="M">Date</Caption>
@@ -185,21 +183,24 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                 <DateInput
                     {...text({
                         name: "openDay",
-                        validate: (value: string) => validateDay(value)
+                        validate: (value: string) => validateDay(value),
+                        validateOnBlur: false
                     })}
                     placeholder="DD"
                 />
                 <DateInput
                     {...text({
                         name: "openMonth",
-                        validate: validateMonth
+                        validate: validateMonth,
+                        validateOnBlur: false
                     })}
                     placeholder="MM"
                 />
                 <DateInput
                     {...text({
                         name: "openYear",
-                        validate: (value: string) => validateYear(value)
+                        validate: (value: string) => validateYear(value),
+                        validateOnBlur: false
                     })}
                     placeholder="YYYY"
                 />
@@ -207,7 +208,8 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     time="true"
                     {...text({
                         name: "openHour",
-                        validate: (value: string) => validateHour(value)
+                        validate: (value: string) => validateHour(value),
+                        validateOnBlur: false
                     })}
                     placeholder="HH"
                 />
@@ -215,7 +217,8 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     {...text({
                         name: "openMinute",
                         validate: (value: string, values: string[]) =>
-                            validateMinute(value, values)
+                            validateMinute(value, values),
+                        validateOnBlur: false
                     })}
                     placeholder="MM"
                 />

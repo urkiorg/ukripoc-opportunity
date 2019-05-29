@@ -42,5 +42,8 @@ export const DateInput = styled.input`
     border-radius: 0;
     -webkit-appearance: none;
     margin-right: 10px;
+    font-family: ${NTA_LIGHT};
+    font-size: 16px;
+    line-height: 1.25;
 
 `;
