@@ -66,7 +66,7 @@ export const SetupApplication: FC<Props> = ({ application }) => {
                 settings below you can build and customise the application form
                 and also define parameters for application review.
             </Details>
-            <Caption mb={3}>Application settings</Caption>
+            <Caption mb={8}>Application settings</Caption>
 
             <SetupApplicationForm application={application} />
         </div>

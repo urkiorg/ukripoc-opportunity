@@ -26,3 +26,21 @@ export const LinkButton = styled.button`
     color: #005ea5;
     line-height: 35px;
 `;
+
+interface DateInputProps {
+    time?: string;
+}
+
+export const DateInput = styled.input`
+    margin-left: ${(props: DateInputProps) => (props.time ? "40px" : "0px")}
+    max-width: 7.4ex;
+    width: 100%;
+    height: 40px;
+    margin-top: 0;
+    padding: 5px;
+    border: 2px solid #0b0c0c;
+    border-radius: 0;
+    -webkit-appearance: none;
+    margin-right: 10px;
+
+`;
