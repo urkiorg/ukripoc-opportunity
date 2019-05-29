@@ -10728,6 +10728,11 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
+react-use-form-state@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-use-form-state/-/react-use-form-state-0.10.2.tgz#3996ad21ddec2f91d8cc21cecef993e0a8ab8324"
+  integrity sha512-RbK2NM3IXlttX3qeHCBdedimqa1lCcwos/LAUgVS72ujxx0xFo+Y94gQjZT9koYAiyCPcJqnjZMqtKNJu7MSnQ==
+
 react@^16.8.1, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"

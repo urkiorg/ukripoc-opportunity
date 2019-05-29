@@ -6,7 +6,7 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { Rehydrated } from "aws-appsync-react";
 import Main from "@govuk-react/main";
-import { Router, Link, RouteComponentProps } from "@reach/router";
+import { Router } from "@reach/router";
 import { Route } from "./components/Route";
 import { AllOpportunities } from "./components/AllOpportunities";
 import { NewOpportunityPage } from "./components/NewOpportunityPage";
@@ -104,7 +104,7 @@ export const App: FC = (props: any) => {
                                     />
                                     <Route
                                         component={WebsiteListingPage}
-                                        path="/component/WebsiteListing/:id"
+                                        path="/component/website-listing/:id"
                                     />
                                     <Route
                                         component={SetupFundersPage}

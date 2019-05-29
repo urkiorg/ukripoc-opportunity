@@ -23,7 +23,9 @@ const CREATE_WEBSITE_LISTING = gql(createWebsiteListing);
 const CREATE_APPLICATION = gql(createApplication);
 
 export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
-    const [selectedComponent, setSelectedComponent] = useState("");
+    const [selectedComponent, setSelectedComponent] = useState(
+        "website-listing"
+    );
 
     const onInputChange = useCallback(
         event => setSelectedComponent(event.target.value),
@@ -75,9 +77,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
         const { data, loading, error } = result;
         if (data) {
             navigate(
-                `/component/${data.createWebsiteListing.__typename}/${
-                    data.createWebsiteListing.id
-                }`
+                `/component/website-listing/${data.createWebsiteListing.id}`
             );
         }
     }, [createWebsiteListingMutation, opportunityId]);

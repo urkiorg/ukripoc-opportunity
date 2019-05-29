@@ -21,6 +21,8 @@ import DateField from "@govuk-react/date-field";
 import { GetApplicationQuery } from "../../API";
 import { Title, ukriGreen } from "../../theme";
 
+import SetupApplicationForm from "./SetupApplicationForm";
+
 interface Funder {
     name: string;
 }
@@ -54,11 +56,6 @@ export const SetupApplication: FC<Props> = ({ application }) => {
         </Breadcrumbs>
     );
 
-    function formSubmit(event: Event) {
-        event.preventDefault();
-        console.log(event);
-    }
-
     return (
         <div>
             <Caption mb={1}>{opportunityName}</Caption>
@@ -70,6 +67,8 @@ export const SetupApplication: FC<Props> = ({ application }) => {
                 and also define parameters for application review.
             </Details>
             <Caption mb={3}>Application settings</Caption>
+
+            <SetupApplicationForm application={application} />
         </div>
     );
 };

@@ -8,7 +8,7 @@ import React, {
 
 import Details from "@govuk-react/details";
 import { getOpportunity } from "../../graphql/queries";
-import { GetOpportunityQuery } from "../../API";
+import { GetOpportunityQuery, GetApplicationQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title } from "../../theme";
@@ -38,7 +38,12 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         opportunity.getOpportunity.websiteListings &&
         opportunity.getOpportunity.websiteListings.items;
 
+    const hasApplications =
+        opportunity.getOpportunity.application &&
+        opportunity.getOpportunity.application.items;
+
     const websiteListings = opportunity.getOpportunity.websiteListings!.items;
+    const applications = opportunity.getOpportunity.application!.items;
     console.log(websiteListings);
     return (
         <>
@@ -76,6 +81,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
             </Details>
             <WorkflowComponentList
                 websiteListings={hasWebsiteListings ? websiteListings : null}
+                applications={hasApplications ? applications : null}
             />
 
             <WorkflowComponentAdd
