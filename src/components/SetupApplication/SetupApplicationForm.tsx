@@ -1,4 +1,10 @@
-import React, { SyntheticEvent, useCallback, FC } from "react";
+import React, {
+    SyntheticEvent,
+    useCallback,
+    FC,
+    useState,
+    useEffect
+} from "react";
 import { useFormState } from "react-use-form-state";
 import { useMutation } from "react-apollo-hooks";
 
@@ -8,10 +14,10 @@ import { updateApplication } from "../../graphql/mutations";
 
 import { navigate } from "@reach/router";
 import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
-import { GetApplicationOutput } from "aws-sdk/clients/codedeploy";
-import { Title, DateInput } from "../../theme";
-import InputField from "@govuk-react/input-field";
 
+import { Title, DateInput } from "../../theme";
+
+import InputField from "@govuk-react/input-field";
 import ErrorSummary from "@govuk-react/error-summary";
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
@@ -35,6 +41,8 @@ interface ApplicationFormType {
 
 export const SetupApplicationForm: FC<Props> = ({ application }) => {
     let initialState = {};
+
+    const [validForm, setValidForm] = useState<boolean>(true);
 
     if (application.getApplication) {
         const openApplication =
@@ -66,9 +74,13 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
     const updateApplicationMutation = useMutation<UpdateApplicationMutation>(
         UPDATE_APPLICATION
     );
+
+    useEffect(() => {
+        checkForErrors();
+    }, [formState]);
+
     const updateApplicationCB = useCallback(
         async (openApplicationDate: string, closeApplicationDate: string) => {
-            console.log(openApplicationDate, closeApplicationDate);
             const result = await updateApplicationMutation({
                 variables: {
                     input: {
@@ -79,8 +91,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                 }
             });
             const { data, loading, error } = result;
-
-            console.log(data);
 
             const updateApplicationResult: UpdateApplicationMutation = data;
 
@@ -93,40 +103,73 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         [updateApplicationMutation]
     );
 
-    const isValidForm: boolean = Object.keys(formState.errors).length
-        ? false
-        : true;
+    const checkForErrors = () => {
+        let isValidSoFar = true;
+        const date = new Date();
+        date.setFullYear(
+            formState.values.openYear,
+            formState.values.openMonth - 1,
+            formState.values.openDay
+        );
+        if (
+            date.getFullYear() !== formState.values.openYear ||
+            date.getMonth() !== formState.values.openMonth + 1 ||
+            date.getDate() !== formState.values.openDay
+        ) {
+            isValidSoFar = false;
+        }
+
+        const closeDate = new Date();
+        closeDate.setFullYear(
+            formState.values.closeYear,
+            formState.values.closeMonth - 1,
+            formState.values.closeDay
+        );
+        if (
+            (isValidSoFar === true &&
+                closeDate.getFullYear() !== formState.values.closeYear) ||
+            closeDate.getMonth() !== formState.values.closeMonth + 1 ||
+            closeDate.getDate() !== formState.values.closeDay
+        ) {
+            isValidSoFar = false;
+        }
+
+        Object.keys(formState.errors).length && !isValidSoFar
+            ? setValidForm(false)
+            : setValidForm(true);
+    };
 
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
-        const stringedOpenDate = `${formState.values.openDay} ${
-            formState.values.openMonth
-        } ${formState.values.openYear} ${formState.values.openHour}:${
-            formState.values.openMinute
-        }`;
+        let year = formState.values.openYear;
+        let month = formState.values.openMonth;
+        let day = formState.values.openDay;
+        let hour = formState.values.openHour;
+        let minute = formState.values.openMinute;
 
-        const openDate = new Date(stringedOpenDate).toISOString();
+        const openDate = new Date(year, month, day, hour, minute).toISOString();
 
-        const stringedCloseDate = `${parseInt(
-            formState.values.closeDay
-        )} ${parseInt(formState.values.closeMonth)} ${parseInt(
-            formState.values.closeYear
-        )} ${parseInt(formState.values.closeHour)}:${parseInt(
-            formState.values.closeMinute
-        )}`;
+        year = formState.values.closeYear;
+        month = formState.values.closeMonth;
+        day = formState.values.closeDay;
+        hour = formState.values.closeHour;
+        minute = formState.values.closeMinute;
 
-        const closeDate = new Date(stringedCloseDate).toISOString();
+        const closeDate = new Date(
+            year,
+            month,
+            day,
+            hour,
+            minute
+        ).toISOString();
 
         if (openDate > closeDate) {
+            setValidForm(false);
             return false;
         }
 
         updateApplicationCB(openDate, closeDate);
-    }
-
-    function checkOpenAndCloseDates(value: string, values: string[]) {
-        console.log(values, value);
     }
 
     function validateDay(value: string) {
@@ -162,24 +205,13 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         if (!value || isNaN(intValue) || intValue > 59) {
             return "Incorrect";
         }
-        checkOpenAndCloseDates(value, values);
     }
 
     return (
         <form onSubmit={event => handleSubmit(event)}>
-            {!isValidForm
-                ? // <ErrorSummary
-                  //     heading={"There is a problem"}
-                  //     description={
-                  //         "The dates you have entered do not seem correct..."
-                  //     }
-                  // />
-                  ""
-                : ""}
-
             <H5 mb={1}> Open application </H5>
             <Caption size="M">Date</Caption>
-            <FormGroup error={!isValidForm}>
+            <FormGroup error={!validForm}>
                 <DateInput
                     {...text({
                         name: "openDay",
@@ -226,7 +258,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
 
             <H5 mb={1}>Close application </H5>
             <Caption size="M"> Date </Caption>
-            <FormGroup error={!isValidForm}>
+            <FormGroup error={!validForm}>
                 <DateInput
                     {...text({
                         name: "closeDay",
@@ -266,7 +298,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                 />
             </FormGroup>
 
-            {!isValidForm ? (
+            {!validForm ? (
                 <Button type="submit" disabled>
                     Save
                 </Button>
