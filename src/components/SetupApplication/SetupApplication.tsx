@@ -1,10 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import Details from "@govuk-react/details";
 
-import { GetApplicationQuery } from "../../API";
+import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
+
 import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
@@ -14,9 +15,13 @@ interface Funder {
 }
 interface Props {
     application?: GetApplicationQuery;
+    updateApplication: (openDate: string, closeDate: string) => void;
 }
 
-export const SetupApplication: FC<Props> = ({ application }) => {
+export const SetupApplication: FC<Props> = ({
+    application,
+    updateApplication
+}) => {
     const opportunityName =
         application &&
         application.getApplication &&
@@ -31,20 +36,14 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             ? application.getApplication.opportunity.id
             : "";
 
-    const linkBack = `/setup/${opportunityId}`;
-
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBack}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            Application
-        </Breadcrumbs>
-    );
-
     return (
-        <div>
-            {breadcrumbs}
+        <>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Application
+            </Breadcrumbs>
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Application</Title>
             <Details summary="About this workflow component">
@@ -55,8 +54,13 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             </Details>
             <Caption mb={8}>Application settings</Caption>
 
-            {application && <SetupApplicationForm application={application} />}
-        </div>
+            {application && (
+                <SetupApplicationForm
+                    application={application}
+                    updateApplication={updateApplication}
+                />
+            )}
+        </>
     );
 };
 
