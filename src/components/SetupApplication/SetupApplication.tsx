@@ -31,20 +31,14 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             ? application.getApplication.opportunity.id
             : "";
 
-    const linkBack = `/setup/${opportunityId}`;
-
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBack}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            Application
-        </Breadcrumbs>
-    );
-
     return (
-        <div>
-            {breadcrumbs}
+        <>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Application
+            </Breadcrumbs>
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Application</Title>
             <Details summary="About this workflow component">
@@ -56,7 +50,7 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             <Caption mb={8}>Application settings</Caption>
 
             {application && <SetupApplicationForm application={application} />}
-        </div>
+        </>
     );
 };
 
