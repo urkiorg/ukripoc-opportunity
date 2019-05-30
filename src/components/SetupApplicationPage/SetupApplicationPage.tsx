@@ -1,14 +1,13 @@
-import React, { FC, HTMLAttributes, useCallback } from "react";
+import React, { FC } from "react";
 
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery } from "react-apollo-hooks";
 
 import { getApplication } from "../../graphql/queries";
-import { updateApplication } from "../../graphql/mutations";
 
-import { navigate, RouteComponentProps, RouterProps } from "@reach/router";
+import { RouterProps } from "@reach/router";
 
-import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
+import { GetApplicationQuery } from "../../API";
 
 import { SetupApplication } from "../SetupApplication";
 
@@ -18,16 +17,12 @@ interface Props extends RouterProps {
 }
 
 export const SetupApplicationPage: FC<Props> = (props: Props) => {
-    //get application
-    const { data, loading, error } = useQuery<GetApplicationQuery>(
-        GET_APPLICATION,
-        {
-            variables: {
-                id: props.id
-            },
-            fetchPolicy: "cache-and-network"
-        }
-    );
+    const { data } = useQuery<GetApplicationQuery>(GET_APPLICATION, {
+        variables: {
+            id: props.id
+        },
+        fetchPolicy: "cache-and-network"
+    });
 
     return <SetupApplication application={data} />;
 };

@@ -1,26 +1,16 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useState,
-    Children,
-    useCallback
-} from "react";
+import React, { FC } from "react";
 
 import Details from "@govuk-react/details";
-import { getOpportunity } from "../../graphql/queries";
-import { GetOpportunityQuery, GetApplicationQuery } from "../../API";
+import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title } from "../../theme";
 import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
-import P from "@govuk-react/paragraph";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
-import SectionBreak from "@govuk-react/section-break";
 import { WorkflowComponentList } from "../WorkflowComponentList";
-import { WebsiteListing } from "../../types";
 
 interface Props {
     opportunity: GetOpportunityQuery;
