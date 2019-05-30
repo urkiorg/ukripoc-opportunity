@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { H1 } from "@govuk-react/heading";
 import { NTA_LIGHT } from "@govuk-react/constants";
 
+import { LINK_COLOUR } from "govuk-colours";
+
 export const ukriGreen = "rgba(0, 130, 118, 1)";
 
 export const Title = styled(H1)`
@@ -23,6 +25,6 @@ export const LinkButton = styled.button`
     background-color: inherit;
     border: none;
     font-size: 20px;
-    color: #005ea5;
+    color: ${LINK_COLOUR};
     line-height: 35px;
 `;
