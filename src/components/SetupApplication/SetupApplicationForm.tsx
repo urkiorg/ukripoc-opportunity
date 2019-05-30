@@ -15,10 +15,8 @@ import { updateApplication } from "../../graphql/mutations";
 import { navigate } from "@reach/router";
 import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
 
-import { Title, DateInput, InputErrorText } from "../../theme";
+import { DateInput } from "../../theme";
 
-import InputField from "@govuk-react/input-field";
-import ErrorSummary from "@govuk-react/error-summary";
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
 import { H5 } from "@govuk-react/heading";
@@ -68,7 +66,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         };
     }
 
-    const [formState, { text, number }] = useFormState(initialState);
+    const [formState, { text }] = useFormState(initialState);
 
     const UPDATE_APPLICATION = gql(updateApplication);
     const updateApplicationMutation = useMutation<UpdateApplicationMutation>(
@@ -90,7 +88,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     }
                 }
             });
-            const { data, loading, error } = result;
+            const { data } = result;
 
             const updateApplicationResult: UpdateApplicationMutation = data;
 
@@ -200,7 +198,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         }
     }
 
-    function validateMinute(value: string, values: string[]) {
+    function validateMinute(value: string) {
         const intValue = parseInt(value);
         if (!value || isNaN(intValue) || intValue > 59) {
             return "Incorrect";
@@ -249,7 +247,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     {...text({
                         name: "openMinute",
                         validate: (value: string, values: string[]) =>
-                            validateMinute(value, values),
+                            validateMinute(value),
                         validateOnBlur: false
                     })}
                     placeholder="MM"
@@ -292,7 +290,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     {...text({
                         name: "closeMinute",
                         validate: (value: string, values: string[]) =>
-                            validateMinute(value, values)
+                            validateMinute(value)
                     })}
                     placeholder="MM"
                 />
