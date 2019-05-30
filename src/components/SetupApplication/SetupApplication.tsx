@@ -1,10 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import Details from "@govuk-react/details";
 
-import { GetApplicationQuery } from "../../API";
+import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
+
 import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
@@ -14,9 +15,13 @@ interface Funder {
 }
 interface Props {
     application?: GetApplicationQuery;
+    updateApplication: (openDate: string, closeDate: string) => void;
 }
 
-export const SetupApplication: FC<Props> = ({ application }) => {
+export const SetupApplication: FC<Props> = ({
+    application,
+    updateApplication
+}) => {
     const opportunityName =
         application &&
         application.getApplication &&
@@ -49,7 +54,12 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             </Details>
             <Caption mb={8}>Application settings</Caption>
 
-            {application && <SetupApplicationForm application={application} />}
+            {application && (
+                <SetupApplicationForm
+                    application={application}
+                    updateApplication={updateApplication}
+                />
+            )}
         </>
     );
 };

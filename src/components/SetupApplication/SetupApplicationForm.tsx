@@ -1,19 +1,5 @@
-import React, {
-    SyntheticEvent,
-    useCallback,
-    FC,
-    useState,
-    useEffect
-} from "react";
+import React, { SyntheticEvent, FC, useState, useEffect } from "react";
 import { useFormState } from "react-use-form-state";
-import { useMutation } from "react-apollo-hooks";
-
-import { gql } from "apollo-boost";
-
-import { updateApplication } from "../../graphql/mutations";
-
-import { navigate } from "@reach/router";
-import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
 
 import { DateInput, InputErrorText } from "../../theme";
 
@@ -21,23 +7,17 @@ import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
 import { H5 } from "@govuk-react/heading";
 import Caption from "@govuk-react/caption";
+import { GetApplicationQuery } from "../../API";
 interface Props {
     application: GetApplicationQuery;
-}
-interface ApplicationFormType {
-    openYear: string;
-    openMonth: string;
-    openDay: string;
-    openHour: string;
-    openMinute: string;
-    closeYear: string;
-    closeMonth: string;
-    closeDay: string;
-    closeHour: string;
-    closeMinute: string;
+    //todo change any
+    updateApplication: (openDate: string, closeDate: string) => void;
 }
 
-export const SetupApplicationForm: FC<Props> = ({ application }) => {
+export const SetupApplicationForm: FC<Props> = ({
+    application,
+    updateApplication
+}) => {
     let initialState = {};
 
     const [validForm, setValidForm] = useState<boolean>(true);
@@ -67,11 +47,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
     }
 
     const [formState, { text }] = useFormState(initialState);
-
-    const UPDATE_APPLICATION = gql(updateApplication);
-    const updateApplicationMutation = useMutation<UpdateApplicationMutation>(
-        UPDATE_APPLICATION
-    );
 
     const checkForErrors = () => {
         let isValidSoFar = true;
@@ -113,30 +88,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         checkForErrors();
     }, [formState]);
 
-    const updateApplicationCB = useCallback(
-        async (openApplicationDate: string, closeApplicationDate: string) => {
-            const result = await updateApplicationMutation({
-                variables: {
-                    input: {
-                        id: application.getApplication!.id,
-                        closeApplication: closeApplicationDate,
-                        openApplication: openApplicationDate
-                    }
-                }
-            });
-            const { data } = result;
-
-            const updateApplicationResult: UpdateApplicationMutation = data;
-
-            navigate(
-                `/setup/${
-                    updateApplicationResult.updateApplication!.opportunity!.id
-                }`
-            );
-        },
-        [updateApplicationMutation]
-    );
-
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
@@ -162,7 +113,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
             minute
         ).toISOString();
 
-        updateApplicationCB(openDate, closeDate);
+        updateApplication(openDate, closeDate);
     }
 
     function validateDay(value: string) {
@@ -246,8 +197,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                 <DateInput
                     {...text({
                         name: "openMinute",
-                        validate: (value: string, values: string[]) =>
-                            validateMinute(value),
+                        validate: (value: string) => validateMinute(value),
                         validateOnBlur: false
                     })}
                     placeholder="MM"
@@ -289,8 +239,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                 <DateInput
                     {...text({
                         name: "closeMinute",
-                        validate: (value: string, values: string[]) =>
-                            validateMinute(value)
+                        validate: (value: string) => validateMinute(value)
                     })}
                     placeholder="MM"
                 />
