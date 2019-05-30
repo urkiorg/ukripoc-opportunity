@@ -1,25 +1,11 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useCallback,
-    useState,
-    SyntheticEvent
-} from "react";
+import React, { FC } from "react";
 
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
-import Checkbox from "@govuk-react/checkbox";
-import Button from "@govuk-react/button";
 import Details from "@govuk-react/details";
 
-import GridRow from "@govuk-react/grid-row";
-import GridCol from "@govuk-react/grid-col";
-import InputField from "@govuk-react/input-field";
-
-import DateField from "@govuk-react/date-field";
-
 import { GetApplicationQuery } from "../../API";
-import { Title, ukriGreen } from "../../theme";
+import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
 
@@ -31,17 +17,17 @@ interface Props {
 }
 
 export const SetupApplication: FC<Props> = ({ application }) => {
-    if (!application) {
-        return <div> No </div>;
-    }
-
     const opportunityName =
-        application.getApplication && application.getApplication.opportunity
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
             ? application.getApplication.opportunity.name
             : "";
 
     const opportunityId =
-        application.getApplication && application.getApplication.opportunity
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
             ? application.getApplication.opportunity.id
             : "";
 
@@ -52,12 +38,13 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             <Breadcrumbs.Link href={linkBack}>
                 Opportunity setup
             </Breadcrumbs.Link>
-            Website listing
+            Application
         </Breadcrumbs>
     );
 
     return (
         <div>
+            {breadcrumbs}
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Application</Title>
             <Details summary="About this workflow component">
@@ -68,7 +55,7 @@ export const SetupApplication: FC<Props> = ({ application }) => {
             </Details>
             <Caption mb={8}>Application settings</Caption>
 
-            <SetupApplicationForm application={application} />
+            {application && <SetupApplicationForm application={application} />}
         </div>
     );
 };

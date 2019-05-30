@@ -15,10 +15,8 @@ import { updateApplication } from "../../graphql/mutations";
 import { navigate } from "@reach/router";
 import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
 
-import { Title, DateInput } from "../../theme";
+import { DateInput, InputErrorText } from "../../theme";
 
-import InputField from "@govuk-react/input-field";
-import ErrorSummary from "@govuk-react/error-summary";
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
 import { H5 } from "@govuk-react/heading";
@@ -68,53 +66,25 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         };
     }
 
-    const [formState, { text, number }] = useFormState(initialState);
+    const [formState, { text }] = useFormState(initialState);
 
     const UPDATE_APPLICATION = gql(updateApplication);
     const updateApplicationMutation = useMutation<UpdateApplicationMutation>(
         UPDATE_APPLICATION
     );
 
-    useEffect(() => {
-        checkForErrors();
-    }, [formState]);
-
-    const updateApplicationCB = useCallback(
-        async (openApplicationDate: string, closeApplicationDate: string) => {
-            const result = await updateApplicationMutation({
-                variables: {
-                    input: {
-                        id: application.getApplication!.id,
-                        closeApplication: closeApplicationDate,
-                        openApplication: openApplicationDate
-                    }
-                }
-            });
-            const { data, loading, error } = result;
-
-            const updateApplicationResult: UpdateApplicationMutation = data;
-
-            navigate(
-                `/setup/${
-                    updateApplicationResult.updateApplication!.opportunity!.id
-                }`
-            );
-        },
-        [updateApplicationMutation]
-    );
-
     const checkForErrors = () => {
         let isValidSoFar = true;
-        const date = new Date();
-        date.setFullYear(
+        const openDate = new Date();
+        openDate.setFullYear(
             formState.values.openYear,
             formState.values.openMonth - 1,
             formState.values.openDay
         );
         if (
-            date.getFullYear() !== formState.values.openYear ||
-            date.getMonth() !== formState.values.openMonth + 1 ||
-            date.getDate() !== formState.values.openDay
+            openDate.getFullYear() !== formState.values.openYear ||
+            openDate.getMonth() !== formState.values.openMonth + 1 ||
+            openDate.getDate() !== formState.values.openDay
         ) {
             isValidSoFar = false;
         }
@@ -138,6 +108,34 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
             ? setValidForm(false)
             : setValidForm(true);
     };
+
+    useEffect(() => {
+        checkForErrors();
+    }, [formState]);
+
+    const updateApplicationCB = useCallback(
+        async (openApplicationDate: string, closeApplicationDate: string) => {
+            const result = await updateApplicationMutation({
+                variables: {
+                    input: {
+                        id: application.getApplication!.id,
+                        closeApplication: closeApplicationDate,
+                        openApplication: openApplicationDate
+                    }
+                }
+            });
+            const { data } = result;
+
+            const updateApplicationResult: UpdateApplicationMutation = data;
+
+            navigate(
+                `/setup/${
+                    updateApplicationResult.updateApplication!.opportunity!.id
+                }`
+            );
+        },
+        [updateApplicationMutation]
+    );
 
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
@@ -163,11 +161,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
             hour,
             minute
         ).toISOString();
-
-        if (openDate > closeDate) {
-            setValidForm(false);
-            return false;
-        }
 
         updateApplicationCB(openDate, closeDate);
     }
@@ -200,7 +193,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         }
     }
 
-    function validateMinute(value: string, values: string[]) {
+    function validateMinute(value: string) {
         const intValue = parseInt(value);
         if (!value || isNaN(intValue) || intValue > 59) {
             return "Incorrect";
@@ -209,6 +202,11 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
 
     return (
         <form onSubmit={event => handleSubmit(event)}>
+            {!validForm && (
+                <InputErrorText>
+                    Please ensure dates are filled correctly
+                </InputErrorText>
+            )}
             <H5 mb={1}> Open application </H5>
             <Caption size="M">Date</Caption>
             <FormGroup error={!validForm}>
@@ -249,7 +247,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     {...text({
                         name: "openMinute",
                         validate: (value: string, values: string[]) =>
-                            validateMinute(value, values),
+                            validateMinute(value),
                         validateOnBlur: false
                     })}
                     placeholder="MM"
@@ -292,7 +290,7 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
                     {...text({
                         name: "closeMinute",
                         validate: (value: string, values: string[]) =>
-                            validateMinute(value, values)
+                            validateMinute(value)
                     })}
                     placeholder="MM"
                 />
