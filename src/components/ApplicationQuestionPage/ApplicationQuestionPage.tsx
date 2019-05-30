@@ -6,11 +6,7 @@ import { updateApplicationQuestion } from "../../graphql/mutations";
 import { navigate, RouterProps } from "@reach/router";
 import { getApplicationQuestion } from "../../graphql/queries";
 import {
-    GetApplicationQuery,
-    UpdateApplicationQuestionMutation,
     GetApplicationQuestionQuery,
-    CreateApplicationQuestionMutationVariables,
-    UpdateApplicationQuestionMutationVariables,
     UpdateApplicationQuestionInput
 } from "../../API";
 import { ApplicationQuestion } from "../ApplicationQuestion";
@@ -26,7 +22,7 @@ interface Props extends RouterProps {
 export const ApplicationQuestionPage: FC<Props> = (props: Props) => {
     const updateApplicationQuestion = useMutation(UPDATE_APPLICATION_QUESTION);
 
-    const { data, loading, error } = useQuery<GetApplicationQuestionQuery>(
+    const { data } = useQuery<GetApplicationQuestionQuery>(
         GET_APPLICATION_QUESTION,
         {
             variables: {
@@ -44,7 +40,7 @@ export const ApplicationQuestionPage: FC<Props> = (props: Props) => {
                 }
             });
 
-            const { data, loading, error } = result;
+            const { data } = result;
 
             if (data) {
                 navigate(

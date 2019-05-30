@@ -9,6 +9,7 @@ import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
 import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
+import { ApplicationQuestionsList } from "../ApplicationQuestionsList";
 
 interface Funder {
     name: string;
@@ -16,12 +17,20 @@ interface Funder {
 interface Props {
     application?: GetApplicationQuery;
     updateApplication: (openDate: string, closeDate: string) => void;
+    addQuestion: (id: string) => void;
+    deleteQuestion: (id: string) => void;
 }
 
 export const SetupApplication: FC<Props> = ({
     application,
-    updateApplication
+    updateApplication,
+    addQuestion,
+    deleteQuestion
 }) => {
+    if (!application || !application.getApplication) {
+        return <div> Loading </div>;
+    }
+
     const opportunityName =
         application &&
         application.getApplication &&
@@ -35,6 +44,17 @@ export const SetupApplication: FC<Props> = ({
         application.getApplication.opportunity
             ? application.getApplication.opportunity.id
             : "";
+
+    const applicationQuestions =
+        application &&
+        application.getApplication &&
+        application.getApplication.applicationQuestions
+            ? application.getApplication.applicationQuestions.items
+            : undefined;
+
+    const applicationId = application.getApplication.id;
+
+    console.log(applicationId);
 
     return (
         <>
@@ -58,6 +78,15 @@ export const SetupApplication: FC<Props> = ({
                 <SetupApplicationForm
                     application={application}
                     updateApplication={updateApplication}
+                />
+            )}
+
+            {application && (
+                <ApplicationQuestionsList
+                    questions={applicationQuestions}
+                    applicationId={applicationId}
+                    addQuestion={addQuestion}
+                    deleteQuestion={deleteQuestion}
                 />
             )}
         </>

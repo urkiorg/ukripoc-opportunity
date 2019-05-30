@@ -8,6 +8,7 @@ import Button from "@govuk-react/button";
 import { H5 } from "@govuk-react/heading";
 import Caption from "@govuk-react/caption";
 import { GetApplicationQuery } from "../../API";
+import { ApplicationQuestionsList } from "../ApplicationQuestionsList";
 interface Props {
     application: GetApplicationQuery;
     //todo change any
@@ -48,7 +49,7 @@ export const SetupApplicationForm: FC<Props> = ({
 
     const [formState, { text }] = useFormState(initialState);
 
-    const checkForErrors = () => {
+    useEffect(() => {
         let isValidSoFar = true;
         const openDate = new Date();
         openDate.setFullYear(
@@ -82,10 +83,6 @@ export const SetupApplicationForm: FC<Props> = ({
         Object.keys(formState.errors).length && !isValidSoFar
             ? setValidForm(false)
             : setValidForm(true);
-    };
-
-    useEffect(() => {
-        checkForErrors();
     }, [formState]);
 
     function handleSubmit(event: SyntheticEvent) {

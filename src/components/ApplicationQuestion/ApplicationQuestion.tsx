@@ -1,4 +1,4 @@
-import React, { FC, useCallback, SyntheticEvent, useState } from "react";
+import React, { FC, useState } from "react";
 
 import Button from "@govuk-react/button";
 import TextArea from "@govuk-react/text-area";
@@ -8,7 +8,18 @@ import InputField from "@govuk-react/input-field";
 
 import { ukriGreen, Title } from "../../theme";
 
-import { GetApplicationQuestionQuery } from "../../API";
+import {
+    GetApplicationQuestionQuery,
+    CreateApplicationQuestionInput
+} from "../../API";
+
+const defaultState: CreateApplicationQuestionInput = {
+    heading: "",
+    title: "",
+    subtitle: "",
+    notes: "",
+    wordLimit: 500
+};
 
 interface Props {
     updateApplicationQuestion: (response: any) => void;
@@ -19,16 +30,21 @@ export const ApplicationQuestion: FC<Props> = ({
     updateApplicationQuestion,
     question
 }) => {
+    const applicationQuestion =
+        question && question.getApplicationQuestion
+            ? question.getApplicationQuestion
+            : defaultState;
+
     const [values, setValues] = useState({
-        heading: "",
-        title: "",
-        subtitle: "",
-        notes: "",
-        wordLimit: "500"
+        heading: applicationQuestion.heading,
+        title: applicationQuestion.title,
+        subtitle: applicationQuestion.subtitle,
+        notes: applicationQuestion.notes,
+        wordLimit: applicationQuestion.wordLimit
     });
 
     if (!question || !question.getApplicationQuestion) {
-        return <Title>Not found</Title>;
+        return <Title>Loading...</Title>;
     }
 
     const onChange = (name: any) => {
@@ -49,19 +65,6 @@ export const ApplicationQuestion: FC<Props> = ({
     const opportunityId = question.getApplicationQuestion.application!
         .opportunity!.id;
 
-    const linkBack = `/component/application/${applicationId}`;
-    const linkBackOpportunity = `/setup/${opportunityId}`;
-
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBackOpportunity}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Link href={linkBack}>Application</Breadcrumbs.Link>
-            Website listing
-        </Breadcrumbs>
-    );
-
     const handleSubmit = (e: any) => {
         e.preventDefault();
         updateApplicationQuestion(values);
@@ -70,7 +73,17 @@ export const ApplicationQuestion: FC<Props> = ({
 
     return (
         <div>
-            {breadcrumbs}
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                <Breadcrumbs.Link
+                    href={`/component/application/${applicationId}`}
+                >
+                    Application
+                </Breadcrumbs.Link>
+                {values.heading}
+            </Breadcrumbs>
             <Title mb={2}>Question: {values.heading} </Title>
             <Caption mb={8}> Application question </Caption>
             <form onSubmit={handleSubmit}>
@@ -78,7 +91,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     mb={6}
                     input={{
                         onChange: onChange,
-                        name: "heading"
+                        name: "heading",
+                        value: values.heading
                     }}
                 >
                     Question heading
@@ -87,7 +101,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     mb={6}
                     input={{
                         onChange: onChange,
-                        name: "title"
+                        name: "title",
+                        value: values.title
                     }}
                 >
                     Question title
@@ -96,7 +111,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     mb={6}
                     input={{
                         onChange: onChange,
-                        name: "subtitle"
+                        name: "subtitle",
+                        value: values.subtitle
                     }}
                 >
                     Question subtitle
@@ -106,7 +122,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     name="notes"
                     input={{
                         onChange: onChange,
-                        name: "notes"
+                        name: "notes",
+                        value: values.notes
                     }}
                 >
                     Guidance notes for applicant
@@ -116,7 +133,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     mb={8}
                     input={{
                         onChange: onChange,
-                        name: "wordLimit"
+                        name: "wordLimit",
+                        value: values.wordLimit
                     }}
                 >
                     Word limit
