@@ -11,7 +11,8 @@ export const SetupOpportunityPage: FC = (props: any) => {
     const { data, loading, error } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
-        }
+        },
+        fetchPolicy: "cache-and-network"
     });
 
     return <SetupOpportunity opportunity={data} />;

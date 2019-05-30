@@ -22,6 +22,8 @@ import { Authenticator } from "aws-amplify-react";
 import "./assets/fonts/stylesheet.css";
 import { HubCallback } from "@aws-amplify/core/lib/Hub";
 
+import { WebsiteListingPage } from "./components/WebsiteListingPage";
+
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
     region: config.aws_appsync_region,
@@ -45,14 +47,15 @@ export const App: FC = (props: any) => {
         const checkAuthenticatedUser = async () => {
             try {
                 const u = await Auth.currentAuthenticatedUser();
-                console.log("user", user);
+                console.log("user", u);
                 setUser(u);
             } catch {
                 setUser(undefined);
             }
         };
         checkAuthenticatedUser();
-    });
+    }, [setUser]);
+
     const handleAuthStateChange: HubCallback = useCallback(
         async data => {
             const state = data.payload.event;
@@ -60,7 +63,7 @@ export const App: FC = (props: any) => {
             console.log("state", state);
             if (state === "signedIn" || state === "signIn") {
                 const u = await Auth.currentAuthenticatedUser();
-                console.log("user", user);
+                console.log("user", u);
                 setUser(u);
             } else {
                 setUser(undefined);
@@ -98,12 +101,10 @@ export const App: FC = (props: any) => {
                                         component={SetupOpportunityPage}
                                         path="/setup/:opportunityId"
                                     />
-
                                     <Route
-                                        component={SetupOpportunityPage}
-                                        path="/setup/:opportunityId"
+                                        component={WebsiteListingPage}
+                                        path="/component/WebsiteListing/:id"
                                     />
-
                                     <Route
                                         component={SetupFundersPage}
                                         path="/setup/:opportunityId/funders"
