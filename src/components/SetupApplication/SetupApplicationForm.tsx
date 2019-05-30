@@ -15,7 +15,7 @@ import { updateApplication } from "../../graphql/mutations";
 import { navigate } from "@reach/router";
 import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
 
-import { DateInput } from "../../theme";
+import { DateInput, InputErrorText } from "../../theme";
 
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
@@ -73,6 +73,42 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         UPDATE_APPLICATION
     );
 
+    const checkForErrors = () => {
+        let isValidSoFar = true;
+        const openDate = new Date();
+        openDate.setFullYear(
+            formState.values.openYear,
+            formState.values.openMonth - 1,
+            formState.values.openDay
+        );
+        if (
+            openDate.getFullYear() !== formState.values.openYear ||
+            openDate.getMonth() !== formState.values.openMonth + 1 ||
+            openDate.getDate() !== formState.values.openDay
+        ) {
+            isValidSoFar = false;
+        }
+
+        const closeDate = new Date();
+        closeDate.setFullYear(
+            formState.values.closeYear,
+            formState.values.closeMonth - 1,
+            formState.values.closeDay
+        );
+        if (
+            (isValidSoFar === true &&
+                closeDate.getFullYear() !== formState.values.closeYear) ||
+            closeDate.getMonth() !== formState.values.closeMonth + 1 ||
+            closeDate.getDate() !== formState.values.closeDay
+        ) {
+            isValidSoFar = false;
+        }
+
+        Object.keys(formState.errors).length && !isValidSoFar
+            ? setValidForm(false)
+            : setValidForm(true);
+    };
+
     useEffect(() => {
         checkForErrors();
     }, [formState]);
@@ -101,42 +137,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         [updateApplicationMutation]
     );
 
-    const checkForErrors = () => {
-        let isValidSoFar = true;
-        const date = new Date();
-        date.setFullYear(
-            formState.values.openYear,
-            formState.values.openMonth - 1,
-            formState.values.openDay
-        );
-        if (
-            date.getFullYear() !== formState.values.openYear ||
-            date.getMonth() !== formState.values.openMonth + 1 ||
-            date.getDate() !== formState.values.openDay
-        ) {
-            isValidSoFar = false;
-        }
-
-        const closeDate = new Date();
-        closeDate.setFullYear(
-            formState.values.closeYear,
-            formState.values.closeMonth - 1,
-            formState.values.closeDay
-        );
-        if (
-            (isValidSoFar === true &&
-                closeDate.getFullYear() !== formState.values.closeYear) ||
-            closeDate.getMonth() !== formState.values.closeMonth + 1 ||
-            closeDate.getDate() !== formState.values.closeDay
-        ) {
-            isValidSoFar = false;
-        }
-
-        Object.keys(formState.errors).length && !isValidSoFar
-            ? setValidForm(false)
-            : setValidForm(true);
-    };
-
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
@@ -161,11 +161,6 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
             hour,
             minute
         ).toISOString();
-
-        if (openDate > closeDate) {
-            setValidForm(false);
-            return false;
-        }
 
         updateApplicationCB(openDate, closeDate);
     }
@@ -207,6 +202,11 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
 
     return (
         <form onSubmit={event => handleSubmit(event)}>
+            {!validForm && (
+                <InputErrorText>
+                    Please ensure dates are filled correctly
+                </InputErrorText>
+            )}
             <H5 mb={1}> Open application </H5>
             <Caption size="M">Date</Caption>
             <FormGroup error={!validForm}>
