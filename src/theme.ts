@@ -47,3 +47,14 @@ export const DateInput = styled.input`
     line-height: 1.25;
 
 `;
+
+export const InputErrorText = styled.span`
+    font-family: ${NTA_LIGHT};
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.25;
+    display: block;
+    margin-bottom: 15px;
+    clear: both;
+    color: rgb(177, 14, 30);
+`;

@@ -15,7 +15,7 @@ import { updateApplication } from "../../graphql/mutations";
 import { navigate } from "@reach/router";
 import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
 
-import { Title, DateInput } from "../../theme";
+import { Title, DateInput, InputErrorText } from "../../theme";
 
 import InputField from "@govuk-react/input-field";
 import ErrorSummary from "@govuk-react/error-summary";
