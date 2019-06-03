@@ -24,16 +24,14 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
 
     const websiteListings =
-        opportunity.getOpportunity.websiteListings &&
-        opportunity.getOpportunity.websiteListings.items
-            ? opportunity.getOpportunity.websiteListings.items
-            : undefined;
+        (opportunity.getOpportunity.websiteListings &&
+            opportunity.getOpportunity.websiteListings.items) ||
+        undefined;
 
     const applications =
-        opportunity.getOpportunity.application &&
-        opportunity.getOpportunity.application.items
-            ? opportunity.getOpportunity.application.items
-            : undefined;
+        (opportunity.getOpportunity.application &&
+            opportunity.getOpportunity.application.items) ||
+        undefined;
 
     return (
         <>
