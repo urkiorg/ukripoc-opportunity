@@ -36,13 +36,27 @@ export const SetupApplicationForm: FC<Props> = ({
             openMonth: openDate.getMonth() + 1 || "",
             openDay: openDate.getDate() || "",
             openHour: openDate.getHours() || "",
-            openMinute: openDate.getMinutes() || "",
+            openMinute:
+                openDate.getMinutes() === 0
+                    ? "00"
+                    : openDate.getMinutes() > 10
+                    ? openDate.getMinutes()
+                    : openDate.getMinutes() > 0 && openDate.getMinutes() < 10
+                    ? `0${openDate.getMinutes()}`
+                    : "",
 
             closeYear: closeDate.getFullYear() || "",
             closeMonth: closeDate.getMonth() + 1 || "",
             closeDay: closeDate.getDate() || "",
             closeHour: closeDate.getHours() || "",
-            closeMinute: closeDate.getMinutes() || ""
+            closeMinute:
+                closeDate.getMinutes() === 0
+                    ? "00"
+                    : closeDate.getMinutes() > 10
+                    ? closeDate.getMinutes()
+                    : closeDate.getMinutes() > 0 && closeDate.getMinutes() < 10
+                    ? `0${closeDate.getMinutes()}`
+                    : ""
         };
     }
 

@@ -20,8 +20,8 @@ interface Application {
 }
 
 interface Props {
-    websiteListings: (WebsiteListing | null)[] | null;
-    applications: (Application | null)[] | null;
+    websiteListings?: Array<WebsiteListing | null>;
+    applications?: Array<Application | null>;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);

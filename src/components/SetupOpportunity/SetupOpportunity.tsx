@@ -23,18 +23,18 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
 
-    const hasWebsiteListings =
-        opportunity.getOpportunity &&
+    const websiteListings =
         opportunity.getOpportunity.websiteListings &&
-        opportunity.getOpportunity.websiteListings.items;
+        opportunity.getOpportunity.websiteListings.items
+            ? opportunity.getOpportunity.websiteListings.items
+            : undefined;
 
-    const hasApplications =
+    const applications =
         opportunity.getOpportunity.application &&
-        opportunity.getOpportunity.application.items;
+        opportunity.getOpportunity.application.items
+            ? opportunity.getOpportunity.application.items
+            : undefined;
 
-    const websiteListings = opportunity.getOpportunity.websiteListings!.items;
-    const applications = opportunity.getOpportunity.application!.items;
-    console.log(websiteListings);
     return (
         <>
             <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
@@ -70,8 +70,8 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 published externally.
             </Details>
             <WorkflowComponentList
-                websiteListings={hasWebsiteListings ? websiteListings : null}
-                applications={hasApplications ? applications : null}
+                websiteListings={websiteListings}
+                applications={applications}
             />
 
             <WorkflowComponentAdd
