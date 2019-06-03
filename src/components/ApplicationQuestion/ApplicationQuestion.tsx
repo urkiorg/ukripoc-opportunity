@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, SyntheticEvent } from "react";
 
 import Button from "@govuk-react/button";
 import TextArea from "@govuk-react/text-area";
@@ -10,10 +10,12 @@ import { ukriGreen, Title } from "../../theme";
 
 import {
     GetApplicationQuestionQuery,
-    CreateApplicationQuestionInput
+    CreateApplicationQuestionInput,
+    UpdateApplicationQuestionInput
 } from "../../API";
 
-const defaultState: CreateApplicationQuestionInput = {
+const defaultState = {
+    id: "",
     heading: "",
     title: "",
     subtitle: "",
@@ -22,7 +24,9 @@ const defaultState: CreateApplicationQuestionInput = {
 };
 
 interface Props {
-    updateApplicationQuestion: (response: any) => void;
+    updateApplicationQuestion: (
+        response: UpdateApplicationQuestionInput
+    ) => void;
     question?: GetApplicationQuestionQuery;
 }
 
@@ -36,6 +40,7 @@ export const ApplicationQuestion: FC<Props> = ({
             : defaultState;
 
     const [values, setValues] = useState({
+        id: applicationQuestion.id,
         heading: applicationQuestion.heading,
         title: applicationQuestion.title,
         subtitle: applicationQuestion.subtitle,
@@ -47,26 +52,19 @@ export const ApplicationQuestion: FC<Props> = ({
         return <Title>Loading...</Title>;
     }
 
-    const onChange = (name: any) => {
-        if (name.currentTarget.name === "wordLimit") {
-            setValues({
-                ...values,
-                [name.currentTarget.name]: parseInt(name.currentTarget.value)
-            });
-        } else {
-            setValues({
-                ...values,
-                [name.currentTarget.name]: name.currentTarget.value
-            });
-        }
+    const onChange = (event: SyntheticEvent<HTMLInputElement>) => {
+        setValues({
+            ...values,
+            [event.currentTarget.name]: event.currentTarget.value
+        });
     };
 
     const applicationId = question.getApplicationQuestion.application!.id;
     const opportunityId = question.getApplicationQuestion.application!
         .opportunity!.id;
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
+    const handleSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
         updateApplicationQuestion(values);
         return false;
     };
@@ -92,7 +90,9 @@ export const ApplicationQuestion: FC<Props> = ({
                     input={{
                         onChange: onChange,
                         name: "heading",
-                        value: values.heading
+                        value: values.heading,
+                        style: { width: "66%" },
+                        required: true
                     }}
                 >
                     Question heading
@@ -102,7 +102,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     input={{
                         onChange: onChange,
                         name: "title",
-                        value: values.title
+                        value: values.title,
+                        required: true
                     }}
                 >
                     Question title
@@ -112,7 +113,8 @@ export const ApplicationQuestion: FC<Props> = ({
                     input={{
                         onChange: onChange,
                         name: "subtitle",
-                        value: values.subtitle
+                        value: values.subtitle,
+                        required: true
                     }}
                 >
                     Question subtitle
@@ -123,7 +125,9 @@ export const ApplicationQuestion: FC<Props> = ({
                     input={{
                         onChange: onChange,
                         name: "notes",
-                        value: values.notes
+                        value: values.notes,
+                        style: { width: "100%" },
+                        required: true
                     }}
                 >
                     Guidance notes for applicant
@@ -134,7 +138,10 @@ export const ApplicationQuestion: FC<Props> = ({
                     input={{
                         onChange: onChange,
                         name: "wordLimit",
-                        value: values.wordLimit
+                        value: values.wordLimit,
+                        style: { width: "33%" },
+                        required: true,
+                        type: "number"
                     }}
                 >
                     Word limit

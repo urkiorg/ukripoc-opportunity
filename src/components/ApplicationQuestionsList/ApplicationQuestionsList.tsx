@@ -6,9 +6,11 @@ import Table from "@govuk-react/table";
 import Button from "@govuk-react/button";
 
 import { LinkButton } from "../../theme";
+import { ApplicationQuestion } from "../../types";
 
 interface Props {
-    questions: any;
+    // questions: (ApplicationQuestion[] | null);
+    questions: any; //ApplicationQuestion[] | null;
     applicationId: string;
     addQuestion: (id: string) => void;
     deleteQuestion: (id: string) => void;
@@ -20,12 +22,14 @@ export const ApplicationQuestionsList: FC<Props> = ({
     addQuestion,
     deleteQuestion
 }) => {
+    console.log(questions);
+
     return (
         <>
             <Caption> Application questions </Caption>
             <Table>
                 {questions &&
-                    questions.map((question: any) => {
+                    questions.map((question: ApplicationQuestion) => {
                         return (
                             <Table.Row key={question.id}>
                                 <Table.Cell>

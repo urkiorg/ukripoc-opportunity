@@ -11,7 +11,6 @@ import { GetApplicationQuery } from "../../API";
 import { ApplicationQuestionsList } from "../ApplicationQuestionsList";
 interface Props {
     application: GetApplicationQuery;
-    //todo change any
     updateApplication: (openDate: string, closeDate: string) => void;
 }
 

@@ -48,9 +48,8 @@ export const SetupApplication: FC<Props> = ({
     const applicationQuestions =
         application &&
         application.getApplication &&
-        application.getApplication.applicationQuestions
-            ? application.getApplication.applicationQuestions.items
-            : undefined;
+        application.getApplication.applicationQuestions &&
+        application.getApplication.applicationQuestions.items;
 
     const applicationId = application.getApplication.id;
 
