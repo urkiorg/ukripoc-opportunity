@@ -5,28 +5,14 @@ import TextArea from "@govuk-react/text-area";
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import InputField from "@govuk-react/input-field";
+import Checkbox from "@govuk-react/checkbox";
 
 import { ukriGreen, Title } from "../../theme";
 
-import {
-    GetApplicationQuestionQuery,
-    CreateApplicationQuestionInput,
-    UpdateApplicationQuestionInput
-} from "../../API";
-
-const defaultState = {
-    id: "",
-    heading: "",
-    title: "",
-    subtitle: "",
-    notes: "",
-    wordLimit: 500
-};
+import { GetApplicationQuestionQuery } from "../../API";
 
 interface Props {
-    updateApplicationQuestion: (
-        response: UpdateApplicationQuestionInput
-    ) => void;
+    updateApplicationQuestion: (response: any) => void;
     question?: GetApplicationQuestionQuery;
 }
 
@@ -34,23 +20,39 @@ export const ApplicationQuestion: FC<Props> = ({
     updateApplicationQuestion,
     question
 }) => {
+    const defaultState = {
+        heading: "",
+        title: "",
+        subtitle: "",
+        notes: "",
+        wordLimit: 500,
+        complete: false
+    };
+
     const applicationQuestion =
         question && question.getApplicationQuestion
             ? question.getApplicationQuestion
             : defaultState;
 
     const [values, setValues] = useState({
-        id: applicationQuestion.id,
         heading: applicationQuestion.heading,
         title: applicationQuestion.title,
         subtitle: applicationQuestion.subtitle,
         notes: applicationQuestion.notes,
-        wordLimit: applicationQuestion.wordLimit
+        wordLimit: applicationQuestion.wordLimit,
+        complete: applicationQuestion.complete || false
     });
 
     if (!question || !question.getApplicationQuestion) {
         return <Title>Loading...</Title>;
     }
+
+    const onChecked = (event: SyntheticEvent<HTMLInputElement>) => {
+        setValues({
+            ...values,
+            [event.currentTarget.name]: event.currentTarget.checked
+        });
+    };
 
     const onChange = (event: SyntheticEvent<HTMLInputElement>) => {
         setValues({
@@ -146,6 +148,17 @@ export const ApplicationQuestion: FC<Props> = ({
                 >
                     Word limit
                 </InputField>
+
+                <Checkbox
+                    name="complete"
+                    defaultChecked={values.complete}
+                    onChange={(event: SyntheticEvent<HTMLInputElement>) =>
+                        onChecked(event)
+                    }
+                >
+                    Complete
+                </Checkbox>
+
                 <Button buttonColour={ukriGreen}>Save</Button>
             </form>
         </div>

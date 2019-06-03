@@ -14,4 +14,5 @@ export interface ApplicationQuestion {
     notes: string | null;
     wordLimit: number | null;
     __typename: string | null;
+    complete: boolean;
 }

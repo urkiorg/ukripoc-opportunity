@@ -50,7 +50,11 @@ export const ApplicationQuestionsList: FC<Props> = ({
                                         Remove
                                     </LinkButton>
                                 </Table.Cell>
-                                <Table.Cell>status</Table.Cell>
+                                <Table.Cell>
+                                    {question.complete
+                                        ? "Complete"
+                                        : "Incomplete"}
+                                </Table.Cell>
                             </Table.Row>
                         );
                     })}
