@@ -33,21 +33,21 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         getOpportunity.application.items
         ) ? getOpportunity.application.items : [];
 
-    const handleOnDragEnd = () => {
-        // Update index
-    }
-
-    const mergedComponents = () => 
+    const mergedOpportunity = () => 
         [...websiteListings, ...applications];
 
-    const orderedComponents = () =>
-        mergedComponents().sort((a, b) => {
+    const orderedOpportunity = () =>
+        mergedOpportunity().sort((a, b) => {
             if (a && b) {
                 return (a.rank - b.rank)
             } else {
-                return 0
+                return -1
             }
     });
+
+    const handleOnDragEnd = () => {
+        // Update index
+    }
 
     return (
         <>
@@ -79,7 +79,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            { orderedComponents().length > 0 ? 
+            { orderedOpportunity().length > 0 ? 
                     <DragDropContext onDragEnd={handleOnDragEnd}>
                         <Droppable droppableId="droppable">
                             {(provided) => (
@@ -89,7 +89,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                                 >
                                     <WorkflowComponentList
                                         placeholder={provided.placeholder}
-                                        mergedComponents={orderedComponents()}
+                                        orderedOpportunity={orderedOpportunity()}
                                     />
                                     { provided.placeholder }
                                     {provided.placeholder}

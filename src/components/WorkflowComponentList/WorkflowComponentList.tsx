@@ -17,7 +17,7 @@ interface Application {
 
 interface Props {
     placeholder: any;
-    mergedComponents: (WebsiteListing | Application | null)[];
+    orderedOpportunity: (WebsiteListing | Application | null)[];
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
@@ -42,7 +42,7 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     );
     
     const renderListItem = () => 
-            props.mergedComponents.map((component, index) =>
+            props.orderedOpportunity.map((component, index) =>
                     component ?
                     <Draggable
                         key={component.id}
