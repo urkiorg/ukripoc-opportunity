@@ -1,0 +1,67 @@
+import React, { FC, useCallback } from "react";
+
+import Breadcrumbs from "@govuk-react/breadcrumbs";
+import Caption from "@govuk-react/caption";
+import Details from "@govuk-react/details";
+
+import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
+
+import { Title } from "../../theme";
+
+import SetupApplicationForm from "./SetupApplicationForm";
+
+interface Funder {
+    name: string;
+}
+interface Props {
+    application?: GetApplicationQuery;
+    updateApplication: (openDate: string, closeDate: string) => void;
+}
+
+export const SetupApplication: FC<Props> = ({
+    application,
+    updateApplication
+}) => {
+    const opportunityName =
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
+            ? application.getApplication.opportunity.name
+            : "";
+
+    const opportunityId =
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
+            ? application.getApplication.opportunity.id
+            : "";
+
+    return (
+        <>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Application
+            </Breadcrumbs>
+            <Caption mb={1}>{opportunityName}</Caption>
+            <Title>Application</Title>
+            <Details summary="About this workflow component">
+                The application component allows you to view and manage
+                applications that are submitted for your opportunity. Using the
+                settings below you can build and customise the application form
+                and also define parameters for application review.
+            </Details>
+            <Caption mb={8}>Application settings</Caption>
+
+            {application && (
+                <SetupApplicationForm
+                    application={application}
+                    updateApplication={updateApplication}
+                />
+            )}
+        </>
+    );
+};
+
+export default SetupApplication;

@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, useCallback } from "react";
+import React, { FC, useCallback } from "react";
 
 import { Link } from "@reach/router";
 import gql from "graphql-tag";
@@ -8,31 +8,47 @@ import { useMutation } from "react-apollo-hooks";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
-import { SettingsListItem, LinkButton, Title } from "../../theme";
-import { CreateWebsiteListingInput, GetWebsiteListingQuery } from "../../API";
+import { SettingsListItem, Title } from "../../theme";
 import { WebsiteListing } from "../../types";
 
+interface Application {
+    __typename: string;
+    id: string;
+    rank: number;
+    openApplication: string | null;
+    closeApplication: string | null;
+}
+
 interface Props {
-    websiteListings: (WebsiteListing | null)[] | null;
+    websiteListings?: Array<WebsiteListing | null>;
+    applications?: Array<Application | null>;
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
-export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
-    console.log(props.websiteListings);
+function typeNameToUrl(name: string) {
+    switch (name) {
+        case "Application":
+            return "application";
+        case "WebsiteListing":
+            return "website-listing";
+        default:
+            console.warn("NO TYPENAMETOURL");
+    }
+}
 
+export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
 
     const deleteListing = useCallback(
         async (id: string) => {
-            const result = await deleteListingMutation({
+            await deleteListingMutation({
                 variables: {
                     input: { id }
                 }
             });
-            const { data, loading, error } = result;
         },
         [deleteListingMutation]
     );
@@ -42,38 +58,37 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     }
     //could be websiteListing / Application
     const renderListItem = (): (JSX.Element | null)[] | undefined => {
-        const websiteListings = props.websiteListings;
+        const websiteListings = props.websiteListings!;
+        const applications = props.applications!;
 
-        if (!websiteListings || !websiteListings.length) {
-            return;
+        const mergedComponents = [...websiteListings, ...applications];
+
+        if (mergedComponents && mergedComponents.length) {
+            return mergedComponents.map(component => {
+                if (!component) {
+                    return <div />;
+                }
+
+                const niceName = typeNameToUrl(component.__typename);
+                const listingLink = `/component/${niceName}/${component.id}`;
+                return (
+                    <SettingsListItem key={component.id}>
+                        <GridRow>
+                            <GridCol setWidth="90%">
+                                <Link to={listingLink}>{niceName}</Link>
+                            </GridCol>
+                            <GridCol>
+                                <button
+                                    onClick={() => deleteListing(component.id)}
+                                >
+                                    Delete
+                                </button>
+                            </GridCol>
+                        </GridRow>
+                    </SettingsListItem>
+                );
+            });
         }
-
-        return websiteListings.map(websiteListing => {
-            if (!websiteListing) {
-                return null;
-            }
-            const listingLink = `/component/WebsiteListing/${
-                websiteListing.id
-            }`;
-            return (
-                <SettingsListItem key={websiteListing.id}>
-                    <GridRow>
-                        <GridCol setWidth="90%">
-                            <Link to={listingLink}>Website Listing</Link>
-                        </GridCol>
-                        <GridCol>
-                            <button
-                                onClick={event =>
-                                    deleteListing(websiteListing.id)
-                                }
-                            >
-                                Delete
-                            </button>
-                        </GridCol>
-                    </GridRow>
-                </SettingsListItem>
-            );
-        });
     };
 
     return <div>{renderListItem()}</div>;
