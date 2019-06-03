@@ -111,7 +111,12 @@ export const SetupApplicationPage: FC<Props> = (props: Props) => {
     const deleteApplicationQuestionMutation = useMutation(
         DELETE_APPLICATION_QUESTION,
         {
-            // refetchQueries: [{ query: GET_APPLICATION }]
+            refetchQueries: [
+                {
+                    query: GET_APPLICATION,
+                    variables: { id: props.id }
+                }
+            ]
         }
     );
     const deleteQuestion = useCallback(
