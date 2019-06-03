@@ -73,7 +73,6 @@
             }
         }
     },
-
     "develop": {
         "awscloudformation": {
             "AuthRoleName": "ukri-develop-20190524095630-authRole",

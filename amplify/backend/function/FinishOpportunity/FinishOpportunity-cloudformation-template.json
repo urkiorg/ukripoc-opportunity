@@ -17,6 +17,30 @@
 		}
 	},
 	"Resources": {
+		"FinishOpportunityUpdate": {
+			"Type": "AWS::SNS::Topic",
+			"Properties": {
+				"DisplayName": "FinishOpportunityUpdate",
+				"TopicName": {
+					"Fn::If": [
+						"ShouldNotCreateEnvResources",
+						"FinishOpportunityUpdate",
+						{
+							"Fn::Join": [
+								"",
+								[
+									"FinishOpportunityUpdate",
+									"-",
+									{
+										"Ref": "env"
+									}
+								]
+							]
+						}
+					]
+				}
+			}
+		},
 		"LambdaFunction": {
 			"Type": "AWS::Lambda::Function",
 			"Metadata": {
@@ -28,12 +52,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"publishopportunitylisting",
+						"FinishOpportunity",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"publishopportunitylisting",
+									"FinishOpportunity",
 									"-",
 									{
 										"Ref": "env"
@@ -47,6 +71,9 @@
 					"Variables": {
 						"ENV": {
 							"Ref": "env"
+						},
+						"REGION": {
+							"Ref": "AWS::Region"
 						}
 					}
 				},
@@ -60,7 +87,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "ukri-sunyadev-20190517103832-deployment",
-					"S3Key": "amplify-builds/publishopportunitylisting-1559297140-latest-build.zip"
+					"S3Key": "amplify-builds/FinishOpportunity-1559572756-latest-build.zip"
 				}
 			}
 		},
@@ -70,12 +97,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"ukriLambdaRole12c72f7e",
+						"ukriLambdaRoleac0d8b4a",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"ukriLambdaRole12c72f7e",
+									"ukriLambdaRoleac0d8b4a",
 									"-",
 									{
 										"Ref": "env"

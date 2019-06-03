@@ -27,4 +27,5 @@ export const LinkButton = styled.button`
     font-size: 20px;
     color: ${LINK_COLOUR};
     line-height: 35px;
+    cursor: pointer;
 `;
