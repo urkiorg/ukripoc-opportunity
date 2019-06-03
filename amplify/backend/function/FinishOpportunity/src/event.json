@@ -1,0 +1,21 @@
+{
+    "description": "Today",
+    "funders": ["AHRC"],
+    "fundersComplete": true,
+    "id": "b6792dfa-185f-4927-874a-d8524d9efddc",
+    "name": "sun test",
+    "teammembers": {
+        "items": [],
+        "nextToken": null,
+        "__typename": "ModelTeamMemberConnection"
+    },
+    "teammembersComplete": null,
+    "type": null,
+    "typeComplete": true,
+    "websiteListings": {
+        "items": [],
+        "nextToken": null,
+        "__typename": "ModelWebsiteListingConnection"
+    },
+    "__typename": "Opportunity"
+}
