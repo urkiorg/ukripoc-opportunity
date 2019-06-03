@@ -3,8 +3,6 @@ import React, { FC, useCallback } from "react";
 import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
-
-import { Title } from "../../theme";
 import { WebsiteListing } from "../../types";
 import { WorkflowComponentItem } from "../WorkflowComponentItem";
 import { Draggable } from "react-beautiful-dnd";
@@ -18,26 +16,13 @@ interface Application {
 }
 
 interface Props {
-    websiteListings: (WebsiteListing | null)[] | null;
-    applications: (Application | null)[] | null;
-    droppableProps: any;
     placeholder: any;
-    innerRef: any;
+    mergedComponents: (WebsiteListing | Application | null)[];
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
-function typeNameToUrl(name: string) {
-    switch (name) {
-        case "Application":
-            return "application";
-        case "WebsiteListing":
-            return "website-listing";
-        default:
-            console.warn("NO TYPENAMETOURL");
-    }
-}
-
+// @ts-ignore
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
 
     const deleteListingMutation = useMutation(DELETE_LISTING, {
@@ -56,49 +41,31 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         [deleteListingMutation]
     );
     
-    //could be websiteListing / Application
-    const renderListItem = () => {
-        const websiteListings = props.websiteListings || [];
-        const applications = props.applications || [];
-        const mergedComponents = [...websiteListings, ...applications];
-
-        if (mergedComponents && mergedComponents.length) {
-            console.log("got length");
-
-            return mergedComponents.map((component, index) =>
+    const renderListItem = () => 
+            props.mergedComponents.map((component, index) =>
                     component ?
                     <Draggable
                         key={component.id}
                         draggableId={component.id} 
                         index={index} >
-                        {(provided: any) => 
-                            <WorkflowComponentItem
-                                innerRef={provided.innerRef}
+                        {(provided: any) =>
+                            <div
+                                ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                component={component} 
-                                deleteListing={deleteListing}
-                            />
+                            > 
+                                <WorkflowComponentItem
+                                    component={component} 
+                                    deleteListing={deleteListing}
+                                />
+                            </div>
                         }
                     </Draggable>
                     :
                     <div key={index} />
                 );
-            };
-        }
 
-    return (
-        <div ref={props.innerRef}>
-            {
-                !props.websiteListings ?
-                    <Title> Not Found </Title>
-                    :
-                    <div>
-                        { renderListItem() }
-                        { props.placeholder }
-                    </div>
-            }
-        </div>);
+    return renderListItem();
 };
 
 export default WorkflowComponentList;

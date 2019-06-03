@@ -7,9 +7,6 @@ import { SettingsListItem } from "../../theme";
 interface Props {
     component: any;
     deleteListing: (id: string) => (void);
-    innerRef: any;
-    draggableProps: any;
-    dragHandleProps: any;
 }
 
 const typeNameToUrl = (name: string) => {
@@ -28,20 +25,18 @@ export const WorkflowComponentItem: FC<Props> = ({...props}) => {
     const listingLink = `/component/${niceName}/${props.component.id}`;
 
     return (
-        <div>
-            <SettingsListItem ref={props.innerRef}>
-                <GridRow>
-                    <GridCol setWidth="90%">
-                        <Link to={listingLink}>{niceName}</Link>
-                    </GridCol>
-                    <GridCol>
-                        <button onClick={() => props.deleteListing(props.component.id)}>
-                            Delete
-                        </button>
-                    </GridCol>
-                </GridRow>
-            </SettingsListItem>
-        </div>
+        <SettingsListItem>
+            <GridRow>
+                <GridCol setWidth="90%">
+                    <Link to={listingLink}>{niceName}</Link>
+                </GridCol>
+                <GridCol>
+                    <button onClick={() => props.deleteListing(props.component.id)}>
+                        Delete
+                    </button>
+                </GridCol>
+            </GridRow>
+        </SettingsListItem>
     )
 };
 

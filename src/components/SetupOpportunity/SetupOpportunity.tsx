@@ -17,7 +17,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
 import { WorkflowComponentList } from "../WorkflowComponentList";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -29,6 +29,8 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
     }
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
+    const websiteListings = opportunity.getOpportunity.websiteListings!.items;
+    const applications = opportunity.getOpportunity.application!.items;
 
     const hasWebsiteListings =
         opportunity.getOpportunity &&
@@ -39,12 +41,14 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
         opportunity.getOpportunity.application &&
         opportunity.getOpportunity.application.items;
 
-    const websiteListings = opportunity.getOpportunity.websiteListings!.items;
-    const applications = opportunity.getOpportunity.application!.items;
-    console.log(websiteListings);
-
     const handleOnDragEnd = () => {
         // Update index
+    }
+
+    const mergeComponents = () => {
+        const wl = hasWebsiteListings ? websiteListings : [];
+        const a = hasApplications ? applications : [];
+        return [...wl || [], ...a || []];
     }
 
     return (
@@ -81,18 +85,27 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            <DragDropContext onDragEnd={handleOnDragEnd}>
-                <Droppable droppableId="workflowList">
-                    {(provided: any) =>
-                        <WorkflowComponentList
-                            innerRef={provided.innerRef}
-                            {...provided.droppableProps}
-                            placeholder={provided.placeholder}
-                            websiteListings={hasWebsiteListings ? websiteListings : null}
-                            applications={hasApplications ? applications : null}
-                        />}
-                </Droppable>
-            </DragDropContext>
+            { mergeComponents().length > 0 ? 
+                    <DragDropContext onDragEnd={handleOnDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided) => (
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    <WorkflowComponentList
+                                        placeholder={provided.placeholder}
+                                        mergedComponents={mergeComponents()}
+                                    />
+                                    { provided.placeholder }
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                :
+                <Title>Not Found</Title>
+            }
 
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}
