@@ -52,4 +52,5 @@ type ApplicationQuestion @model {
     notes: String
     wordLimit: Int
     application: Application @connection(name: "ApplicationQuestion")
+    complete: Boolean
 }
