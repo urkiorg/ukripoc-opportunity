@@ -6,11 +6,16 @@ import { updateOpportunity } from "../../graphql/mutations";
 import SetupOpportunity from "../SetupOpportunity/SetupOpportunity";
 import { UpdateOpportunityMutation } from "../../API";
 import { navigate } from "@reach/router";
+import { Opportunity } from "../../types";
 
 const GET_OPP = gql(getOpportunity);
 const UPDATE_OPPORTUNITY = gql(updateOpportunity);
 
-export const SetupOpportunityPage: FC = (props: any) => {
+interface Props extends React.HTMLAttributes<HTMLElement> {
+    opportunityId?: string;
+}
+
+export const SetupOpportunityPage: FC<Props> = (props: Props) => {
     const opportunityId = props.opportunityId;
     const { data, loading, error } = useQuery(GET_OPP, {
         variables: {
@@ -30,11 +35,10 @@ export const SetupOpportunityPage: FC = (props: any) => {
             }
         });
 
-        const { data, loading, error } = result;
+        const { res, loading, error } = result;
         // @todo handle errrrorrr
-        console.log(data);
 
-        if (data) {
+        if (res) {
             navigate(`/`);
         }
     }, [updateOpportunityMutation, props.opportunityId]);
