@@ -6,13 +6,11 @@ export interface WebsiteListing {
     __typename: string;
 }
 
-export interface ApplicationQuestion {
-    id: string;
+export interface ApplicationQuestionType {
     heading: string | null;
     title: string | null;
     subtitle: string | null;
     notes: string | null;
     wordLimit: number | null;
-    __typename: string | null;
-    complete: boolean;
+    complete: boolean | null;
 }

@@ -9,6 +9,8 @@ import {
     GetApplicationQuestionQuery,
     UpdateApplicationQuestionInput
 } from "../../API";
+
+import { ApplicationQuestionType } from "../../types";
 import { ApplicationQuestion } from "../ApplicationQuestion";
 
 const UPDATE_APPLICATION_QUESTION = gql(updateApplicationQuestion);
@@ -33,7 +35,7 @@ export const ApplicationQuestionPage: FC<Props> = (props: Props) => {
     );
 
     const updateQuestion = useCallback(
-        async (description: UpdateApplicationQuestionInput) => {
+        async (description: ApplicationQuestionType) => {
             const result = await updateApplicationQuestion({
                 variables: {
                     input: { id: props.id, ...description }

@@ -8,11 +8,12 @@ import InputField from "@govuk-react/input-field";
 import Checkbox from "@govuk-react/checkbox";
 
 import { ukriGreen, Title } from "../../theme";
+import { ApplicationQuestionType } from "../../types";
 
 import { GetApplicationQuestionQuery } from "../../API";
 
 interface Props {
-    updateApplicationQuestion: (response: any) => void;
+    updateApplicationQuestion: (response: ApplicationQuestionType) => void;
     question?: GetApplicationQuestionQuery;
 }
 

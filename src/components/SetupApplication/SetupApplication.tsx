@@ -53,8 +53,6 @@ export const SetupApplication: FC<Props> = ({
 
     const applicationId = application.getApplication.id;
 
-    console.log(applicationId);
-
     return (
         <>
             <Breadcrumbs>
