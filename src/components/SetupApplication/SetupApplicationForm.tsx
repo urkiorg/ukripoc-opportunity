@@ -36,13 +36,19 @@ export const SetupApplicationForm: FC<Props> = ({
             openMonth: openDate.getMonth() + 1 || "",
             openDay: openDate.getDate() || "",
             openHour: openDate.getHours() || "",
-            openMinute: openDate.getMinutes() || "",
+            openMinute: getFormattedMinutes(
+                openDate.getMinutes(),
+                openDate.getFullYear()
+            ),
 
             closeYear: closeDate.getFullYear() || "",
             closeMonth: closeDate.getMonth() + 1 || "",
             closeDay: closeDate.getDate() || "",
             closeHour: closeDate.getHours() || "",
-            closeMinute: closeDate.getMinutes() || ""
+            closeMinute: getFormattedMinutes(
+                closeDate.getMinutes(),
+                openDate.getFullYear()
+            )
         };
     }
 
@@ -144,6 +150,18 @@ export const SetupApplicationForm: FC<Props> = ({
         const intValue = parseInt(value);
         if (!value || isNaN(intValue) || intValue > 59) {
             return "Incorrect";
+        }
+    }
+
+    function getFormattedMinutes(minute: number, year: number) {
+        if (minute > 9) {
+            return minute;
+        } else if (minute > 0 && minute < 10) {
+            return `0${minute}`;
+        } else if (minute === 0 && year > 0) {
+            return "00";
+        } else {
+            return "";
         }
     }
 
