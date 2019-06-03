@@ -32,7 +32,7 @@ export const WorkflowComponentItem: FC<Props> = ({...props}) => {
                 </GridCol>
                 <GridCol>
                     <button onClick={() => props.deleteListing(props.component.id)}>
-                        Delete
+                        Remove
                     </button>
                 </GridCol>
             </GridRow>

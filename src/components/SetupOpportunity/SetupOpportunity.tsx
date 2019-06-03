@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useState,
-    Children,
-    useCallback
-} from "react";
-
+import React, { FC } from "react";
 import Details from "@govuk-react/details";
 import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
@@ -17,7 +10,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
 import { WorkflowComponentList } from "../WorkflowComponentList";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 interface Props {
     opportunity: GetOpportunityQuery;
@@ -29,37 +22,40 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
     }
 
     const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
-    const websiteListings = opportunity.getOpportunity.websiteListings!.items;
-    const applications = opportunity.getOpportunity.application!.items;
-
-    const hasWebsiteListings =
-        opportunity.getOpportunity &&
-        opportunity.getOpportunity.websiteListings &&
-        opportunity.getOpportunity.websiteListings.items;
-
-    const hasApplications =
-        opportunity.getOpportunity.application &&
-        opportunity.getOpportunity.application.items;
+    const { getOpportunity } = opportunity;
+    const websiteListings = (
+        getOpportunity &&
+        getOpportunity.websiteListings &&
+        getOpportunity.websiteListings.items
+        ) ? getOpportunity.websiteListings.items : [];
+    const applications = (
+        getOpportunity.application &&
+        getOpportunity.application.items
+        ) ? getOpportunity.application.items : [];
 
     const handleOnDragEnd = () => {
         // Update index
     }
 
-    const mergeComponents = () => {
-        const wl = hasWebsiteListings ? websiteListings : [];
-        const a = hasApplications ? applications : [];
-        return [...wl || [], ...a || []];
-    }
+    const mergedComponents = () => 
+        [...websiteListings, ...applications];
+
+    const orderedComponents = () =>
+        mergedComponents().sort((a, b) => {
+            if (a && b) {
+                return (a.rank - b.rank)
+            } else {
+                return 0
+            }
+    });
 
     return (
         <>
             <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
             <Title>Opportunity setup</Title>
-
             <Caption mb={6} size="XL">
                 Settings
             </Caption>
-
             <SettingsListItem>
                 <GridRow>
                     <GridCol setWidth="90%">
@@ -74,9 +70,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                     </GridCol>
                 </GridRow>
             </SettingsListItem>
-
             <Caption mb={3}>Workflow</Caption>
-
             <Details summary="How do I create my workflow ?" mb={2}>
                 To add a workflow component, just select a component and
                 sub-type to add using the dropdowns. You can re-order your
@@ -85,7 +79,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            { mergeComponents().length > 0 ? 
+            { orderedComponents().length > 0 ? 
                     <DragDropContext onDragEnd={handleOnDragEnd}>
                         <Droppable droppableId="droppable">
                             {(provided) => (
@@ -95,7 +89,7 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                                 >
                                     <WorkflowComponentList
                                         placeholder={provided.placeholder}
-                                        mergedComponents={mergeComponents()}
+                                        mergedComponents={orderedComponents()}
                                     />
                                     { provided.placeholder }
                                     {provided.placeholder}
@@ -106,7 +100,6 @@ export const SetupOpportunity: FC<Props> = ({ opportunity }) => {
                 :
                 <Title>Not Found</Title>
             }
-
             <WorkflowComponentAdd
                 opportunityId={opportunity.getOpportunity.id}
             />
