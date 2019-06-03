@@ -2,22 +2,26 @@ import React, { FC, useCallback } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
 import { createApplicationQuestion } from "../../graphql/mutations";
-import { navigate } from "@reach/router";
+import { navigate, RouterProps } from "@reach/router";
 
 const CREATE_APPLICATION_QUESTION = gql(createApplicationQuestion);
 
-export const CreateApplicationQuestion: FC = () => {
+interface Props extends RouterProps {
+    id?: string;
+}
+
+export const CreateApplicationQuestion: FC<Props> = (props: Props) => {
     const addApplicationQuestionMutation = useMutation(
         CREATE_APPLICATION_QUESTION
     );
 
     const payLoad = {
-        heading: " ",
-        title: " ",
-        subtitle: " ",
-        notes: " ",
+        heading: "",
+        title: "",
+        subtitle: "",
+        notes: "",
         wordLimit: 500,
-        applicationQuestionApplicationId: "b762afaa-7625-4c22-9d14-e1ca501b8cf0"
+        applicationQuestionApplicationId: props.id
     };
     const addQuestion = useCallback(
         async (name: string) => {

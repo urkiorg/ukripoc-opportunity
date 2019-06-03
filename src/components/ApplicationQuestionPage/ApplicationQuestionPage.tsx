@@ -5,13 +5,10 @@ import { updateApplicationQuestion } from "../../graphql/mutations";
 
 import { navigate, RouterProps } from "@reach/router";
 import { getApplicationQuestion } from "../../graphql/queries";
-import {
-    GetApplicationQuestionQuery,
-    UpdateApplicationQuestionInput
-} from "../../API";
+import { UpdateApplicationQuestionInput } from "../../API";
 
-import { ApplicationQuestionType } from "../../types";
 import { ApplicationQuestion } from "../ApplicationQuestion";
+import { ApplicationQuestionType } from "../../types";
 
 const UPDATE_APPLICATION_QUESTION = gql(updateApplicationQuestion);
 
@@ -24,21 +21,26 @@ interface Props extends RouterProps {
 export const ApplicationQuestionPage: FC<Props> = (props: Props) => {
     const updateApplicationQuestion = useMutation(UPDATE_APPLICATION_QUESTION);
 
-    const { data } = useQuery<GetApplicationQuestionQuery>(
-        GET_APPLICATION_QUESTION,
-        {
-            variables: {
-                id: props.id
-            },
-            fetchPolicy: "cache-and-network"
-        }
-    );
+    const { data } = useQuery(GET_APPLICATION_QUESTION, {
+        variables: {
+            id: props.id
+        },
+        fetchPolicy: "cache-and-network"
+    });
 
     const updateQuestion = useCallback(
         async (description: ApplicationQuestionType) => {
             const result = await updateApplicationQuestion({
                 variables: {
-                    input: { id: props.id, ...description }
+                    input: {
+                        id: props.id,
+                        heading: description.heading,
+                        title: description.title,
+                        subtitle: description.subtitle,
+                        notes: description.notes,
+                        wordLimit: description.wordLimit,
+                        complete: description.complete
+                    }
                 }
             });
 

@@ -1,4 +1,4 @@
-import React, { FC, useState, SyntheticEvent } from "react";
+import React, { FC, useState, SyntheticEvent, useCallback } from "react";
 
 import Button from "@govuk-react/button";
 import TextArea from "@govuk-react/text-area";
@@ -30,19 +30,18 @@ export const ApplicationQuestion: FC<Props> = ({
         complete: false
     };
 
-    const applicationQuestion =
-        question && question.getApplicationQuestion
-            ? question.getApplicationQuestion
-            : defaultState;
+    const [values, setValues] = useState(
+        (question && question.getApplicationQuestion) || defaultState
+    );
 
-    const [values, setValues] = useState({
-        heading: applicationQuestion.heading,
-        title: applicationQuestion.title,
-        subtitle: applicationQuestion.subtitle,
-        notes: applicationQuestion.notes,
-        wordLimit: applicationQuestion.wordLimit,
-        complete: applicationQuestion.complete || false
-    });
+    const handleSubmit = useCallback(
+        async (event: SyntheticEvent) => {
+            event.preventDefault();
+            updateApplicationQuestion(values);
+            return false;
+        },
+        [updateApplicationQuestion, values]
+    );
 
     if (!question || !question.getApplicationQuestion) {
         return <Title>Loading...</Title>;
@@ -62,15 +61,15 @@ export const ApplicationQuestion: FC<Props> = ({
         });
     };
 
-    const applicationId = question.getApplicationQuestion.application!.id;
-    const opportunityId = question.getApplicationQuestion.application!
-        .opportunity!.id;
+    const applicationId =
+        question.getApplicationQuestion.application &&
+        question.getApplicationQuestion.application.id;
 
-    const handleSubmit = (event: SyntheticEvent) => {
-        event.preventDefault();
-        updateApplicationQuestion(values);
-        return false;
-    };
+    const opportunityId =
+        question.getApplicationQuestion &&
+        question.getApplicationQuestion.application &&
+        question.getApplicationQuestion.application.opportunity &&
+        question.getApplicationQuestion.application.opportunity.id;
 
     return (
         <div>
@@ -137,7 +136,7 @@ export const ApplicationQuestion: FC<Props> = ({
                 </TextArea>
 
                 <InputField
-                    mb={8}
+                    mb={5}
                     input={{
                         onChange: onChange,
                         name: "wordLimit",
@@ -153,9 +152,7 @@ export const ApplicationQuestion: FC<Props> = ({
                 <Checkbox
                     name="complete"
                     defaultChecked={values.complete}
-                    onChange={(event: SyntheticEvent<HTMLInputElement>) =>
-                        onChecked(event)
-                    }
+                    onChange={onChecked}
                 >
                     Complete
                 </Checkbox>
