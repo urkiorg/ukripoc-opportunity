@@ -1,5 +1,5 @@
 {
-    "body": "{'bits': 'bob'}",
+    "body": "{'listingId': 'listingId1','opportunityId':'opportunityId1','description':'Hello UKRI!'}",
     "resource": "/{proxy+}",
     "path": "/opportunity-listing/publish",
     "httpMethod": "POST",

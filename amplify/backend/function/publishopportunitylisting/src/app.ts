@@ -79,7 +79,7 @@ const getOpportunity = async (
         .promise();
 
     return result.Item as any;
-};
+}; 
 
 const postSNSMessage = async (
     topicName: string,
