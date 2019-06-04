@@ -1,29 +1,35 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "API Gateway resource stack creation using Amplify CLI",
-
+    
     "Parameters": {
         "authRoleName": {
-            "Type": "String"
+            "Type":  "String"
         },
         "unauthRoleName": {
-            "Type": "String"
+            "Type":  "String"
         },
         "env": {
             "Type": "String"
         },
-
-        "functionpublishopportunitylistingName": {
+    
+    
+          "functionpublishopportunitylistingName": {
             "Type": "String",
             "Default": "functionpublishopportunitylistingName"
-        },
-
-        "functionpublishopportunitylistingArn": {
+          },
+        
+          
+          "functionpublishopportunitylistingArn": {
             "Type": "String",
             "Default": "functionpublishopportunitylistingArn"
-        }
+          }
+        
+          
+          
+    
     },
-    "Conditions": {
+     "Conditions": {
         "ShouldNotCreateEnvResources": {
             "Fn::Equals": [
                 {
@@ -34,284 +40,676 @@
         }
     },
     "Resources": {
-        "publishopportunitylisting": {
-            "Type": "AWS::ApiGateway::RestApi",
+        
+        "PolicyAPIGWpublishopportunitylistingauth": {
+            "DependsOn": [
+              "publishopportunitylisting"
+            ],
+            "Type": "AWS::IAM::Policy",
             "Properties": {
-                "Description": "",
-                "Name": "publishopportunitylisting",
-                "Body": {
-                    "swagger": "2.0",
-                    "info": {
-                        "version": "2018-05-24T17:52:00Z",
-                        "title": "publishopportunitylisting"
-                    },
-                    "host": {
+              "PolicyName": "PolicyAPIGWpublishopportunitylistingauth",
+              "Roles": [
+                {"Ref": "authRoleName"}
+              ],
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "execute-api:Invoke"
+                    ],
+                    "Resource": [
+                    
+                    
+                    
+                      {
                         "Fn::Join": [
-                            "",
-                            [
-                                "apigateway.",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                ".amazonaws.com"
-                            ]
-                        ]
-                    },
-                    "basePath": {
-                        "Fn::If": [
-                            "ShouldNotCreateEnvResources",
-                            "/Prod",
+                          "",
+                          [
+                            "arn:aws:execute-api:",
                             {
-                                "Fn::Join": [
-                                    "",
-                                    [
-                                        "/",
-                                        {
-                                            "Ref": "env"
-                                        }
-                                    ]
-                                ]
-                            }
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/POST",
+                            "/opportunity-listing/publish/*"
+                          ]
                         ]
-                    },
-                    "schemes": ["https"],
-                    "paths": {
-                        "/opportunity-listing/publish": {
-                            "options": {
-                                "consumes": ["application/json"],
-                                "produces": ["application/json"],
-                                "responses": {
-                                    "200": {
-                                        "description": "200 response",
-                                        "headers": {
-                                            "Access-Control-Allow-Origin": {
-                                                "type": "string"
-                                            },
-                                            "Access-Control-Allow-Methods": {
-                                                "type": "string"
-                                            },
-                                            "Access-Control-Allow-Headers": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                },
-                                "x-amazon-apigateway-integration": {
-                                    "responses": {
-                                        "default": {
-                                            "statusCode": "200",
-                                            "responseParameters": {
-                                                "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
-                                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                                                "method.response.header.Access-Control-Allow-Origin": "'*'"
-                                            }
-                                        }
-                                    },
-                                    "requestTemplates": {
-                                        "application/json": "{\"statusCode\": 200}"
-                                    },
-                                    "passthroughBehavior": "when_no_match",
-                                    "type": "mock"
-                                }
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
                             },
-                            "x-amazon-apigateway-any-method": {
-                                "consumes": ["application/json"],
-                                "produces": ["application/json"],
-                                "parameters": [
-                                    {
-                                        "in": "body",
-                                        "name": "RequestSchema",
-                                        "required": false,
-                                        "schema": {
-                                            "$ref": "#/definitions/RequestSchema"
-                                        }
-                                    }
-                                ],
-                                "responses": {
-                                    "200": {
-                                        "description": "200 response",
-                                        "schema": {
-                                            "$ref": "#/definitions/ResponseSchema"
-                                        }
-                                    }
-                                },
-
-                                "security": [
-                                    {
-                                        "sigv4": []
-                                    }
-                                ],
-
-                                "x-amazon-apigateway-integration": {
-                                    "responses": {
-                                        "default": {
-                                            "statusCode": "200"
-                                        }
-                                    },
-                                    "uri": {
-                                        "Fn::Join": [
-                                            "",
-                                            [
-                                                "arn:aws:apigateway:",
-                                                {
-                                                    "Ref": "AWS::Region"
-                                                },
-                                                ":lambda:path/2015-03-31/functions/",
-
-                                                {
-                                                    "Ref": "functionpublishopportunitylistingArn"
-                                                },
-
-                                                "/invocations"
-                                            ]
-                                        ]
-                                    },
-                                    "passthroughBehavior": "when_no_match",
-                                    "httpMethod": "POST",
-                                    "type": "aws_proxy"
-                                }
-                            }
-                        },
-                        "/opportunity-listing/publish/{proxy+}": {
-                            "options": {
-                                "consumes": ["application/json"],
-                                "produces": ["application/json"],
-                                "responses": {
-                                    "200": {
-                                        "description": "200 response",
-                                        "headers": {
-                                            "Access-Control-Allow-Origin": {
-                                                "type": "string"
-                                            },
-                                            "Access-Control-Allow-Methods": {
-                                                "type": "string"
-                                            },
-                                            "Access-Control-Allow-Headers": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                },
-                                "x-amazon-apigateway-integration": {
-                                    "responses": {
-                                        "default": {
-                                            "statusCode": "200",
-                                            "responseParameters": {
-                                                "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
-                                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                                                "method.response.header.Access-Control-Allow-Origin": "'*'"
-                                            }
-                                        }
-                                    },
-                                    "requestTemplates": {
-                                        "application/json": "{\"statusCode\": 200}"
-                                    },
-                                    "passthroughBehavior": "when_no_match",
-                                    "type": "mock"
-                                }
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
                             },
-                            "x-amazon-apigateway-any-method": {
-                                "consumes": ["application/json"],
-                                "produces": ["application/json"],
-                                "parameters": [
-                                    {
-                                        "in": "body",
-                                        "name": "RequestSchema",
-                                        "required": false,
-                                        "schema": {
-                                            "$ref": "#/definitions/RequestSchema"
-                                        }
-                                    }
-                                ],
-                                "responses": {
-                                    "200": {
-                                        "description": "200 response",
-                                        "schema": {
-                                            "$ref": "#/definitions/ResponseSchema"
-                                        }
-                                    }
-                                },
-
-                                "security": [
-                                    {
-                                        "sigv4": []
-                                    }
-                                ],
-
-                                "x-amazon-apigateway-integration": {
-                                    "responses": {
-                                        "default": {
-                                            "statusCode": "200"
-                                        }
-                                    },
-                                    "uri": {
-                                        "Fn::Join": [
-                                            "",
-                                            [
-                                                "arn:aws:apigateway:",
-                                                {
-                                                    "Ref": "AWS::Region"
-                                                },
-                                                ":lambda:path/2015-03-31/functions/",
-
-                                                {
-                                                    "Ref": "functionpublishopportunitylistingArn"
-                                                },
-
-                                                "/invocations"
-                                            ]
-                                        ]
-                                    },
-                                    "passthroughBehavior": "when_no_match",
-                                    "httpMethod": "POST",
-                                    "type": "aws_proxy"
-                                }
-                            }
-                        }
-                    },
-                    "securityDefinitions": {
-                        "sigv4": {
-                            "type": "apiKey",
-                            "name": "Authorization",
-                            "in": "header",
-                            "x-amazon-apigateway-authtype": "awsSigv4"
-                        }
-                    },
-                    "definitions": {
-                        "RequestSchema": {
-                            "type": "object",
-                            "required": ["request"],
-                            "properties": {
-                                "request": {
-                                    "type": "string"
-                                }
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
                             },
-                            "title": "Request Schema"
-                        },
-                        "ResponseSchema": {
-                            "type": "object",
-                            "required": ["response"],
-                            "properties": {
-                                "response": {
-                                    "type": "string"
-                                }
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
                             },
-                            "title": "Response Schema"
-                        }
-                    }
-                },
-                "FailOnWarnings": true
+                              "/POST",
+                            "/opportunity-listing/publish"
+                          ]
+                        ]
+                      }
+                    
+                      ,
+                    
+                    
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/GET",
+                            "/opportunity-listing/publish/*"
+                          ]
+                        ]
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/GET",
+                            "/opportunity-listing/publish"
+                          ]
+                        ]
+                      }
+                    
+                      ,
+                    
+                    
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/PUT",
+                            "/opportunity-listing/publish/*"
+                          ]
+                        ]
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/PUT",
+                            "/opportunity-listing/publish"
+                          ]
+                        ]
+                      }
+                    
+                      ,
+                    
+                    
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/PATCH",
+                            "/opportunity-listing/publish/*"
+                          ]
+                        ]
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/PATCH",
+                            "/opportunity-listing/publish"
+                          ]
+                        ]
+                      }
+                    
+                      ,
+                    
+                    
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/DELETE",
+                            "/opportunity-listing/publish/*"
+                          ]
+                        ]
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "publishopportunitylisting"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/DELETE",
+                            "/opportunity-listing/publish"
+                          ]
+                        ]
+                      }
+                    
+                    
+                    
+                    
+                    
+                    ]
+                  }
+                ]
+              }
             }
-        },
+          },
+        
+        
+      "publishopportunitylisting": {
+        "Type": "AWS::ApiGateway::RestApi",
+        "Properties": {
+          "Description": "",
+          "Name": "publishopportunitylisting",
+          "Body": {
+            "swagger": "2.0",
+            "info": {
+              "version": "2018-05-24T17:52:00Z",
+              "title": "publishopportunitylisting"
+            },
+            "host": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "apigateway.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              },
+            "basePath": {
+              "Fn::If": [
+                "ShouldNotCreateEnvResources",
+                "/Prod",
+                {
+                  "Fn::Join": [
+                      "",
+                      [
+                          "/",
+                          {
+                              "Ref": "env"
+                          }
+                      ]
+                  ]
+                } 
+              ]
+            },
+            "schemes": [
+              "https"
+            ],
+            "paths": {
+              
+              "/opportunity-listing/publish": {
+                "options": {
+                  "consumes": [
+                    "application/json"
+                  ],
+                  "produces": [
+                    "application/json"
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "200 response",
+                      "headers": {
+                        "Access-Control-Allow-Origin": {
+                          "type": "string"
+                        },
+                        "Access-Control-Allow-Methods": {
+                          "type": "string"
+                        },
+                        "Access-Control-Allow-Headers": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "x-amazon-apigateway-integration": {
+                    "responses": {
+                      "default": {
+                        "statusCode": "200",
+                        "responseParameters": {
+                          "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
+                          "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                          "method.response.header.Access-Control-Allow-Origin": "'*'"
+                        }
+                      }
+                    },
+                    "requestTemplates": {
+                      "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock"
+                  }
+                },
+                "x-amazon-apigateway-any-method": {
+                  "consumes": [
+                    "application/json"
+                  ],
+                  "produces": [
+                    "application/json"
+                  ],
+                  "parameters": [
+                    {
+                      "in": "body",
+                      "name": "RequestSchema",
+                      "required": false,
+                      "schema": {
+                        "$ref": "#/definitions/RequestSchema"
+                      }
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "200 response",
+                      "schema": {
+                        "$ref": "#/definitions/ResponseSchema"
+                      }
+                    }
+                  },
+                          
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
+                  
+                  "x-amazon-apigateway-integration": {
+                    "responses": {
+                      "default": {
+                        "statusCode": "200"
+                      }
+                    },
+                    "uri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:apigateway:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":lambda:path/2015-03-31/functions/",
+                            
+                            {
+                                
+                                "Ref": "functionpublishopportunitylistingArn"
+                            },
+                            
+                            "/invocations"
+                          ]
+                        ]
+                      },
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                  }
+                }
+              },
+              "/opportunity-listing/publish/{proxy+}": {
+                "options": {
+                  "consumes": [
+                    "application/json"
+                  ],
+                  "produces": [
+                    "application/json"
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "200 response",
+                      "headers": {
+                        "Access-Control-Allow-Origin": {
+                          "type": "string"
+                        },
+                        "Access-Control-Allow-Methods": {
+                          "type": "string"
+                        },
+                        "Access-Control-Allow-Headers": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "x-amazon-apigateway-integration": {
+                    "responses": {
+                      "default": {
+                        "statusCode": "200",
+                        "responseParameters": {
+                          "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
+                          "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                          "method.response.header.Access-Control-Allow-Origin": "'*'"
+                        }
+                      }
+                    },
+                    "requestTemplates": {
+                      "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock"
+                  }
+                },
+                "x-amazon-apigateway-any-method": {
+                  "consumes": [
+                    "application/json"
+                  ],
+                  "produces": [
+                    "application/json"
+                  ],
+                  "parameters": [
+                    {
+                      "in": "body",
+                      "name": "RequestSchema",
+                      "required": false,
+                      "schema": {
+                        "$ref": "#/definitions/RequestSchema"
+                      }
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "200 response",
+                      "schema": {
+                        "$ref": "#/definitions/ResponseSchema"
+                      }
+                    }
+                  },
+                          
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
+                  
+                  "x-amazon-apigateway-integration": {
+                    "responses": {
+                      "default": {
+                        "statusCode": "200"
+                      }
+                    },
+                    "uri": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:apigateway:",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ":lambda:path/2015-03-31/functions/",
+                          
+                          {
+                            
+                            "Ref": "functionpublishopportunitylistingArn"
+                          },
+                          
+                          "/invocations"
+                        ]
+                      ]
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                  }
+                }
+              }   
+              
+            },
+            "securityDefinitions": {
+              "sigv4": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "x-amazon-apigateway-authtype": "awsSigv4"
+              }
+            },
+            "definitions": {
+              "RequestSchema": {
+                "type": "object",
+                "required": [
+                  "request"
+                ],
+                "properties": {
+                  "request": {
+                    "type": "string"
+                  }
+                },
+                "title": "Request Schema"
+              },
+              "ResponseSchema": {
+                "type": "object",
+                "required": [
+                  "response"
+                ],
+                "properties": {
+                  "response": {
+                    "type": "string"
+                  }
+                },
+                "title": "Response Schema"
+              }
+            }
+          },
+          "FailOnWarnings": true
+        }
+      },
 
+                  
+        
+        
         "functionpublishopportunitylistingPermissionpublishopportunitylisting": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
-                "FunctionName": {
-                    "Ref": "functionpublishopportunitylistingName"
-                },
-
-                "Action": "lambda:InvokeFunction",
+                "FunctionName": 
+                    {
+                        "Ref":  "functionpublishopportunitylistingName"
+                    },
+                    
+                    "Action": "lambda:InvokeFunction",
                 "Principal": "apigateway.amazonaws.com",
                 "SourceArn": {
                     "Fn::Join": [
@@ -335,52 +733,36 @@
                 }
             }
         },
-
-        "DeploymentAPIGWpublishopportunitylisting": {
-            "Type": "AWS::ApiGateway::Deployment",
-            "Properties": {
-                "Description": "The Development stage deployment of your API.",
-                "StageName": {
-                    "Fn::If": [
-                        "ShouldNotCreateEnvResources",
-                        "Prod",
-                        {
-                            "Ref": "env"
-                        }
-                    ]
-                },
-                "RestApiId": {
-                    "Ref": "publishopportunitylisting"
-                }
-            }
+        
+        
+        
+      "DeploymentAPIGWpublishopportunitylisting79b17509": {
+        "Type": "AWS::ApiGateway::Deployment",
+        "Properties": {
+          "Description": "The Development stage deployment of your API.",
+          "StageName": {
+            "Fn::If": [
+              "ShouldNotCreateEnvResources",
+              "Prod", 
+              {
+                "Ref": "env"
+              } 
+            ]
+          },
+          "RestApiId": {
+            "Ref": "publishopportunitylisting"
+          }
         }
+      }
     },
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {
-                "Fn::Join": [
-                    "",
-                    [
-                        "https://",
-                        { "Ref": "publishopportunitylisting" },
-                        ".execute-api.",
-                        { "Ref": "AWS::Region" },
-                        ".amazonaws.com/",
-                        {
-                            "Fn::If": [
-                                "ShouldNotCreateEnvResources",
-                                "Prod",
-                                { "Ref": "env" }
-                            ]
-                        }
-                    ]
-                ]
-            }
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "publishopportunitylisting"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
-            "Description": "API Friendly name",
-            "Value": "publishopportunitylisting"
+          "Description": "API Friendly name",
+          "Value": "publishopportunitylisting"
         }
     }
-}
+  }

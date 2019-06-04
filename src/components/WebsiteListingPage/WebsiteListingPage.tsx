@@ -9,6 +9,7 @@ import {
     GetWebsiteListingQuery,
     UpdateWebsiteListingMutation
 } from "../../API";
+import { API } from "aws-amplify";
 
 const UPDATE_WEBSITE_LISTING = gql(updateWebsiteListing);
 
@@ -43,19 +44,27 @@ export const WebsiteListingPage: FC<Props> = (props: Props) => {
 
             const { data, loading, error } = result;
 
-            const payLoad = {
+            const payload = {
                 listingId: props.id,
                 opportunityId: data.updateWebsiteListing.opportunity.id,
                 description: description
             };
 
-            console.log(payLoad);
+            console.log(payload);
 
             if (data) {
                 navigate(`/setup/${data.updateWebsiteListing.opportunity.id}`);
             }
+
+            const apiName = "publishopportunitylisting";
+            const path = "/opportunity-listing/publish";
+            const init = {
+                body: payload
+            };
+
+            const response = await API.post(apiName, path, init);
         },
-        [updateWebsiteListingMutation, props.id]
+        [updateWebsiteListingMutation, props]
     );
 
     return (
