@@ -476,6 +476,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -519,6 +520,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -562,6 +564,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -594,6 +597,7 @@ export const createApplicationQuestion = `mutation CreateApplicationQuestion($in
         nextToken
       }
     }
+    complete
   }
 }
 `;
@@ -623,6 +627,7 @@ export const updateApplicationQuestion = `mutation UpdateApplicationQuestion($in
         nextToken
       }
     }
+    complete
   }
 }
 `;
@@ -652,6 +657,7 @@ export const deleteApplicationQuestion = `mutation DeleteApplicationQuestion($in
         nextToken
       }
     }
+    complete
   }
 }
 `;

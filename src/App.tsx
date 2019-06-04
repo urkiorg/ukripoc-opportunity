@@ -24,6 +24,8 @@ import { HubCallback } from "@aws-amplify/core/lib/Hub";
 
 import { WebsiteListingPage } from "./components/WebsiteListingPage";
 import { SetupApplicationPage } from "./components/SetupApplicationPage";
+import { ApplicationQuestionPage } from "./components/ApplicationQuestionPage";
+import { CreateApplicationQuestion } from "./components/CreateApplicationQuestion";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -114,6 +116,14 @@ export const App: FC = (props: any) => {
                                     <Route
                                         component={SetupApplicationPage}
                                         path="/component/application/:id"
+                                    />
+                                    <Route
+                                        component={ApplicationQuestionPage}
+                                        path="/component/application/:applicationId/question/:id"
+                                    />
+                                    <Route
+                                        component={CreateApplicationQuestion}
+                                        path="/component/application/:applicationId/question/create"
                                     />
                                 </Router>
                             </AuthController>

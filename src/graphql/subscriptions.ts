@@ -476,6 +476,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -519,6 +520,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -562,6 +564,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -594,6 +597,7 @@ export const onCreateApplicationQuestion = `subscription OnCreateApplicationQues
         nextToken
       }
     }
+    complete
   }
 }
 `;
@@ -623,6 +627,7 @@ export const onUpdateApplicationQuestion = `subscription OnUpdateApplicationQues
         nextToken
       }
     }
+    complete
   }
 }
 `;
@@ -652,6 +657,7 @@ export const onDeleteApplicationQuestion = `subscription OnDeleteApplicationQues
         nextToken
       }
     }
+    complete
   }
 }
 `;

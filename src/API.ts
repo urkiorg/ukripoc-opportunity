@@ -110,6 +110,7 @@ export type CreateApplicationQuestionInput = {
   subtitle?: string | null,
   notes?: string | null,
   wordLimit?: number | null,
+  complete?: boolean | null,
   applicationQuestionApplicationId?: string | null,
 };
 
@@ -120,6 +121,7 @@ export type UpdateApplicationQuestionInput = {
   subtitle?: string | null,
   notes?: string | null,
   wordLimit?: number | null,
+  complete?: boolean | null,
   applicationQuestionApplicationId?: string | null,
 };
 
@@ -228,6 +230,7 @@ export type ModelApplicationQuestionFilterInput = {
   subtitle?: ModelStringFilterInput | null,
   notes?: ModelStringFilterInput | null,
   wordLimit?: ModelIntFilterInput | null,
+  complete?: ModelBooleanFilterInput | null,
   and?: Array< ModelApplicationQuestionFilterInput | null > | null,
   or?: Array< ModelApplicationQuestionFilterInput | null > | null,
   not?: ModelApplicationQuestionFilterInput | null,
@@ -849,6 +852,7 @@ export type CreateApplicationMutation = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -904,6 +908,7 @@ export type UpdateApplicationMutation = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -959,6 +964,7 @@ export type DeleteApplicationMutation = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -999,6 +1005,7 @@ export type CreateApplicationQuestionMutation = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -1036,6 +1043,7 @@ export type UpdateApplicationQuestionMutation = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -1073,6 +1081,7 @@ export type DeleteApplicationQuestionMutation = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -1443,6 +1452,7 @@ export type GetApplicationQuery = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -1517,6 +1527,7 @@ export type GetApplicationQuestionQuery = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -1544,6 +1555,7 @@ export type ListApplicationQuestionsQuery = {
         openApplication: string | null,
         closeApplication: string | null,
       } | null,
+      complete: boolean | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -2113,6 +2125,7 @@ export type OnCreateApplicationSubscription = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -2164,6 +2177,7 @@ export type OnUpdateApplicationSubscription = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -2215,6 +2229,7 @@ export type OnDeleteApplicationSubscription = {
         subtitle: string | null,
         notes: string | null,
         wordLimit: number | null,
+        complete: boolean | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -2251,6 +2266,7 @@ export type OnCreateApplicationQuestionSubscription = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -2284,6 +2300,7 @@ export type OnUpdateApplicationQuestionSubscription = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };
 
@@ -2317,5 +2334,6 @@ export type OnDeleteApplicationQuestionSubscription = {
         nextToken: string | null,
       } | null,
     } | null,
+    complete: boolean | null,
   } | null,
 };

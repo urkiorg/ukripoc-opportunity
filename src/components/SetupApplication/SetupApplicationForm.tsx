@@ -1,37 +1,25 @@
-import React, { SyntheticEvent, useCallback, FC } from "react";
+import React, { SyntheticEvent, FC, useState, useEffect } from "react";
 import { useFormState } from "react-use-form-state";
-import { useMutation } from "react-apollo-hooks";
 
-import { gql } from "apollo-boost";
+import { DateInput, InputErrorText } from "../../theme";
 
-import { updateApplication } from "../../graphql/mutations";
-
-import { navigate } from "@reach/router";
-import { UpdateApplicationMutation, GetApplicationQuery } from "../../API";
-import { GetApplicationOutput } from "aws-sdk/clients/codedeploy";
-import { Title } from "../../theme";
-
+import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
-
+import { H5 } from "@govuk-react/heading";
+import Caption from "@govuk-react/caption";
+import { GetApplicationQuery } from "../../API";
 interface Props {
     application: GetApplicationQuery;
+    updateApplication: (openDate: string, closeDate: string) => void;
 }
 
-interface ApplicationFormType {
-    openYear: string;
-    openMonth: string;
-    openDay: string;
-    openHour: string;
-    openMinute: string;
-    closeYear: string;
-    closeMonth: string;
-    closeDay: string;
-    closeHour: string;
-    closeMinute: string;
-}
-
-export const SetupApplicationForm: FC<Props> = ({ application }) => {
+export const SetupApplicationForm: FC<Props> = ({
+    application,
+    updateApplication
+}) => {
     let initialState = {};
+
+    const [validForm, setValidForm] = useState<boolean>(true);
 
     if (application.getApplication) {
         const openApplication =
@@ -39,141 +27,242 @@ export const SetupApplicationForm: FC<Props> = ({ application }) => {
         const closeApplication =
             application.getApplication.closeApplication || "";
 
-        var openDate = new Date(openApplication);
-
-        console.log({ openApplication, openDate });
-
-        var closeDate = new Date(closeApplication);
+        const openDate = new Date(openApplication);
+        const closeDate = new Date(closeApplication);
 
         initialState = {
             openYear: openDate.getFullYear() || "",
             openMonth: openDate.getMonth() + 1 || "",
             openDay: openDate.getDate() || "",
             openHour: openDate.getHours() || "",
-            openMinute: openDate.getMinutes() || "",
+            openMinute: getFormattedMinutes(
+                openDate.getMinutes(),
+                openDate.getFullYear()
+            ),
 
             closeYear: closeDate.getFullYear() || "",
             closeMonth: closeDate.getMonth() + 1 || "",
             closeDay: closeDate.getDate() || "",
             closeHour: closeDate.getHours() || "",
-            closeMinute: closeDate.getMinutes() || ""
+            closeMinute: getFormattedMinutes(
+                closeDate.getMinutes(),
+                openDate.getFullYear()
+            )
         };
     }
 
-    const [formState, input] = useFormState<ApplicationFormType>(initialState);
+    const [formState, { text }] = useFormState(initialState);
 
-    const UPDATE_APPLICATION = gql(updateApplication);
+    useEffect(() => {
+        const openDate = new Date();
+        openDate.setFullYear(
+            formState.values.openYear,
+            formState.values.openMonth - 1,
+            formState.values.openDay
+        );
+        if (
+            openDate.getFullYear() !== formState.values.openYear ||
+            openDate.getMonth() !== formState.values.openMonth + 1 ||
+            openDate.getDate() !== formState.values.openDay
+        ) {
+            setValidForm(false);
+        }
 
-    const updateApplicationMutation = useMutation<UpdateApplicationMutation>(
-        UPDATE_APPLICATION
-    );
+        const closeDate = new Date();
+        closeDate.setFullYear(
+            formState.values.closeYear,
+            formState.values.closeMonth - 1,
+            formState.values.closeDay
+        );
+        if (
+            closeDate.getFullYear() !== formState.values.closeYear ||
+            closeDate.getMonth() !== formState.values.closeMonth + 1 ||
+            closeDate.getDate() !== formState.values.closeDay
+        ) {
+            setValidForm(false);
+        }
 
-    const updateApplicationCB = useCallback(
-        async (openApplicationDate: string, closeApplicationDate: string) => {
-            console.log(openApplicationDate, closeApplicationDate);
-            const result = await updateApplicationMutation({
-                variables: {
-                    input: {
-                        id: application.getApplication!.id,
-                        closeApplication: closeApplicationDate,
-                        openApplication: openApplicationDate
-                    }
-                }
-            });
-            const { data, loading, error } = result;
-
-            console.log(data);
-
-            const updateApplicationResult: UpdateApplicationMutation = data;
-
-            navigate(
-                `/setup/${
-                    updateApplicationResult.updateApplication!.opportunity!.id
-                }`
-            );
-        },
-        [updateApplicationMutation]
-    );
+        Object.keys(formState.errors).length
+            ? setValidForm(false)
+            : setValidForm(true);
+    }, [formState]);
 
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
-        const stringedOpenDate = `${formState.values.openDay} ${
-            formState.values.openMonth
-        } ${formState.values.openYear} ${formState.values.openHour}:${
-            formState.values.openMinute
-        }`;
+        let year = formState.values.openYear;
+        let month = formState.values.openMonth;
+        let day = formState.values.openDay;
+        let hour = formState.values.openHour;
+        let minute = formState.values.openMinute;
 
-        const openDate = new Date(stringedOpenDate).toISOString();
+        const openDate = new Date(year, month, day, hour, minute).toISOString();
 
-        const stringedCloseDate = `${parseInt(
-            formState.values.closeDay
-        )} ${parseInt(formState.values.closeMonth)} ${parseInt(
-            formState.values.closeYear
-        )} ${parseInt(formState.values.closeHour)}:${parseInt(
-            formState.values.closeMinute
-        )}`;
+        year = formState.values.closeYear;
+        month = formState.values.closeMonth;
+        day = formState.values.closeDay;
+        hour = formState.values.closeHour;
+        minute = formState.values.closeMinute;
 
-        const closeDate = new Date(stringedCloseDate).toISOString();
+        const closeDate = new Date(
+            year,
+            month,
+            day,
+            hour,
+            minute
+        ).toISOString();
 
-        updateApplicationCB(openDate, closeDate);
+        updateApplication(openDate, closeDate);
     }
 
     function validateDay(value: string) {
-        console.log("the value is: ", value);
-
         const intValue = parseInt(value);
         if (!value || isNaN(intValue) || intValue > 31) {
-            console.log("Failed validation", intValue);
-            return false;
+            return "Incorrect";
+        }
+    }
+
+    function validateYear(value: string) {
+        const intValue = parseInt(value);
+        if (!value || isNaN(intValue) || intValue > 2040 || intValue < 2019) {
+            return "Incorrect";
+        }
+    }
+
+    function validateMonth(value: string) {
+        const intValue = parseInt(value);
+        if (!value || isNaN(intValue) || intValue > 12) {
+            return "Incorrect";
+        }
+    }
+
+    function validateHour(value: string) {
+        const intValue = parseInt(value);
+        if (!value || isNaN(intValue) || intValue > 23) {
+            return "Incorrect";
+        }
+    }
+
+    function validateMinute(value: string) {
+        const intValue = parseInt(value);
+        if (!value || isNaN(intValue) || intValue > 59) {
+            return "Incorrect";
+        }
+    }
+
+    function getFormattedMinutes(minute: number, year: number) {
+        if (minute > 9) {
+            return minute;
+        } else if (minute > 0 && minute < 10) {
+            return `0${minute}`;
+        } else if (minute === 0 && year > 0) {
+            return "00";
         } else {
-            console.log("PASSED!");
+            return "";
         }
     }
 
     return (
         <form onSubmit={event => handleSubmit(event)}>
-            <b> Open </b> <br />
-            <br />
-            <input {...input.number("openYear")} required placeholder="YYYY" />
-            <br />
-            <input {...input.number("openMonth")} required placeholder="MM" />
-            <br />
-            <input
-                {...input.number({
-                    name: "openDay",
-                    validate: (value: string) => validateDay(value),
-                    validateOnBlur: true
-                })}
-                placeholder="DD"
-                required
-            />
-            <br />
-            <input {...input.number("openHour")} required placeholder="HH" />
-            <br />
-            <input {...input.number("openMinute")} required placeholder="MM" />
-            <br />
-            <b> Close </b>
-            <br />
-            <input {...input.number("closeYear")} required placeholder="YYYY" />
-            <br />
-            <input {...input.number("closeMonth")} required placeholder="MM" />
-            <br />
-            <input
-                {...input.number({
-                    name: "closeDay",
-                    validate: (value: string) => validateDay(value),
-                    validateOnBlur: true
-                })}
-                placeholder="DD"
-                required
-            />
-            <br />
-            <input {...input.number("closeHour")} required placeholder="HH" />
-            <br />
-            <input {...input.number("closeMinute")} required placeholder="MM" />
-            <br />
-            <Button type="submit"> Save </Button>
+            {!validForm && (
+                <InputErrorText>
+                    Please ensure dates are filled correctly
+                </InputErrorText>
+            )}
+            <H5 mb={1}> Open application </H5>
+            <Caption size="M">Date</Caption>
+            <FormGroup error={!validForm}>
+                <DateInput
+                    {...text({
+                        name: "openDay",
+                        validate: (value: string) => validateDay(value),
+                        validateOnBlur: false
+                    })}
+                    placeholder="DD"
+                />
+                <DateInput
+                    {...text({
+                        name: "openMonth",
+                        validate: validateMonth,
+                        validateOnBlur: false
+                    })}
+                    placeholder="MM"
+                />
+                <DateInput
+                    {...text({
+                        name: "openYear",
+                        validate: (value: string) => validateYear(value),
+                        validateOnBlur: false
+                    })}
+                    placeholder="YYYY"
+                />
+                <DateInput
+                    time="true"
+                    {...text({
+                        name: "openHour",
+                        validate: (value: string) => validateHour(value),
+                        validateOnBlur: false
+                    })}
+                    placeholder="HH"
+                />
+                <DateInput
+                    {...text({
+                        name: "openMinute",
+                        validate: (value: string) => validateMinute(value),
+                        validateOnBlur: false
+                    })}
+                    placeholder="MM"
+                />
+            </FormGroup>
+
+            <H5 mb={1}>Close application </H5>
+            <Caption size="M"> Date </Caption>
+            <FormGroup error={!validForm}>
+                <DateInput
+                    {...text({
+                        name: "closeDay",
+                        validate: (value: string) => validateDay(value)
+                    })}
+                    placeholder="DD"
+                />
+                <DateInput
+                    {...text({
+                        name: "closeMonth",
+                        validate: (value: string) => validateMonth(value)
+                    })}
+                    placeholder="MM"
+                />
+                <DateInput
+                    {...text({
+                        name: "closeYear",
+                        validate: (value: string) => validateYear(value)
+                    })}
+                    placeholder="YYYY"
+                />
+                <DateInput
+                    time="true"
+                    {...text({
+                        name: "closeHour",
+                        validate: (value: string) => validateHour(value)
+                    })}
+                    placeholder="HH"
+                />
+                <DateInput
+                    {...text({
+                        name: "closeMinute",
+                        validate: (value: string) => validateMinute(value)
+                    })}
+                    placeholder="MM"
+                />
+            </FormGroup>
+
+            {!validForm ? (
+                <Button type="submit" disabled>
+                    Save
+                </Button>
+            ) : (
+                <Button type="submit">Save</Button>
+            )}
         </form>
     );
 };

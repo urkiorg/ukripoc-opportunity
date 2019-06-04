@@ -1,63 +1,66 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useCallback,
-    useState,
-    SyntheticEvent
-} from "react";
+import React, { FC, useCallback } from "react";
 
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
-import Checkbox from "@govuk-react/checkbox";
-import Button from "@govuk-react/button";
 import Details from "@govuk-react/details";
 
-import GridRow from "@govuk-react/grid-row";
-import GridCol from "@govuk-react/grid-col";
-import InputField from "@govuk-react/input-field";
+import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
 
-import DateField from "@govuk-react/date-field";
-
-import { GetApplicationQuery } from "../../API";
-import { Title, ukriGreen } from "../../theme";
+import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
+import { ApplicationQuestionsList } from "../ApplicationQuestionsList";
 
 interface Funder {
     name: string;
 }
 interface Props {
     application?: GetApplicationQuery;
+    updateApplication: (openDate: string, closeDate: string) => void;
+    addQuestion: (id: string) => void;
+    deleteQuestion: (id: string) => void;
 }
 
-export const SetupApplication: FC<Props> = ({ application }) => {
-    if (!application) {
-        return <div> No </div>;
+export const SetupApplication: FC<Props> = ({
+    application,
+    updateApplication,
+    addQuestion,
+    deleteQuestion
+}) => {
+    if (!application || !application.getApplication) {
+        return <div> Loading </div>;
     }
 
     const opportunityName =
-        application.getApplication && application.getApplication.opportunity
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
             ? application.getApplication.opportunity.name
             : "";
 
     const opportunityId =
-        application.getApplication && application.getApplication.opportunity
+        application &&
+        application.getApplication &&
+        application.getApplication.opportunity
             ? application.getApplication.opportunity.id
             : "";
 
-    const linkBack = `/setup/${opportunityId}`;
+    const applicationQuestions =
+        application &&
+        application.getApplication &&
+        application.getApplication.applicationQuestions &&
+        application.getApplication.applicationQuestions.items;
 
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBack}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            Website listing
-        </Breadcrumbs>
-    );
+    const applicationId = application.getApplication.id;
 
     return (
-        <div>
+        <>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Application
+            </Breadcrumbs>
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Application</Title>
             <Details summary="About this workflow component">
@@ -66,10 +69,24 @@ export const SetupApplication: FC<Props> = ({ application }) => {
                 settings below you can build and customise the application form
                 and also define parameters for application review.
             </Details>
-            <Caption mb={3}>Application settings</Caption>
+            <Caption mb={8}>Application settings</Caption>
 
-            <SetupApplicationForm application={application} />
-        </div>
+            {application && (
+                <SetupApplicationForm
+                    application={application}
+                    updateApplication={updateApplication}
+                />
+            )}
+
+            {application && (
+                <ApplicationQuestionsList
+                    questions={applicationQuestions}
+                    applicationId={applicationId}
+                    addQuestion={addQuestion}
+                    deleteQuestion={deleteQuestion}
+                />
+            )}
+        </>
     );
 };
 

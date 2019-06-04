@@ -24,19 +24,17 @@ const DELETE_LISTING = gql(deleteWebsiteListing);
 
 // @ts-ignore
 export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
-
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
 
     const deleteListing = useCallback(
         async (id: string) => {
-            const result = await deleteListingMutation({
+            await deleteListingMutation({
                 variables: {
                     input: { id }
                 }
             });
-            const { data, loading, error } = result;
         },
         [deleteListingMutation]
     );

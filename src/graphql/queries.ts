@@ -290,6 +290,7 @@ export const getApplication = `query GetApplication($id: ID!) {
         subtitle
         notes
         wordLimit
+        complete
       }
       nextToken
     }
@@ -350,6 +351,7 @@ export const getApplicationQuestion = `query GetApplicationQuestion($id: ID!) {
         nextToken
       }
     }
+    complete
   }
 }
 `;
@@ -376,6 +378,7 @@ export const listApplicationQuestions = `query ListApplicationQuestions(
         openApplication
         closeApplication
       }
+      complete
     }
     nextToken
   }

@@ -56,7 +56,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
             }
         });
 
-        const { data, loading, error } = result;
+        const { data } = result;
         if (data) {
             navigate(`/component/application/${data.createApplication.id}`);
         }
@@ -74,7 +74,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
         });
         //end if
 
-        const { data, loading, error } = result;
+        const { data } = result;
         if (data) {
             navigate(
                 `/component/website-listing/${data.createWebsiteListing.id}`
