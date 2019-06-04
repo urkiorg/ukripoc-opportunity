@@ -17,18 +17,9 @@ interface Props {
     opportunity: GetOpportunityQuery;
 }
 
-export const SetupOpportunity: FC<Props> = ({ 
-    opportunity, 
-    updateWebsiteListingRanking, 
-    updateApplicationRanking }) => {
-
-    const [allOpportunities, setAllOpportunities] = useState();
-
-    const linkToFunders = opportunity.getOpportunity ? 
-        `/setup/${opportunity.getOpportunity.id}/funders` : "";
-    
+const getAllOpportunities = (opportunity: GetOpportunityQuery) => {
     const { getOpportunity } = opportunity;
-    
+
     const websiteListings = (
         getOpportunity &&
         getOpportunity.websiteListings &&
@@ -41,46 +32,53 @@ export const SetupOpportunity: FC<Props> = ({
         getOpportunity.application.items
         ) ? getOpportunity.application.items : [];
     
-    const mergedOpportunity = () => 
+    const mergedOpportunities = () => 
         [...websiteListings, ...applications];
         
-    const orderedOpportunity = () =>
-        mergedOpportunity().sort((a, b) => {
-            if (a && b) {
-                return (a.rank - b.rank)
-            } else {
-                return -1
-            }
+    return mergedOpportunities().sort((a, b) => {
+        if (a && b) {
+            return (a.rank - b.rank)
+        } else {
+            return -1
+        }
     });
+}
 
+export const SetupOpportunity: FC<Props> = ({ 
+    opportunity, 
+    updateWebsiteListingRanking, 
+    updateApplicationRanking }) => {
+
+    const [allOpportunities, setAllOpportunities] = useState();
+
+    const linkToFunders = opportunity.getOpportunity ? 
+        `/setup/${opportunity.getOpportunity.id}/funders` : "";
+      
     useEffect(() => {
-        console.log("orderedOpportunity: ",orderedOpportunity());
-        setAllOpportunities(orderedOpportunity());
+        setAllOpportunities(getAllOpportunities(opportunity));
     },[]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
-        const { destination, source, draggableId } = draggableEvent
+        const { destination, source } = draggableEvent
 
         if (!destination ||
             (destination.index === source.index && 
             destination.droppableId === source.droppableId)) {
             // No reordering required
             return;
-        } else  {
+        } else {
             const newOrdering = [...allOpportunities];
             newOrdering.splice(source.index, 1);
             newOrdering.splice(destination.index, 0, allOpportunities[source.index]);
             setAllOpportunities(newOrdering);
             
-            // Save to database
-            newOrdering.forEach((opportunity, index) => {
-                // Update remote with new index
+            newOrdering.forEach(({__typename, id}, index) => {
                 if (opportunity) {
-                    if (opportunity.__typename === "Application") {
-                        updateApplicationRanking(opportunity.id, index + 1);
+                    if (__typename === "Application") {
+                        updateApplicationRanking(id, index);
                     }
-                    if (opportunity.__typename === "WebsiteListing") {
-                        updateWebsiteListingRanking(opportunity.id, index + 1);
+                    if (__typename === "WebsiteListing") {
+                        updateWebsiteListingRanking(id, index + 1);
                     } 
                 }
             })   

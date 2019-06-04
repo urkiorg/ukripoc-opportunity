@@ -12,9 +12,9 @@ interface Props {
 const typeNameToUrl = (name: string) => {
     switch (name) {
         case "Application":
-            return "application";
+            return "Application";
         case "WebsiteListing":
-            return "website-listing";
+            return "website Listing";
         default:
             console.warn("NO TYPENAMETOURL");
     }
