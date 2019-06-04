@@ -56,7 +56,7 @@ export const WebsiteListing: FC<Props> = ({
     }, []);
 
     if (!websiteListing || !websiteListing.getWebsiteListing) {
-        return <Title>Not found</Title>;
+        return <div> Loading... </div>;
     }
 
     const opportunityName =
