@@ -20,7 +20,7 @@ export const SetupOpportunityPage: FC = (props: any) => {
         fetchPolicy: "cache-and-network"
     });
     const updateWebsiteRankingMutation = useMutation<UpdateWebsiteListingMutationVariables>(UPDATE_WEBSITE_RANKING);
-    const updateApplicationMutation = useMutation<UpdateApplicationMutation>(UPDATE_APPLICATION);
+    const updateApplicationRankingMutation = useMutation<UpdateApplicationMutation>(UPDATE_APPLICATION);
 
     const updateWebsiteListingRanking = useCallback(
         async (id, rank) => {
@@ -45,7 +45,7 @@ export const SetupOpportunityPage: FC = (props: any) => {
             const { data, loading, error } = result;
             console.log("data, loading, error:", data, loading, error);
         },
-        [updateApplicationMutation]
+        [updateApplicationRankingMutation]
     );
 
     return (
