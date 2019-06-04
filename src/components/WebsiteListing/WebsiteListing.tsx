@@ -35,7 +35,19 @@ export const WebsiteListing: FC<Props> = ({
         defaultListingDescription
     );
 
+    const [textAreaMeta, settextAreaMeta] = useState({
+        error: "",
+        touched: false
+    });
+
     const onButtonClick = useCallback(() => {
+        if (listingDescription.trim() === "") {
+            settextAreaMeta({
+                error: "Please fill out the description",
+                touched: true
+            });
+            return false;
+        }
         updateWebsiteListing(listingDescription);
     }, [listingDescription, updateWebsiteListing]);
 
@@ -96,11 +108,7 @@ export const WebsiteListing: FC<Props> = ({
                     onChange: onInputChange,
                     value: listingDescription
                 }}
-                meta={{
-                    name: "hls",
-                    active: true,
-                    initial: listingDescription
-                }}
+                meta={textAreaMeta}
             />
 
             <GridRow>
