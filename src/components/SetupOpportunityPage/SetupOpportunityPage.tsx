@@ -3,8 +3,12 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { getOpportunity } from "../../graphql/queries";
 import SetupOpportunity from "../SetupOpportunity/SetupOpportunity";
+import { updateWebsiteListing } from "../../graphql/mutations";
+import { UpdateWebsiteListingMutationVariables } from "../../API";
+
 
 const GET_OPP = gql(getOpportunity);
+const UPDATE_WEBSITE_RANKING = gql(updateWebsiteListing);
 
 export const SetupOpportunityPage: FC = (props: any) => {
     const opportunityId = props.opportunityId;
@@ -14,8 +18,27 @@ export const SetupOpportunityPage: FC = (props: any) => {
         },
         fetchPolicy: "cache-and-network"
     });
+    const updateWebsiteRankingMutation = useMutation<
+        UpdateWebsiteListingMutationVariables
+    >(UPDATE_WEBSITE_RANKING);
 
-    return <SetupOpportunity opportunity={data} />;
+    const updateOpportunityRanking = useCallback(
+        async (id, rank) => {
+            const result = await updateWebsiteRankingMutation({
+                variables: {
+                    // id, rank
+                    input: { id, rank }
+                }
+            });
+            const { data, loading, error } = result;
+            console.log("data, loading, error:", data, loading, error);
+        },
+        [updateWebsiteRankingMutation]
+    );
+
+    return <SetupOpportunity
+                updateOpportunityRanking={updateOpportunityRanking}
+                opportunity={data} />;
 };
 
 export default SetupOpportunityPage;
