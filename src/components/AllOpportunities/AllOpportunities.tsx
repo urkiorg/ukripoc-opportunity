@@ -2,6 +2,8 @@ import React, { FC, HTMLAttributes } from "react";
 import LoadingBox from "@govuk-react/loading-box";
 import { Query } from "react-apollo";
 
+import { Link } from "@reach/router";
+
 import gql from "graphql-tag";
 
 import Table from "@govuk-react/table";
@@ -14,6 +16,7 @@ const GET_OPP = gql`
             items {
                 name
                 description
+                id
             }
         }
     }
@@ -33,10 +36,14 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                                     (opportunity: any, i: any) => (
                                         <Table.Row key={i}>
                                             <Table.Cell>
-                                                {opportunity.name}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {opportunity.description}
+                                                <Link
+                                                    to={`/setup/${
+                                                        opportunity.id
+                                                    }`}
+                                                >
+                                                    {" "}
+                                                    {opportunity.name}{" "}
+                                                </Link>
                                             </Table.Cell>
                                         </Table.Row>
                                     )
