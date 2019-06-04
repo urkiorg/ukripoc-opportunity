@@ -9,7 +9,8 @@ import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
-import SectionBreak from "@govuk-react/section-break";
+
+import LoadingBox from "@govuk-react/loading-box";
 
 import { ukriGreen, Title, LinkButton } from "../../theme";
 
@@ -55,36 +56,32 @@ export const WebsiteListing: FC<Props> = ({
         setlistingDescription(event.target.value);
     }, []);
 
-    if (!websiteListing || !websiteListing.getWebsiteListing) {
-        return <div> Loading... </div>;
-    }
-
     const opportunityName =
+        websiteListing &&
         websiteListing.getWebsiteListing &&
         websiteListing.getWebsiteListing.opportunity
             ? websiteListing.getWebsiteListing.opportunity.name
             : "";
 
     const opportunityId =
+        websiteListing &&
         websiteListing.getWebsiteListing &&
         websiteListing.getWebsiteListing.opportunity
             ? websiteListing.getWebsiteListing.opportunity.id
             : "";
 
-    const linkBack = `/setup/${opportunityId}`;
-
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBack}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            Website listing
-        </Breadcrumbs>
-    );
+    if (!websiteListing) {
+        return <LoadingBox />;
+    }
 
     return (
-        <div className={styles.wrap}>
-            {breadcrumbs}
+        <>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Website listing
+            </Breadcrumbs>
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Website listing</Title>
             <Details summary="About this workflow component">
@@ -123,7 +120,7 @@ export const WebsiteListing: FC<Props> = ({
                     </LinkButton>
                 </GridCol>
             </GridRow>
-        </div>
+        </>
     );
 };
 
