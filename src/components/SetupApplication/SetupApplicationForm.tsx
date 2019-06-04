@@ -10,7 +10,6 @@ import Caption from "@govuk-react/caption";
 import { GetApplicationQuery } from "../../API";
 interface Props {
     application: GetApplicationQuery;
-    //todo change any
     updateApplication: (openDate: string, closeDate: string) => void;
 }
 
@@ -54,8 +53,7 @@ export const SetupApplicationForm: FC<Props> = ({
 
     const [formState, { text }] = useFormState(initialState);
 
-    const checkForErrors = () => {
-        let isValidSoFar = true;
+    useEffect(() => {
         const openDate = new Date();
         openDate.setFullYear(
             formState.values.openYear,
@@ -67,7 +65,7 @@ export const SetupApplicationForm: FC<Props> = ({
             openDate.getMonth() !== formState.values.openMonth + 1 ||
             openDate.getDate() !== formState.values.openDay
         ) {
-            isValidSoFar = false;
+            setValidForm(false);
         }
 
         const closeDate = new Date();
@@ -77,21 +75,16 @@ export const SetupApplicationForm: FC<Props> = ({
             formState.values.closeDay
         );
         if (
-            (isValidSoFar === true &&
-                closeDate.getFullYear() !== formState.values.closeYear) ||
+            closeDate.getFullYear() !== formState.values.closeYear ||
             closeDate.getMonth() !== formState.values.closeMonth + 1 ||
             closeDate.getDate() !== formState.values.closeDay
         ) {
-            isValidSoFar = false;
+            setValidForm(false);
         }
 
-        Object.keys(formState.errors).length && !isValidSoFar
+        Object.keys(formState.errors).length
             ? setValidForm(false)
             : setValidForm(true);
-    };
-
-    useEffect(() => {
-        checkForErrors();
     }, [formState]);
 
     function handleSubmit(event: SyntheticEvent) {

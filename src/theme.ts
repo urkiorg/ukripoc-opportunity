@@ -34,7 +34,7 @@ interface DateInputProps {
 }
 
 export const DateInput = styled.input`
-    margin-left: ${(props: DateInputProps) => (props.time ? "40px" : "0px")}
+    margin-left: ${(props: DateInputProps) => (props.time ? "40px" : "0px")};
     max-width: 7.4ex;
     width: 100%;
     height: 40px;
@@ -47,7 +47,6 @@ export const DateInput = styled.input`
     font-family: ${NTA_LIGHT};
     font-size: 16px;
     line-height: 1.25;
-
 `;
 
 export const InputErrorText = styled.span`
