@@ -41,8 +41,7 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                                                         opportunity.id
                                                     }`}
                                                 >
-                                                    {" "}
-                                                    {opportunity.name}{" "}
+                                                    {opportunity.name}
                                                 </Link>
                                             </Table.Cell>
                                         </Table.Row>
