@@ -56,7 +56,7 @@ export const SetupOpportunity: FC<Props> = ({
       
     useEffect(() => {
         setAllOpportunities(getAllOpportunities(opportunity));
-    },[allOpportunities]);
+    },[opportunity]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent
@@ -78,7 +78,7 @@ export const SetupOpportunity: FC<Props> = ({
                         updateApplicationRanking(id, index);
                     }
                     if (__typename === "WebsiteListing") {
-                        updateWebsiteListingRanking(id, index + 1);
+                        updateWebsiteListingRanking(id, index);
                     } 
                 }
             })   
