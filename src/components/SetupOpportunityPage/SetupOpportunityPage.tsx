@@ -6,7 +6,6 @@ import SetupOpportunity from "../SetupOpportunity/SetupOpportunity";
 import { updateWebsiteListing, updateApplication } from "../../graphql/mutations";
 import { UpdateWebsiteListingMutationVariables, UpdateApplicationMutation } from "../../API";
 
-
 const GET_OPP = gql(getOpportunity);
 const UPDATE_WEBSITE_RANKING = gql(updateWebsiteListing);
 const UPDATE_APPLICATION = gql(updateApplication);
@@ -29,8 +28,6 @@ export const SetupOpportunityPage: FC = (props: any) => {
                     input: { id, rank }
                 }
             });
-            const { data, loading, error } = result;
-            console.log("data, loading, error:", data, loading, error);
         },
         [updateWebsiteRankingMutation]
     );
@@ -42,8 +39,6 @@ export const SetupOpportunityPage: FC = (props: any) => {
                     input: { id, rank }
                 }
             });
-            const { data, loading, error } = result;
-            console.log("data, loading, error:", data, loading, error);
         },
         [updateApplicationRankingMutation]
     );
