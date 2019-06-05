@@ -5,7 +5,13 @@
             "lambdaFunction": "publishopportunitylisting",
             "privacy": {
                 "private": true,
-                "auth": []
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
             }
         }
     ],
@@ -17,10 +23,10 @@
         }
     ],
     "privacy": {
-        "auth": 0,
+        "auth": 1,
         "unauth": 0,
-        "authRoleName": "ukri-sunyadev-20190517103832-authRole",
-        "unAuthRoleName": "ukri-sunyadev-20190517103832-unauthRole"
+        "authRoleName": "ukri-mattdev-20190522113836-authRole",
+        "unAuthRoleName": "ukri-mattdev-20190522113836-unauthRole"
     },
     "dependsOn": [
         {
@@ -31,5 +37,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "79b17509"
 }
