@@ -127,7 +127,6 @@ export const SetupOpportunity: FC<Props> = ({
                                     ref={provided.innerRef}
                                 >
                                     <WorkflowComponentList
-                                        placeholder={provided.placeholder}
                                         orderedOpportunity={allOpportunities}
                                     />
                                     { provided.placeholder }
