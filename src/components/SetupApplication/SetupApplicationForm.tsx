@@ -7,32 +7,17 @@ import React, {
 } from "react";
 import { useFormState } from "react-use-form-state";
 
-import { DateInput, InputErrorText } from "../../theme";
+import { DateInput } from "../../theme";
 
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
 import { H5 } from "@govuk-react/heading";
 import Caption from "@govuk-react/caption";
 import { GetApplicationQuery } from "../../API";
-import { ErrorType } from "aws-sdk/clients/workspaces";
 import ErrorText from "@govuk-react/error-text";
-import ErrorSummary from "@govuk-react/error-summary";
 interface Props {
     application: GetApplicationQuery;
     updateApplication: (openDate: string, closeDate: string) => void;
-}
-
-interface Form {
-    openYear: string;
-    openMonth: string;
-    openDay: string;
-    openHour: string;
-    openMinute: string;
-    closeYear: string;
-    closeMonth: string;
-    closeDay: string;
-    closeHour: string;
-    closeMinute: string;
 }
 
 export const SetupApplicationForm: FC<Props> = ({
@@ -43,19 +28,12 @@ export const SetupApplicationForm: FC<Props> = ({
 
     const [validForm, setValidForm] = useState<boolean>(true);
     const [dateError, setDateError] = useState<string | undefined>(undefined);
-    const [closeDateError, setCloseDateError] = useState<string | undefined>(
-        undefined
-    );
-    const [validationErrors, setValidationErrors] = useState<ErrorType[]>([]);
 
     const validateForm = useCallback(() => {
         const errors: any[] = [];
         if (dateError) {
-            errors.push({ text: dateError, targetName: "openDate" });
+            errors.push({ text: dateError, targetName: "date" });
         }
-
-        setValidationErrors(errors);
-
         return !errors.length;
     }, [dateError]);
 
@@ -94,7 +72,7 @@ export const SetupApplicationForm: FC<Props> = ({
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
-        if (!correctDate()) {
+        if (!correctDate() || !validateForm()) {
             return false;
         }
 
@@ -135,12 +113,14 @@ export const SetupApplicationForm: FC<Props> = ({
         const closeDate = new Date(year, month, day, hour, minute);
 
         const today = new Date();
+
         if (openDate < today) {
-            setDateError("The Open date must start after the current date.");
+            setDateError("Open date must be before today");
             return false;
         }
+
         if (openDate > closeDate) {
-            setDateError("The Open date must start before the Close date");
+            setDateError("Open date must be before the closing date");
             return false;
         }
 
@@ -195,35 +175,36 @@ export const SetupApplicationForm: FC<Props> = ({
         }
     }
 
+    useEffect(() => {
+        Object.keys(formState.errors).length
+            ? setValidForm(false)
+            : setValidForm(true);
+    }, [formState]);
+
     return (
         <form onSubmit={handleSubmit}>
-            {dateError && !!dateError.length && (
-                <InputErrorText> {dateError} </InputErrorText>
-            )}
+            {dateError && <ErrorText> {dateError} </ErrorText>}
             <H5 mb={1}> Open application </H5>
             <Caption size="M">Date</Caption>
             <FormGroup error={!validForm || dateError}>
                 <DateInput
                     {...text({
                         name: "openDay",
-                        validate: validateDay,
-                        validateOnBlur: true
+                        validate: validateDay
                     })}
                     placeholder="DD"
                 />
                 <DateInput
                     {...text({
                         name: "openMonth",
-                        validate: validateMonth,
-                        validateOnBlur: true
+                        validate: validateMonth
                     })}
                     placeholder="MM"
                 />
                 <DateInput
                     {...text({
                         name: "openYear",
-                        validate: validateYear,
-                        validateOnBlur: true
+                        validate: validateYear
                     })}
                     placeholder="YYYY"
                 />
@@ -231,16 +212,14 @@ export const SetupApplicationForm: FC<Props> = ({
                     time="true"
                     {...text({
                         name: "openHour",
-                        validate: validateHour,
-                        validateOnBlur: true
+                        validate: validateHour
                     })}
                     placeholder="HH"
                 />
                 <DateInput
                     {...text({
                         name: "openMinute",
-                        validate: validateMinute,
-                        validateOnBlur: true
+                        validate: validateMinute
                     })}
                     placeholder="MM"
                 />
@@ -260,16 +239,14 @@ export const SetupApplicationForm: FC<Props> = ({
                 <DateInput
                     {...text({
                         name: "closeMonth",
-                        validate: validateMonth,
-                        validateOnBlur: true
+                        validate: validateMonth
                     })}
                     placeholder="MM"
                 />
                 <DateInput
                     {...text({
                         name: "closeYear",
-                        validate: validateYear,
-                        validateOnBlur: true
+                        validate: validateYear
                     })}
                     placeholder="YYYY"
                 />
@@ -277,22 +254,20 @@ export const SetupApplicationForm: FC<Props> = ({
                     time="true"
                     {...text({
                         name: "closeHour",
-                        validate: validateHour,
-                        validateOnBlur: true
+                        validate: validateHour
                     })}
                     placeholder="HH"
                 />
                 <DateInput
                     {...text({
                         name: "closeMinute",
-                        validate: validateMinute,
-                        validateOnBlur: true
+                        validate: validateMinute
                     })}
                     placeholder="MM"
                 />
             </FormGroup>
 
-            {!validForm && dateError ? (
+            {!validForm ? (
                 <Button type="submit" disabled>
                     Save
                 </Button>
