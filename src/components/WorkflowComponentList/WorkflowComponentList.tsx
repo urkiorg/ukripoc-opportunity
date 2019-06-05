@@ -11,8 +11,7 @@ interface Props {
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
-
-// @ts-ignore
+    
 export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
 
     const deleteListingMutation = useMutation(DELETE_LISTING, {
@@ -30,8 +29,8 @@ export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
         [deleteListingMutation]
     );
 
-    return (
-        orderedOpportunity.map((component, index) =>
+    return <>
+        {orderedOpportunity.map((component, index) =>
             component ?
             <Draggable
                 key={component.id}
@@ -53,7 +52,7 @@ export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
             :
             <div key={index} />
         )
-    )
+            }</>
 };
 
 export default WorkflowComponentList;
