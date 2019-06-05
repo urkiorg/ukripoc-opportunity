@@ -72,7 +72,7 @@ export const SetupApplicationForm: FC<Props> = ({
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
-        if (!correctDate() || !validateForm()) {
+        if (!correctDate()) {
             return false;
         }
 
