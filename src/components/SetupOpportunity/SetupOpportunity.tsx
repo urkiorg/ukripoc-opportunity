@@ -10,6 +10,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import LoadingBox from "@govuk-react/loading-box";
 
 interface Props {
     updateApplicationRanking: ((id: string, rank: number) => void);
@@ -84,13 +85,10 @@ export const SetupOpportunity: FC<Props> = ({
             })   
         }     
     }
-
-    return (
-            !opportunity.getOpportunity ? 
-            <div> Loading... </div>
-                :
-            <React.Fragment>
-                <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
+    
+        return (
+            <LoadingBox loading={ !opportunity.getOpportunity }>
+                <Caption mb={1}>{opportunity.getOpportunity ? opportunity.getOpportunity.name : ""}</Caption>
                 <Title>Opportunity setup</Title>
                 <Caption mb={6} size="XL">
                     Settings
@@ -103,7 +101,7 @@ export const SetupOpportunity: FC<Props> = ({
                             </Link>
                         </GridCol>
                         <GridCol>
-                            {opportunity.getOpportunity.fundersComplete
+                            {opportunity.getOpportunity && opportunity.getOpportunity.fundersComplete
                                 ? "Done"
                                 : "Not Done"}
                         </GridCol>
@@ -139,9 +137,9 @@ export const SetupOpportunity: FC<Props> = ({
                     <Title>Not Found</Title>
                 }
                 <WorkflowComponentAdd
-                    opportunityId={opportunity.getOpportunity.id}
+                    opportunityId={opportunity.getOpportunity ? opportunity.getOpportunity.id : ""}
                 />
-            </React.Fragment>
+            </LoadingBox>
     );
 };
 
