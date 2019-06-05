@@ -1,43 +1,19 @@
 import React, { FC, useCallback } from "react";
-
-import { Link } from "@reach/router";
 import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
-
-import GridRow from "@govuk-react/grid-row";
-import GridCol from "@govuk-react/grid-col";
-
-import { SettingsListItem, Title } from "../../theme";
-import { WebsiteListing } from "../../types";
-
-interface Application {
-    __typename: string;
-    id: string;
-    rank: number;
-    openApplication: string | null;
-    closeApplication: string | null;
-}
+import { WebsiteListing, ApplicationListing } from "../../types";
+import { WorkflowComponentItem } from "../WorkflowComponentItem";
+import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 
 interface Props {
-    websiteListings?: Array<WebsiteListing | null>;
-    applications?: Array<Application | null>;
+    orderedOpportunity: (WebsiteListing | ApplicationListing | null)[];
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
+    
+export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
 
-function typeNameToUrl(name: string) {
-    switch (name) {
-        case "Application":
-            return "application";
-        case "WebsiteListing":
-            return "website-listing";
-        default:
-            console.warn("NO TYPENAMETOURL");
-    }
-}
-
-export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
@@ -53,45 +29,30 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         [deleteListingMutation]
     );
 
-    if (!props.websiteListings) {
-        return <Title> Not Found </Title>;
-    }
-    //could be websiteListing / Application
-    const renderListItem = (): (JSX.Element | null)[] | undefined => {
-        const websiteListings = props.websiteListings!;
-        const applications = props.applications!;
-
-        const mergedComponents = [...websiteListings, ...applications];
-
-        if (mergedComponents && mergedComponents.length) {
-            return mergedComponents.map(component => {
-                if (!component) {
-                    return <div />;
+    return <>
+        {orderedOpportunity.map((component, index) =>
+            component ?
+            <Draggable
+                key={component.id}
+                draggableId={component.id} 
+                index={index}>
+                {(provided: DraggableProvided) =>
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                    > 
+                        <WorkflowComponentItem
+                            component={component} 
+                            deleteListing={deleteListing}
+                        />
+                    </div>
                 }
-
-                const niceName = typeNameToUrl(component.__typename);
-                const listingLink = `/component/${niceName}/${component.id}`;
-                return (
-                    <SettingsListItem key={component.id}>
-                        <GridRow>
-                            <GridCol setWidth="90%">
-                                <Link to={listingLink}>{niceName}</Link>
-                            </GridCol>
-                            <GridCol>
-                                <button
-                                    onClick={() => deleteListing(component.id)}
-                                >
-                                    Delete
-                                </button>
-                            </GridCol>
-                        </GridRow>
-                    </SettingsListItem>
-                );
-            });
-        }
-    };
-
-    return <div>{renderListItem()}</div>;
+            </Draggable>
+            :
+            <div key={index} />
+        )
+            }</>
 };
 
 export default WorkflowComponentList;

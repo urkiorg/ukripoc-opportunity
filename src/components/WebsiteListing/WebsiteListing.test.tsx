@@ -7,7 +7,6 @@ describe("WebsiteListing", () => {
         const tree = renderer
             .create(
                 <WebsiteListing
-                    websiteListing={}
                     updateWebsiteListing={() => {}}
                 />
             )

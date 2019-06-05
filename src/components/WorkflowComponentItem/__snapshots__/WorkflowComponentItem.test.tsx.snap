@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WorkflowComponentItem renders correctly 1`] = `
+<div
+  className="sc-ifAKCX iNkSEI"
+>
+  <div
+    className="sc-bdVaJa gkOpjT"
+  >
+    <div
+      className="sc-bwzfXH dkijAd"
+    >
+      <a
+        href="/component/Application/1"
+        onClick={[Function]}
+      >
+        Application
+      </a>
+    </div>
+    <div
+      className="sc-bwzfXH iXLolC"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</div>
+`;

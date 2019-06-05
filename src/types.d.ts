@@ -6,6 +6,14 @@ export interface WebsiteListing {
     __typename: string;
 }
 
+export interface ApplicationListing {
+    __typename: string;
+    id: string;
+    rank: number;
+    openApplication: string | null;
+    closeApplication: string | null;
+}
+
 export interface ApplicationQuestionType {
     heading: string | null;
     title: string | null;
@@ -13,4 +21,9 @@ export interface ApplicationQuestionType {
     notes: string | null;
     wordLimit: number | null;
     complete: boolean | null;
+}
+
+export interface ApplicationTypes {
+    application: "Application";
+    websiteListing: "Website Listing";
 }

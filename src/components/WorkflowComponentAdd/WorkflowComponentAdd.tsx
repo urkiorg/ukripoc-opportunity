@@ -51,7 +51,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
             variables: {
                 input: {
                     applicationOpportunityId: opportunityId,
-                    rank: 1
+                    rank: 0
                 }
             }
         });
@@ -68,7 +68,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
             variables: {
                 input: {
                     websiteListingOpportunityId: opportunityId,
-                    rank: 1
+                    rank: 0
                 }
             }
         });
