@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from "react";
-
 import gql from "graphql-tag";
 import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
@@ -16,14 +15,14 @@ interface Application {
 }
 
 interface Props {
-    placeholder: any;
     orderedOpportunity: (WebsiteListing | Application | null)[];
 }
 
 const DELETE_LISTING = gql(deleteWebsiteListing);
 
 // @ts-ignore
-export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
+export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
+
     const deleteListingMutation = useMutation(DELETE_LISTING, {
         fetchPolicy: "no-cache"
     });
@@ -38,32 +37,31 @@ export const WorkflowComponentList: FC<Props> = ({ ...props }) => {
         },
         [deleteListingMutation]
     );
-    
-    const renderListItem = () => 
-            props.orderedOpportunity.map((component, index) =>
-                    component ?
-                    <Draggable
-                        key={component.id}
-                        draggableId={component.id} 
-                        index={index} >
-                        {(provided: any) =>
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                            > 
-                                <WorkflowComponentItem
-                                    component={component} 
-                                    deleteListing={deleteListing}
-                                />
-                            </div>
-                        }
-                    </Draggable>
-                    :
-                    <div key={index} />
-                );
 
-    return renderListItem();
+    return (
+        orderedOpportunity.map((component, index) =>
+            component ?
+            <Draggable
+                key={component.id}
+                draggableId={component.id} 
+                index={index} >
+                {(provided: any) =>
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                    > 
+                        <WorkflowComponentItem
+                            component={component} 
+                            deleteListing={deleteListing}
+                        />
+                    </div>
+                }
+            </Draggable>
+            :
+            <div key={index} />
+        )
+    )
 };
 
 export default WorkflowComponentList;
