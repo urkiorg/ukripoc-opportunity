@@ -1,6 +1,4 @@
 import React, { FC, useState, useCallback } from "react";
-import styles from "./WebsiteListing.module.scss";
-
 import Button from "@govuk-react/button";
 import P from "@govuk-react/paragraph";
 import Details from "@govuk-react/details";
@@ -36,17 +34,20 @@ export const WebsiteListing: FC<Props> = ({
         defaultListingDescription
     );
 
+    const [loading, setLoading] = useState(false);
     const [textAreaMeta, settextAreaMeta] = useState({
         error: "",
         touched: false
     });
 
     const onButtonClick = useCallback(() => {
+        setLoading(true);
         if (listingDescription.trim() === "") {
             settextAreaMeta({
                 error: "Please fill out the description",
                 touched: true
             });
+            setLoading(false);
             return false;
         }
         updateWebsiteListing(listingDescription);
@@ -70,12 +71,8 @@ export const WebsiteListing: FC<Props> = ({
             ? websiteListing.getWebsiteListing.opportunity.id
             : "";
 
-    if (!websiteListing) {
-        return <LoadingBox />;
-    }
-
     return (
-        <>
+        <LoadingBox loading={loading}>
             <Breadcrumbs>
                 <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
                     Opportunity setup
@@ -120,7 +117,7 @@ export const WebsiteListing: FC<Props> = ({
                     </LinkButton>
                 </GridCol>
             </GridRow>
-        </>
+        </LoadingBox>
     );
 };
 
