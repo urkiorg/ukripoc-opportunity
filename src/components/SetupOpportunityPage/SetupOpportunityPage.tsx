@@ -37,7 +37,7 @@ export const SetupOpportunityPage: FC = (props: any) => {
 
     const updateApplicationRanking = useCallback(
         async (id, rank) => {
-            const result = await updateApplicationMutation({
+            const result = await updateApplicationRankingMutation({
                 variables: {
                     input: { id, rank }
                 }
