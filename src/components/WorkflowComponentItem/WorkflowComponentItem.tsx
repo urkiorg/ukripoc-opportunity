@@ -26,7 +26,6 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
             <GridRow>
                 <GridCol setWidth="90%">
                     <Link to={listingLink}>{formattedName}</Link>
-                    { component.rank }
                 </GridCol>
                 <GridCol>
                     <button onClick={() => deleteListing(component.id)}>
