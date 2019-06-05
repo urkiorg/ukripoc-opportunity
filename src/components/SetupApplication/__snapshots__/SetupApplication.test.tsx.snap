@@ -2,65 +2,6 @@
 
 exports[`SetupApplication renders correctly 1`] = `
 <div>
-  <div
-    className="sc-bwzfXH enMJLA"
-  >
-    <ol
-      className="sc-htpNat kUfvhM"
-    >
-      <li
-        className="sc-bxivhb dQybha"
-      >
-        <a
-          className="sc-bdVaJa haNvij"
-          href="/setup/"
-        >
-          Opportunity setup
-        </a>
-      </li>
-      <li
-        className="sc-bxivhb dQybha"
-      >
-        Website listing
-      </li>
-    </ol>
-  </div>
-  <span
-    className="sc-ifAKCX gdozZn"
-    size="XL"
-  >
-    
-  </span>
-  <h1
-    className="sc-iwsKbI ftyRPW sc-dnqmqq bFXjfT"
-    size="XLARGE"
-  >
-    Application
-  </h1>
-  <details
-    className="sc-EHOje dqJfCj"
-    open={false}
-  >
-    <summary
-      className="sc-bZQynM fdZorV"
-    >
-      <span
-        className="sc-gzVnrw kXCnsC"
-      >
-        About this workflow component
-      </span>
-    </summary>
-    <div
-      className="sc-htoDjs eGnZNt"
-    >
-      The application component allows you to view and manage applications that are submitted for your opportunity. Using the settings below you can build and customise the application form and also define parameters for application review.
-    </div>
-  </details>
-  <span
-    className="sc-ifAKCX kVDkmX"
-    size="XL"
-  >
-    Application settings
-  </span>
+   Loading 
 </div>
 `;

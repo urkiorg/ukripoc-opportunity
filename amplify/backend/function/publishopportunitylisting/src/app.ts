@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import awsServerlessExpressMiddleware from "aws-serverless-express/middleware";
 import AWS from "aws-sdk";
+import console = require("console");
 
 AWS.config.region = "eu-west-1";
 
@@ -29,28 +30,46 @@ const saveListing = async (
         .promise();
 };
 
+const getApplications = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<Application[]> => {
+    console.log({ TableName });
+    const result = await client
+        .query({
+            TableName,
+            ExpressionAttributeValues: { ":o": opportunityId },
+            IndexName: "gsi-Application",
+            KeyConditionExpression: "applicationOpportunityId = :o"
+        })
+        .promise();
+
+    return result.Items || [];
+};
+
 const getListing = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
     listingId: string
-): Promise<WebsiteListing> => {
+): Promise<WebsiteListing | undefined> => {
     let result = await client
         .get({ TableName, Key: { id: listingId } })
         .promise();
 
-    return result.Item as any;
+    return result.Item as WebsiteListing;
 };
 
 const getOpportunity = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
     opportunityId: string
-): Promise<Opportunity> => {
+): Promise<Opportunity | undefined> => {
     let result = await client
         .get({ TableName, Key: { id: opportunityId } })
         .promise();
 
-    return result.Item as any;
+    return result.Item as Opportunity;
 };
 
 const postSNSMessage = async (
@@ -135,6 +154,13 @@ app.post("/opportunity-listing/publish", async (req, res) => {
             opportunityId
         );
         console.log("opportunity", opportunity);
+        if (!opportunity) {
+            console.error(
+                `The opportunity ${opportunityId} is not was not found`
+            );
+
+            throw new Error(`Opportunity not found`);
+        }
 
         const listingTableName = getDBTableName(env, apiId, "WebsiteListing");
         const listing = await getListing(client, listingTableName, listingId);
@@ -158,16 +184,34 @@ app.post("/opportunity-listing/publish", async (req, res) => {
         // write new data to DB
         await saveListing(client, listingTableName, listing);
 
+        const applications = await getApplications(
+            client,
+            getDBTableName(env, apiId, "Application"),
+            opportunityId
+        );
+
+        let openDate: string | undefined;
+        let closeDate: string | undefined;
+
+        if (applications.length) {
+            const app =
+                applications.length === 1
+                    ? applications[0]
+                    : applications.sort(
+                          (a, b) => (a.rank || 0) - (b.rank || 0)
+                      )[0];
+            openDate = app.openApplication;
+            closeDate = app.closeApplication;
+        }
+
         const message: ListingEvent = {
             id: listing.id,
             opportunityId: opportunity.id,
             name: opportunity.name,
-            description: listing.description ? listing.description : undefined,
+            description: listing.description,
             funders: opportunity.funders,
-            openDate: opportunity.openDate ? opportunity.openDate : undefined,
-            closeDate: opportunity.closeDate
-                ? opportunity.closeDate
-                : undefined,
+            openDate,
+            closeDate,
             lastPublished: listing.lastPublished
         };
 
