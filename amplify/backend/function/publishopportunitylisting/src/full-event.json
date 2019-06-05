@@ -1,11 +1,5 @@
 {
-    "$schema": "./api.schema.json",
-    "id": "dummyuuid",
-    "opportunityId": "dummyOpportunityuuid",
-    "name": "Dummy event opportunity 2",
-    "description": "Amazon DynamoDB is a fully managed proprietary NoSQL database service that supports key-value and document data structures and is offered by Amazon.com as part of the Amazon Web Services portfolio. DynamoDB exposes a similar data model to and derives its name from Dynamo, but has a different underlying implementation.",
-    "funders": ["AHRC", "Innovate UK"],
-    "openDate": "2019-05-16T13:25:03.805Z",
-    "closeDate": "2019-05-16T13:25:03.805Z",
-    "lastPublished": "2019-05-16T13:25:03.805Z"
+    "listingId": "3fc01060-7734-445f-8041-4d18ee88a59b",
+    "opportunityId": "db086bd8-3670-4074-ae46-f7cec9fd9c84",
+    "description": "This is a high-level summary"
 }

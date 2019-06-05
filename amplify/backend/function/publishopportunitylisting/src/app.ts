@@ -59,17 +59,17 @@ const postSNSMessage = async (
     message: any
 ): Promise<AWS.SNS.PublishResponse> => {
     const sns = new AWS.SNS();
-
+    const TopicArn = getSNSARNName(
+        "aws",
+        "sns",
+        undefined,
+        accountId,
+        topicName
+    );
     return new Promise((resolve, reject) => {
         sns.publish(
             {
-                TopicArn: getSNSARNName(
-                    "aws",
-                    "sns",
-                    undefined,
-                    accountId,
-                    topicName
-                ),
+                TopicArn,
                 Message: JSON.stringify(message)
             },
             function(err, data) {

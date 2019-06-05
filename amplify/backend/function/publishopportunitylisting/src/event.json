@@ -30,6 +30,6 @@
     "multiValueQueryStringParameters": null,
     "pathParameters": null,
     "stageVariables": null,
-    "body": "{\"listingId\":\"9e7747d6-4ec1-4689-a718-3af11178edfb\",\"opportunityId\":\"b2f83655-0829-4371-a03b-daab3c71387a\",\"description\":\"A summary\"}",
+    "body": "{\"listingId\":\"3fc01060-7734-445f-8041-4d18ee88a59b\",\"opportunityId\":\"db086bd8-3670-4074-ae46-f7cec9fd9c84\",\"description\":\"A summary\"}",
     "isBase64Encoded": false
 }
