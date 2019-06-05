@@ -12,8 +12,8 @@ import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 interface Props {
-    updateApplicationRanking: ((id: any, rank: any) => void);
-    updateWebsiteListingRanking: ((id: any, rank: any) => void);
+    updateApplicationRanking: ((id: string, rank: number) => void);
+    updateWebsiteListingRanking: ((id: string, rank: number) => void);
     opportunity: GetOpportunityQuery;
 }
 

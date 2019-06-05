@@ -4,7 +4,7 @@ import { deleteWebsiteListing } from "../../graphql/mutations";
 import { useMutation } from "react-apollo-hooks";
 import { WebsiteListing, ApplicationListing } from "../../types";
 import { WorkflowComponentItem } from "../WorkflowComponentItem";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 
 interface Props {
     orderedOpportunity: (WebsiteListing | ApplicationListing | null)[];
@@ -35,8 +35,8 @@ export const WorkflowComponentList: FC<Props> = ({ orderedOpportunity }) => {
             <Draggable
                 key={component.id}
                 draggableId={component.id} 
-                index={index} >
-                {(provided: any) =>
+                index={index}>
+                {(provided: DraggableProvided) =>
                     <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}

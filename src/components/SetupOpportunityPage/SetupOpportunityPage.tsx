@@ -10,9 +10,12 @@ const GET_OPP = gql(getOpportunity);
 const UPDATE_WEBSITE_RANKING = gql(updateWebsiteListing);
 const UPDATE_APPLICATION = gql(updateApplication);
 
-export const SetupOpportunityPage: FC = (props: any) => {
-    const opportunityId = props.opportunityId;
-    const { data, loading, error } = useQuery(GET_OPP, {
+interface Props {
+    opportunityId?: string;
+}
+
+export const SetupOpportunityPage: FC<Props> = ({opportunityId}) => {
+    const { data } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
         },
@@ -23,7 +26,7 @@ export const SetupOpportunityPage: FC = (props: any) => {
 
     const updateWebsiteListingRanking = useCallback(
         async (id, rank) => {
-            const result = await updateWebsiteRankingMutation({
+            await updateWebsiteRankingMutation({
                 variables: {
                     input: { id, rank }
                 }
@@ -34,7 +37,7 @@ export const SetupOpportunityPage: FC = (props: any) => {
 
     const updateApplicationRanking = useCallback(
         async (id, rank) => {
-            const result = await updateApplicationRankingMutation({
+            updateApplicationRankingMutation({
                 variables: {
                     input: { id, rank }
                 }
