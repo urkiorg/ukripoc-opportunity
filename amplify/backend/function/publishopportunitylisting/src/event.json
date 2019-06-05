@@ -1,62 +1,35 @@
 {
-    "body": "{'bits': 'bob'}",
-    "resource": "/{proxy+}",
+    "resource": "/opportunity-listing/publish",
     "path": "/opportunity-listing/publish",
     "httpMethod": "POST",
-    "isBase64Encoded": true,
-    "queryStringParameters": {
-        "foo": "bar"
-    },
-    "pathParameters": {
-        "proxy": "/opportunity-listing/publish"
-    },
-    "stageVariables": {
-        "baz": "qux"
-    },
     "headers": {
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Encoding": "gzip, deflate, sdch",
-        "Accept-Language": "en-US,en;q=0.8",
-        "Cache-Control": "max-age=0",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
         "CloudFront-Forwarded-Proto": "https",
         "CloudFront-Is-Desktop-Viewer": "true",
         "CloudFront-Is-Mobile-Viewer": "false",
         "CloudFront-Is-SmartTV-Viewer": "false",
         "CloudFront-Is-Tablet-Viewer": "false",
-        "CloudFront-Viewer-Country": "US",
-        "Host": "1234567890.execute-api.eu-west-1.amazonaws.com",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Custom User Agent String",
-        "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
-        "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
-        "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+        "CloudFront-Viewer-Country": "GB",
+        "content-type": "application/json; charset=UTF-8",
+        "Host": "yvwax8u54k.execute-api.eu-west-1.amazonaws.com",
+        "origin": "http://localhost:3000",
+        "Referer": "http://localhost:3000/setup/b2f83655-0829-4371-a03b-daab3c71387a",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+        "Via": "2.0 cb61a80d1dbb1ad2fee08568166c1dea.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "RfCyvnoQ2q2cnE8ZMFIyscOLVle-B4FlSh3NkxQ4Al_4yGay8fm-SA==",
+        "x-amz-date": "20190604T144209Z",
+        "X-Amzn-Trace-Id": "Root=1-5cf68342-5ad4f34420b5518a252f979a",
+        "X-Forwarded-For": "213.122.181.229, 52.46.13.80",
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https"
     },
-    "requestContext": {
-        "accountId": "123456789012",
-        "resourceId": "123456",
-        "stage": "prod",
-        "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
-        "requestTime": "09/Apr/2015:12:34:56 +0000",
-        "requestTimeEpoch": 1428582896000,
-        "identity": {
-            "cognitoIdentityPoolId": null,
-            "accountId": null,
-            "cognitoIdentityId": null,
-            "caller": null,
-            "accessKey": null,
-            "sourceIp": "127.0.0.1",
-            "cognitoAuthenticationType": null,
-            "cognitoAuthenticationProvider": null,
-            "userArn": null,
-            "userAgent": "Custom User Agent String",
-            "user": null
-        },
-        "path": "/opportunity-listing/publish",
-        "resourcePath": "/{proxy+}",
-        "httpMethod": "POST",
-        "apiId": "1234567890",
-        "protocol": "HTTP/1.1"
-    }
+
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "body": "{\"listingId\": \"0cf90f27-8fc3-4437-8382-ce12e52ea3e1\",\"opportunityId\": \"d27baf90-bdbe-40e9-9d0f-ab20764511a9\",\"description\": \"This is a high-level summary\"}",
+    "isBase64Encoded": false
 }

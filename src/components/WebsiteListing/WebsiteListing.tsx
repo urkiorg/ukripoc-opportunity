@@ -1,13 +1,13 @@
 import React, { FC, useState, useCallback } from "react";
 import Button from "@govuk-react/button";
-import P from "@govuk-react/paragraph";
+import Label from "@govuk-react/label-text";
+import { H4 } from "@govuk-react/heading";
 import Details from "@govuk-react/details";
 import TextArea from "@govuk-react/text-area";
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
-
 import LoadingBox from "@govuk-react/loading-box";
 
 import { ukriGreen, Title, LinkButton } from "../../theme";
@@ -23,12 +23,9 @@ export const WebsiteListing: FC<Props> = ({
     updateWebsiteListing,
     websiteListing
 }) => {
-    const defaultListingDescription =
-        websiteListing &&
-        websiteListing.getWebsiteListing &&
-        websiteListing.getWebsiteListing.description
-            ? websiteListing.getWebsiteListing.description
-            : "";
+    const listing = websiteListing && websiteListing.getWebsiteListing;
+
+    const defaultListingDescription = (listing && listing.description) || "";
 
     const [listingDescription, setlistingDescription] = useState(
         defaultListingDescription
@@ -58,18 +55,13 @@ export const WebsiteListing: FC<Props> = ({
     }, []);
 
     const opportunityName =
-        websiteListing &&
-        websiteListing.getWebsiteListing &&
-        websiteListing.getWebsiteListing.opportunity
-            ? websiteListing.getWebsiteListing.opportunity.name
-            : "";
+        (listing && listing.opportunity && listing.opportunity.name) || "";
 
     const opportunityId =
-        websiteListing &&
-        websiteListing.getWebsiteListing &&
-        websiteListing.getWebsiteListing.opportunity
-            ? websiteListing.getWebsiteListing.opportunity.id
-            : "";
+        (listing && listing.opportunity && listing.opportunity.id) || "";
+
+    const lastPublished =
+        listing && listing.lastPublished && new Date(listing.lastPublished);
 
     return (
         <LoadingBox loading={loading}>
@@ -88,13 +80,15 @@ export const WebsiteListing: FC<Props> = ({
                 will be published. If you have added an application component,
                 open and close dates will be published.
             </Details>
-            <P mb={0}>
-                Open date: Unavailable (set in the Application component)
-            </P>
-            <P>Close date: Unavailable (set in the Application component)</P>
-            <P mb={3} mt={6}>
-                **High level summary**
-            </P>
+
+            {lastPublished && (
+                <Label mb={2}>
+                    Last published: {lastPublished.toLocaleDateString()}{" "}
+                    {lastPublished.toLocaleTimeString()}
+                </Label>
+            )}
+
+            <H4>High level summary</H4>
 
             <TextArea
                 mb={3}

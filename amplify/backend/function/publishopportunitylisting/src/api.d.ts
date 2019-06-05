@@ -14,14 +14,6 @@ interface Opportunity {
     name: string;
     description: string;
     funders: string[];
-    fundersComplete?: boolean;
-    openDate?: string;
-    closeDate?: string;
-    websiteListings?: WebsiteListing[];
-    teammembers?: TeamMember[];
-    teammembersComplete?: boolean;
-    type?: OpportunityType;
-    typeComplete?: boolean;
 }
 
 interface WebsiteListing {
@@ -29,6 +21,7 @@ interface WebsiteListing {
     rank: number;
     lastPublished?: string;
     description?: string;
+    websiteListingOpportunityId?: string;
 }
 
 interface TeamMember {
@@ -41,4 +34,14 @@ interface OpportunityType {
     id: string;
     name: string;
     description: string;
+}
+
+interface Application {
+    applicationOpportunityId?: string;
+    closeApplication?: string;
+    createdAt?: string;
+    id?: string;
+    openApplication?: string;
+    rank?: number;
+    updatedAt?: string;
 }
