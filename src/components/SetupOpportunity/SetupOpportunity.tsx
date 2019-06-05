@@ -56,7 +56,7 @@ export const SetupOpportunity: FC<Props> = ({
       
     useEffect(() => {
         setAllOpportunities(getAllOpportunities(opportunity));
-    },[]);
+    },[allOpportunities]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent
