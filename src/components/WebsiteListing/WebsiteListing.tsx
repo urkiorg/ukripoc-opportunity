@@ -1,6 +1,4 @@
 import React, { FC, useState, useCallback } from "react";
-import styles from "./WebsiteListing.module.scss";
-
 import Button from "@govuk-react/button";
 import Label from "@govuk-react/label-text";
 import { H4 } from "@govuk-react/heading";
@@ -10,6 +8,7 @@ import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
+import LoadingBox from "@govuk-react/loading-box";
 
 import { ukriGreen, Title, LinkButton } from "../../theme";
 
@@ -32,7 +31,22 @@ export const WebsiteListing: FC<Props> = ({
         defaultListingDescription
     );
 
+    const [loading, setLoading] = useState(false);
+    const [textAreaMeta, settextAreaMeta] = useState({
+        error: "",
+        touched: false
+    });
+
     const onButtonClick = useCallback(() => {
+        setLoading(true);
+        if (listingDescription.trim() === "") {
+            settextAreaMeta({
+                error: "Please fill out the description",
+                touched: true
+            });
+            setLoading(false);
+            return false;
+        }
         updateWebsiteListing(listingDescription);
     }, [listingDescription, updateWebsiteListing]);
 
@@ -49,20 +63,14 @@ export const WebsiteListing: FC<Props> = ({
     const lastPublished =
         listing && listing.lastPublished && new Date(listing.lastPublished);
 
-    const linkBack = `/setup/${opportunityId}`;
-
-    const breadcrumbs = (
-        <Breadcrumbs>
-            <Breadcrumbs.Link href={linkBack}>
-                Opportunity setup
-            </Breadcrumbs.Link>
-            Website listing
-        </Breadcrumbs>
-    );
-
     return (
-        <div className={styles.wrap}>
-            {breadcrumbs}
+        <LoadingBox loading={loading}>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Website listing
+            </Breadcrumbs>
             <Caption mb={1}>{opportunityName}</Caption>
             <Title>Website listing</Title>
             <Details summary="About this workflow component">
@@ -88,11 +96,7 @@ export const WebsiteListing: FC<Props> = ({
                     onChange: onInputChange,
                     value: listingDescription
                 }}
-                meta={{
-                    name: "hls",
-                    active: true,
-                    initial: listingDescription
-                }}
+                meta={textAreaMeta}
             />
 
             <GridRow>
@@ -107,7 +111,7 @@ export const WebsiteListing: FC<Props> = ({
                     </LinkButton>
                 </GridCol>
             </GridRow>
-        </div>
+        </LoadingBox>
     );
 };
 

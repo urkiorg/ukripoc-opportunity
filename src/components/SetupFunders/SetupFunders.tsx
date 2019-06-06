@@ -1,16 +1,14 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useCallback,
-    useState,
-    SyntheticEvent
-} from "react";
-import cx from "classnames";
+import React, { FC, useCallback, useState, SyntheticEvent } from "react";
 
 import Checkbox from "@govuk-react/checkbox";
 import Button from "@govuk-react/button";
 
-import { GetOpportunityQuery, UpdateOpportunityMutation } from "../../API";
+import Breadcrumbs from "@govuk-react/breadcrumbs";
+import Caption from "@govuk-react/caption";
+
+import { Title } from "../../theme";
+
+import { GetOpportunityQuery } from "../../API";
 
 interface Funder {
     name: string;
@@ -30,6 +28,14 @@ export const SetupFunders: FC<Props> = ({
         (currentOpportunity.getOpportunity &&
             currentOpportunity.getOpportunity.funders) ||
         [];
+
+    const opportunityName =
+        currentOpportunity.getOpportunity &&
+        currentOpportunity.getOpportunity.name;
+
+    const opportunityId =
+        currentOpportunity.getOpportunity &&
+        currentOpportunity.getOpportunity.id;
 
     const [funderList, setFunderList] = useState(
         funders.reduce(
@@ -60,7 +66,14 @@ export const SetupFunders: FC<Props> = ({
 
     return (
         <div>
-            <h1>Funders</h1>
+            <Breadcrumbs>
+                <Breadcrumbs.Link href={`/setup/${opportunityId}`}>
+                    Opportunity setup
+                </Breadcrumbs.Link>
+                Funders
+            </Breadcrumbs>
+            <Caption mb={1}>{opportunityName} </Caption>
+            <Title>Funders</Title>
             {funders.map(funder => (
                 <Checkbox
                     key={funder.name}
