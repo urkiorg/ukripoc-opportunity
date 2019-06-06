@@ -11,18 +11,47 @@ import GridCol from "@govuk-react/grid-col";
 import Button from "@govuk-react/button";
 
 import SectionBreak from "@govuk-react/section-break";
-import { WebsiteListing, Opportunity } from "../../types";
+import {
+    WebsiteListing,
+    Opportunity,
+    ApplicationListing,
+    Obj
+} from "../../types";
 import styled from "styled-components";
 import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import LoadingBox from "@govuk-react/loading-box";
 
-const checkWebsiteListingComplete = (
-    websiteListings: (WebsiteListing | null)[]
+const checkWebsiteListingComplete = (listing: WebsiteListing): boolean => {
+    return !!(listing.description && listing.lastPublished);
+};
+const checkApplicationListingComplete = (
+    listing: ApplicationListing
+): boolean => {
+    return !!(listing.openApplication && listing.closeApplication);
+};
+
+const checkListingsComplete = (
+    listing: (WebsiteListing | ApplicationListing | null)[]
 ): boolean =>
-    websiteListings.reduce<boolean>((acc, listing: WebsiteListing | null) => {
-        return !listing || listing.lastPublished ? true : acc;
-    }, false);
+    listing.reduce<boolean>(
+        (acc, listing: WebsiteListing | ApplicationListing | null) => {
+            if (!listing) {
+                return true;
+            }
+            const typename = listing.__typename;
+
+            if (typename === "WebsiteListing") {
+                return checkWebsiteListingComplete ? true : acc;
+            }
+
+            if (typename === "Application") {
+                return checkApplicationListingComplete ? true : acc;
+            }
+            return acc;
+        },
+        false
+    );
 
 interface Props {
     updateApplicationRanking: (id: string, rank: number) => void;
@@ -79,7 +108,9 @@ export const SetupOpportunity: FC<Props> = ({
     finishOpportunity
 }) => {
     const { getOpportunity } = opportunity;
-    const [allWorkflows, setAllWorkflows] = useState();
+    const [allWorkflows, setAllWorkflows] = useState<
+        (ApplicationListing | WebsiteListing | null)[]
+    >([]);
     const onButtonClick = useCallback(() => {
         finishOpportunity();
     }, [finishOpportunity]);
@@ -107,6 +138,10 @@ export const SetupOpportunity: FC<Props> = ({
             // No reordering required
             return;
         } else {
+            if (!allWorkflows || !allWorkflows.length) {
+                return;
+            }
+
             const newOrdering = [...allWorkflows];
             newOrdering.splice(source.index, 1);
             newOrdering.splice(
@@ -116,7 +151,13 @@ export const SetupOpportunity: FC<Props> = ({
             );
             setAllWorkflows(newOrdering);
 
-            newOrdering.forEach(({ __typename, id }, index) => {
+            newOrdering.forEach((item, index) => {
+                if (!item) {
+                    return;
+                }
+
+                const { __typename, id } = item;
+
                 if (opportunity) {
                     if (__typename === "Application") {
                         updateApplicationRanking(id, index);
@@ -132,7 +173,7 @@ export const SetupOpportunity: FC<Props> = ({
     // Add other completion check functions here
     const allComplete =
         getOpportunity &&
-        checkWebsiteListingComplete(allWorkflows) &&
+        checkListingsComplete(allWorkflows) &&
         getOpportunity.fundersComplete;
 
     return (
