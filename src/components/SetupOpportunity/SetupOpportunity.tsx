@@ -11,12 +11,7 @@ import GridCol from "@govuk-react/grid-col";
 import Button from "@govuk-react/button";
 
 import SectionBreak from "@govuk-react/section-break";
-import {
-    WebsiteListing,
-    Opportunity,
-    ApplicationListing,
-    Obj
-} from "../../types";
+import { WebsiteListing, Opportunity, ApplicationListing } from "../../types";
 import styled from "styled-components";
 import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";

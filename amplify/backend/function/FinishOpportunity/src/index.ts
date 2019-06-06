@@ -37,7 +37,7 @@ const getListingsForOpportunity = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
     opportunityId: string
-): Promise<WebsiteListing[]> => {
+): Promise<WebsiteListings> => {
     let result = await client
         .query({
             TableName,
@@ -46,7 +46,8 @@ const getListingsForOpportunity = async (
         })
         .promise();
 
-    return result.Items || [];
+    const items = (result.Items || []) as WebsiteListing[];
+    return { items };
 };
 
 const getOpportunity = async (
@@ -92,14 +93,13 @@ const sendOpportunityToSNS = async (event: FunctionEvent) => {
         }
 
         const listingTableName = getDBTableName(env, apiId, "WebsiteListing");
-        const listing = await getListingsForOpportunity(
+        const listings = await getListingsForOpportunity(
             client,
             listingTableName,
             opportunityId
         );
-        const now = new Date().toISOString();
 
-        if (!listing) {
+        if (!listings || !listings.items || !listings.items.length) {
             console.error(
                 `Error finding listings for the opportunity, ${opportunityId}`
             );
@@ -113,27 +113,36 @@ const sendOpportunityToSNS = async (event: FunctionEvent) => {
             opportunityId
         );
 
-        let openDate: string | undefined;
-        let closeDate: string | undefined;
-
+        let app;
         if (applications.length) {
-            const app =
+            app =
                 applications.length === 1
                     ? applications[0]
                     : applications.sort(
                           (a, b) => (a.rank || 0) - (b.rank || 0)
                       )[0];
-            openDate = app.openApplication;
-            closeDate = app.closeApplication;
         }
 
-        const { id, name, funders, description } = opportunity;
+        // @todo: Teammembers will need to be included here
+
+        const {
+            id,
+            name,
+            funders,
+            description,
+            __typename,
+            fundersComplete
+        } = opportunity;
 
         const message: Opportunity = {
             id,
             name,
             funders,
-            description
+            description,
+            fundersComplete,
+            websiteListings: listings,
+            __typename,
+            application: app ? ({ items: app } as Applications) : null
         };
 
         const topicName = getTopicName(topic, env);
