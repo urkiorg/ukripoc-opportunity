@@ -8,18 +8,17 @@ const orderedOpportunity = [
         id: "1",
         rank: 0,
         lastPublished: "",
-        description: "Test webs site listing",
+        description: "Test webs site listing"
     },
     {
         __typename: "Application",
         id: "1",
         rank: 0,
         openApplication: "",
-        closeApplication: "",
-    },
+        closeApplication: ""
+    }
 ];
 
 storiesOf("Components|WorkflowComponentList", module).add("Default", () => (
-    <WorkflowComponentList 
-        orderedOpportunity={orderedOpportunity} />
+    <WorkflowComponentList orderedWorkflows={orderedOpportunity} />
 ));
