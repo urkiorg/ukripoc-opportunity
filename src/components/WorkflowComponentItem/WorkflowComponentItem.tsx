@@ -17,6 +17,30 @@ const niceName: ApplicationTypes = {
 
 const formatCasing = (word: string) => word.charAt(0).toLowerCase() + word.slice(1);
 
+const renderApplicationDetails = (component:  ApplicationListing) => {
+    const {openApplication, closeApplication} = component;
+    
+    return (
+        <div>
+            <p>Application open</p>
+            <p>{openApplication}</p>
+            <p>Application close</p>
+            <p>{closeApplication}</p>
+        </div>
+    )
+}
+
+const renderWebsiteListing = (component: WebsiteListing) => {
+    const {lastPublished} = component;
+
+    return (
+        <div>
+            <p>Publish data</p>
+            <p>{lastPublished}</p>
+        </div>
+    )
+}
+
 export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => {
     const formattedName = niceName[formatCasing(component.__typename) as keyof ApplicationTypes];
     const listingLink = `/component/${formattedName}/${component.id}`;
@@ -24,13 +48,19 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
     return (
         <SettingsListItem>
             <GridRow>
-                <GridCol setWidth="90%">
+                <GridCol setWidth="70%">
                     <Link to={listingLink}>{formattedName}</Link>
                 </GridCol>
                 <GridCol>
-                    <button onClick={() => deleteListing(component.id)}>
+                    <a onClick={() => deleteListing(component.id)}>
                         Remove
-                    </button>
+                    </a>
+                </GridCol>
+                <GridCol>
+                    {component.__typename === "application" && 
+                        renderApplicationDetails(component) }
+                    {component.__typename === "websiteListing" 
+                        && renderWebsiteListing(component) }
                 </GridCol>
             </GridRow>
         </SettingsListItem>
