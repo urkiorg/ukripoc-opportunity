@@ -2,8 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import awsServerlessExpressMiddleware from "aws-serverless-express/middleware";
 import AWS from "aws-sdk";
-
-import { api } from "../../../amplify-meta.json";
+import console = require("console");
 
 AWS.config.region = "eu-west-1";
 
@@ -18,67 +17,59 @@ export const getSNSARNName = (
     topicName: string
 ): string => `arn:${partition}:${service}:${region}:${accountId}:${topicName}`;
 
-const setListingLastPublished = async (
+const saveListing = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
-    opportunityRecord: Opportunity,
     listing: WebsiteListing
 ) => {
-    const opportunityListings = opportunityRecord.websiteListings
-        ? opportunityRecord.websiteListings.reduce(
-              (acc, current) => {
-                  if (current.id === listing.id) {
-                      return [...acc, listing];
-                  } else {
-                      return [...acc, current];
-                  }
-              },
-              [] as WebsiteListing[]
-          )
-        : undefined;
-
-    if (!opportunityListings) {
-        return;
-    }
-
-    opportunityRecord.websiteListings = opportunityListings;
-
     await client
         .put({
             TableName,
-            Item: {
-                ...opportunityRecord
-            }
+            Item: listing
         })
         .promise();
 };
 
-const getListing = (
-    opportunityRecord: Opportunity,
+const getApplications = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<Application[]> => {
+    console.log({ TableName });
+    const result = await client
+        .query({
+            TableName,
+            ExpressionAttributeValues: { ":o": opportunityId },
+            IndexName: "gsi-Application",
+            KeyConditionExpression: "applicationOpportunityId = :o"
+        })
+        .promise();
+
+    return result.Items || [];
+};
+
+const getListing = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
     listingId: string
-): WebsiteListing[] => {
-    if (
-        opportunityRecord &&
-        opportunityRecord.websiteListings &&
-        opportunityRecord.websiteListings.length
-    ) {
-        return opportunityRecord.websiteListings.filter(listing => {
-            return listing.id === listingId;
-        });
-    }
-    return [];
+): Promise<WebsiteListing | undefined> => {
+    let result = await client
+        .get({ TableName, Key: { id: listingId } })
+        .promise();
+
+    return result.Item as WebsiteListing;
 };
 
 const getOpportunity = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
     opportunityId: string
-): Promise<Opportunity> => {
+): Promise<Opportunity | undefined> => {
     let result = await client
         .get({ TableName, Key: { id: opportunityId } })
         .promise();
 
-    return result.Item as any;
+    return result.Item as Opportunity;
 };
 
 const postSNSMessage = async (
@@ -87,17 +78,17 @@ const postSNSMessage = async (
     message: any
 ): Promise<AWS.SNS.PublishResponse> => {
     const sns = new AWS.SNS();
-
+    const TopicArn = getSNSARNName(
+        "aws",
+        "sns",
+        undefined,
+        accountId,
+        topicName
+    );
     return new Promise((resolve, reject) => {
         sns.publish(
             {
-                TopicArn: getSNSARNName(
-                    "aws",
-                    "sns",
-                    undefined,
-                    accountId,
-                    topicName
-                ),
+                TopicArn,
                 Message: JSON.stringify(message)
             },
             function(err, data) {
@@ -138,15 +129,16 @@ app.use(function(req, res, next) {
 // 4. add `lastPublished` to listing in DynamoDb
 
 app.post("/opportunity-listing/publish", async (req, res) => {
-    console.log(req.body);
+    console.log("req", req.body);
     try {
         const { listingId, opportunityId, description } = req.body;
-        const env = process.env.env;
-        const apiId = api.ukri.output.GraphQLAPIIdOutput;
+        // console.log(process.env);
+        const env = process.env.ENV;
+        const apiId = process.env.AppSyncApiId;
 
-        if (!env || !listingId || !opportunityId) {
+        if (!env || !apiId || !listingId || !opportunityId) {
             console.error(
-                "An environment, listing id and opportunity id must be set"
+                "An environment, api id, listing id and opportunity id must be set"
             );
             return res.status(404).json({});
         }
@@ -155,23 +147,32 @@ app.post("/opportunity-listing/publish", async (req, res) => {
             region: "eu-west-1"
         });
 
-        const TableName = getDBTableName(env, apiId, "Opportunity");
+        const opportunityTableName = getDBTableName(env, apiId, "Opportunity");
         const opportunity = await getOpportunity(
             client,
-            TableName,
+            opportunityTableName,
             opportunityId
         );
-        const listingArr = getListing(opportunity, listingId);
+        console.log("opportunity", opportunity);
+        if (!opportunity) {
+            console.error(
+                `The opportunity ${opportunityId} is not was not found`
+            );
+
+            throw new Error(`Opportunity not found`);
+        }
+
+        const listingTableName = getDBTableName(env, apiId, "WebsiteListing");
+        const listing = await getListing(client, listingTableName, listingId);
         const now = new Date().toISOString();
 
-        if (!listingArr.length) {
+        if (!listing) {
             console.error(
                 `The listing, ${listingId} is not part of the opportunity, ${opportunityId}`
             );
 
             throw new Error(`The listing couldn't be found in the opportunity`);
         }
-        const listing = listingArr[0];
 
         listing.lastPublished = now;
         console.log({ description, now });
@@ -181,23 +182,41 @@ app.post("/opportunity-listing/publish", async (req, res) => {
         }
 
         // write new data to DB
-        setListingLastPublished(client, TableName, opportunity, listing);
+        await saveListing(client, listingTableName, listing);
+
+        const applications = await getApplications(
+            client,
+            getDBTableName(env, apiId, "Application"),
+            opportunityId
+        );
+
+        let openDate: string | undefined;
+        let closeDate: string | undefined;
+
+        if (applications.length) {
+            const app =
+                applications.length === 1
+                    ? applications[0]
+                    : applications.sort(
+                          (a, b) => (a.rank || 0) - (b.rank || 0)
+                      )[0];
+            openDate = app.openApplication;
+            closeDate = app.closeApplication;
+        }
 
         const message: ListingEvent = {
             id: listing.id,
             opportunityId: opportunity.id,
             name: opportunity.name,
-            description: listing.description ? listing.description : undefined,
+            description: listing.description,
             funders: opportunity.funders,
-            openDate: opportunity.openDate ? opportunity.openDate : undefined,
-            closeDate: opportunity.closeDate
-                ? opportunity.closeDate
-                : undefined,
+            openDate,
+            closeDate,
             lastPublished: listing.lastPublished
         };
 
         const post = await postSNSMessage(
-            "OpportunityListingUpdate",
+            `OpportunityListingUpdate-${env}`,
             "475991803334",
             message
         );

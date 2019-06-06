@@ -9,12 +9,13 @@ frontend:
     phases:
         preBuild:
             commands:
+                - nvm use 10
                 - yarn install
         build:
             commands:
-                - yarn build:ci
+                - yarn build
     artifacts:
-        baseDirectory: dist
+        baseDirectory: build
         files:
             - "**/*"
     cache:

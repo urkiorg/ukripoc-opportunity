@@ -41,6 +41,15 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
       }
       nextToken
     }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -81,6 +90,15 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
         rank
         lastPublished
         description
+      }
+      nextToken
+    }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
       }
       nextToken
     }
@@ -127,6 +145,15 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
       }
       nextToken
     }
+    application {
+      items {
+        id
+        rank
+        openApplication
+        closeApplication
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -152,6 +179,9 @@ export const onCreateTeamMember = `subscription OnCreateTeamMember {
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -182,6 +212,9 @@ export const onUpdateTeamMember = `subscription OnUpdateTeamMember {
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -208,6 +241,9 @@ export const onDeleteTeamMember = `subscription OnDeleteTeamMember {
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -238,6 +274,9 @@ export const onCreateOpportunityType = `subscription OnCreateOpportunityType {
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -266,6 +305,9 @@ export const onUpdateOpportunityType = `subscription OnUpdateOpportunityType {
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -292,6 +334,9 @@ export const onDeleteOpportunityType = `subscription OnDeleteOpportunityType {
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -323,6 +368,9 @@ export const onCreateWebsiteListing = `subscription OnCreateWebsiteListing {
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
   }
 }
@@ -350,6 +398,9 @@ export const onUpdateWebsiteListing = `subscription OnUpdateWebsiteListing {
       }
       typeComplete
       websiteListings {
+        nextToken
+      }
+      application {
         nextToken
       }
     }
@@ -381,7 +432,232 @@ export const onDeleteWebsiteListing = `subscription OnDeleteWebsiteListing {
       websiteListings {
         nextToken
       }
+      application {
+        nextToken
+      }
     }
+  }
+}
+`;
+export const onCreateApplication = `subscription OnCreateApplication {
+  onCreateApplication {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        complete
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateApplication = `subscription OnUpdateApplication {
+  onUpdateApplication {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        complete
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteApplication = `subscription OnDeleteApplication {
+  onDeleteApplication {
+    id
+    rank
+    openApplication
+    closeApplication
+    opportunity {
+      id
+      name
+      description
+      funders
+      fundersComplete
+      teammembers {
+        nextToken
+      }
+      teammembersComplete
+      type {
+        id
+        name
+        description
+      }
+      typeComplete
+      websiteListings {
+        nextToken
+      }
+      application {
+        nextToken
+      }
+    }
+    applicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        complete
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateApplicationQuestion = `subscription OnCreateApplicationQuestion {
+  onCreateApplicationQuestion {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
+        nextToken
+      }
+    }
+    complete
+  }
+}
+`;
+export const onUpdateApplicationQuestion = `subscription OnUpdateApplicationQuestion {
+  onUpdateApplicationQuestion {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
+        nextToken
+      }
+    }
+    complete
+  }
+}
+`;
+export const onDeleteApplicationQuestion = `subscription OnDeleteApplicationQuestion {
+  onDeleteApplicationQuestion {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    application {
+      id
+      rank
+      openApplication
+      closeApplication
+      opportunity {
+        id
+        name
+        description
+        funders
+        fundersComplete
+        teammembersComplete
+        typeComplete
+      }
+      applicationQuestions {
+        nextToken
+      }
+    }
+    complete
   }
 }
 `;

@@ -18,25 +18,6 @@
             }
         }
     },
-    "dtorchia": {
-        "awscloudformation": {
-            "AuthRoleName": "ukri-dtorchia-20190516204423-authRole",
-            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-dtorchia-20190516204423-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-dtorchia-20190516204423-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "ukri-dtorchia-20190516204423-deployment",
-            "UnauthRoleName": "ukri-dtorchia-20190516204423-unauthRole",
-            "StackName": "ukri-dtorchia-20190516204423",
-            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-dtorchia-20190516204423/01f1b400-7813-11e9-8a4a-02c681d3a380"
-        },
-        "categories": {
-            "auth": {
-                "cognito686849a5": {
-                    "hostedUIProviderCreds": "[]"
-                }
-            }
-        }
-    },
     "staging": {
         "awscloudformation": {
             "AuthRoleName": "ukri-staging-20190522095915-authRole",
@@ -100,6 +81,23 @@
             "UnauthRoleName": "ukri-sunyadev-20190517103832-unauthRole",
             "StackName": "ukri-sunyadev-20190517103832",
             "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-sunyadev-20190517103832/8923e5a0-7887-11e9-b459-0673c4cbbe82"
+        },
+        "categories": {
+            "auth": {
+                "cognito686849a5": {}
+            }
+        }
+    },
+    "torchiadev": {
+        "awscloudformation": {
+            "AuthRoleName": "ukri-torchiadev-20190524121944-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukri-torchiadev-20190524121944-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukri-torchiadev-20190524121944-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukri-torchiadev-20190524121944-deployment",
+            "UnauthRoleName": "ukri-torchiadev-20190524121944-unauthRole",
+            "StackName": "ukri-torchiadev-20190524121944",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukri-torchiadev-20190524121944/d50999e0-7e15-11e9-909b-069eaf5ad9a0"
         },
         "categories": {
             "auth": {

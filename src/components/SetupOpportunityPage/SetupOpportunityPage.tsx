@@ -6,23 +6,59 @@ import { updateOpportunity } from "../../graphql/mutations";
 import SetupOpportunity from "../SetupOpportunity/SetupOpportunity";
 import { UpdateOpportunityMutation } from "../../API";
 import { navigate } from "@reach/router";
-import { Opportunity } from "../../types";
+import {
+    updateWebsiteListing,
+    updateApplication
+} from "../../graphql/mutations";
+import {
+    UpdateWebsiteListingMutationVariables,
+    UpdateApplicationMutation
+} from "../../API";
 
 const GET_OPP = gql(getOpportunity);
+const UPDATE_WEBSITE_RANKING = gql(updateWebsiteListing);
+const UPDATE_APPLICATION = gql(updateApplication);
 const UPDATE_OPPORTUNITY = gql(updateOpportunity);
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
     opportunityId?: string;
 }
 
-export const SetupOpportunityPage: FC<Props> = (props: Props) => {
-    const opportunityId = props.opportunityId;
-    const { data, loading, error } = useQuery(GET_OPP, {
+export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
+    const { data } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
         },
         fetchPolicy: "cache-and-network"
     });
+    const updateWebsiteRankingMutation = useMutation<
+        UpdateWebsiteListingMutationVariables
+    >(UPDATE_WEBSITE_RANKING);
+    const updateApplicationRankingMutation = useMutation<
+        UpdateApplicationMutation
+    >(UPDATE_APPLICATION);
+
+    const updateWebsiteListingRanking = useCallback(
+        async (id, rank) => {
+            await updateWebsiteRankingMutation({
+                variables: {
+                    input: { id, rank }
+                }
+            });
+        },
+        [updateWebsiteRankingMutation]
+    );
+
+    const updateApplicationRanking = useCallback(
+        async (id, rank) => {
+            updateApplicationRankingMutation({
+                variables: {
+                    input: { id, rank }
+                }
+            });
+        },
+        [updateApplicationRankingMutation]
+    );
 
     const updateOpportunityMutation = useMutation<UpdateOpportunityMutation>(
         UPDATE_OPPORTUNITY
@@ -31,7 +67,7 @@ export const SetupOpportunityPage: FC<Props> = (props: Props) => {
     const finishOpportunity = useCallback(async () => {
         const result = await updateOpportunityMutation({
             variables: {
-                input: { id: props.opportunityId, typeComplete: true }
+                input: { id: opportunityId, typeComplete: true }
             }
         });
 
@@ -41,12 +77,14 @@ export const SetupOpportunityPage: FC<Props> = (props: Props) => {
         if (res) {
             navigate(`/`);
         }
-    }, [updateOpportunityMutation, props.opportunityId]);
+    }, [updateOpportunityMutation, opportunityId]);
 
     return (
         <SetupOpportunity
             opportunity={data}
             finishOpportunity={finishOpportunity}
+            updateApplicationRanking={updateApplicationRanking}
+            updateWebsiteListingRanking={updateWebsiteListingRanking}
         />
     );
 };
