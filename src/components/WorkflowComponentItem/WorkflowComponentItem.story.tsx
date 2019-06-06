@@ -1,13 +1,16 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { WorkflowComponentItem } from "./index";
+import { Application } from "../../types";
+
+const type: Application  = "Application";
 
 const component = {
     id: "1",
     rank: 0,
     openApplication: "",
     closeApplication: "",
-    __typename: "Application"
+    __typename: type,
 };
 
 const deleteListing = () => {};

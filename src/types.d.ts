@@ -1,13 +1,16 @@
+export type WebsiteListing  = "WebsiteListing";
+export type Application  = "Application"
+
 export interface WebsiteListing {
     id: string;
     rank: number;
     lastPublished: string | null;
     description: string | null;
-    __typename: string;
+    __typename: WebsiteListing;
 }
 
 export interface ApplicationListing {
-    __typename: string;
+    __typename: Application;
     id: string;
     rank: number;
     openApplication: string | null;

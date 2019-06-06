@@ -57,9 +57,9 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
                     </a>
                 </GridCol>
                 <GridCol>
-                    {component.__typename === "application" && 
+                    {component.__typename === "Application" && 
                         renderApplicationDetails(component) }
-                    {component.__typename === "websiteListing" 
+                    {component.__typename === "WebsiteListing" 
                         && renderWebsiteListing(component) }
                 </GridCol>
             </GridRow>
