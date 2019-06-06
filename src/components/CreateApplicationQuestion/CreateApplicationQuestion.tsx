@@ -10,7 +10,7 @@ interface Props extends RouterProps {
     id?: string;
 }
 
-export const CreateApplicationQuestion: FC<Props> = (props: Props) => {
+export const CreateApplicationQuestion: FC<Props> = ({ id }) => {
     const addApplicationQuestionMutation = useMutation(
         CREATE_APPLICATION_QUESTION
     );
@@ -21,7 +21,7 @@ export const CreateApplicationQuestion: FC<Props> = (props: Props) => {
         subtitle: "",
         notes: "",
         wordLimit: 500,
-        applicationQuestionApplicationId: props.id
+        applicationQuestionApplicationId: id
     };
     const addQuestion = useCallback(
         async (name: string) => {
@@ -31,7 +31,7 @@ export const CreateApplicationQuestion: FC<Props> = (props: Props) => {
                 }
             });
 
-            const { data, loading, error } = result;
+            const { data } = result;
 
             if (data) {
                 navigate(
@@ -41,7 +41,7 @@ export const CreateApplicationQuestion: FC<Props> = (props: Props) => {
                 );
             }
         },
-        [addApplicationQuestionMutation]
+        [addApplicationQuestionMutation, payLoad]
     );
 
     return <button onClick={() => addQuestion("somethign")} />;

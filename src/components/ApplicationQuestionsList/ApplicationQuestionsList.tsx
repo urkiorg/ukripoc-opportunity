@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC } from "react";
 
 import Caption from "@govuk-react/caption";
 import { Link } from "@reach/router";
@@ -27,35 +27,36 @@ export const ApplicationQuestionsList: FC<Props> = ({
             <Table>
                 {questions &&
                     questions.map(question => {
-                        if (question) {
-                            return (
-                                <Table.Row key={question.id}>
-                                    <Table.Cell>
-                                        <Link
-                                            to={`/component/application/${applicationId}/question/${
-                                                question.id
-                                            }`}
-                                        >
-                                            {question.heading}
-                                        </Link>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <LinkButton
-                                            onClick={() =>
-                                                deleteQuestion(question.id)
-                                            }
-                                        >
-                                            Remove
-                                        </LinkButton>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {question.complete
-                                            ? "Complete"
-                                            : "Incomplete"}
-                                    </Table.Cell>
-                                </Table.Row>
-                            );
+                        if (!question) {
+                            return null;
                         }
+                        return (
+                            <Table.Row key={question.id}>
+                                <Table.Cell>
+                                    <Link
+                                        to={`/component/application/${applicationId}/question/${
+                                            question.id
+                                        }`}
+                                    >
+                                        {question.heading}
+                                    </Link>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <LinkButton
+                                        onClick={() =>
+                                            deleteQuestion(question.id)
+                                        }
+                                    >
+                                        Remove
+                                    </LinkButton>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {question.complete
+                                        ? "Complete"
+                                        : "Incomplete"}
+                                </Table.Cell>
+                            </Table.Row>
+                        );
                     })}
                 <Table.Row>
                     <Table.Cell>

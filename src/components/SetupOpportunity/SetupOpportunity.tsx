@@ -1,7 +1,9 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 import Details from "@govuk-react/details";
 import { GetOpportunityQuery } from "../../API";
-import { Link } from "@reach/router";
+import Link from "@govuk-react/link";
+
+import { Link as RouterLink } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title, LinkButton } from "../../theme";
 import Caption from "@govuk-react/caption";
@@ -85,9 +87,9 @@ const getAllWorkflows = (getOpportunity: Opportunity) => {
             ? getOpportunity.application.items
             : [];
 
-    const mergedWorkflows = () => [...websiteListings, ...applications];
+    const mergedOpportunities = () => [...websiteListings, ...applications];
 
-    return mergedWorkflows().sort((a, b) => {
+    return mergedOpportunities().sort((a, b) => {
         if (a && b) {
             return a.rank - b.rank;
         } else {

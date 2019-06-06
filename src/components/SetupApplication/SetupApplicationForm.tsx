@@ -1,10 +1,4 @@
-import React, {
-    SyntheticEvent,
-    FC,
-    useState,
-    useEffect,
-    useCallback
-} from "react";
+import React, { SyntheticEvent, FC, useState, useEffect } from "react";
 import { useFormState } from "react-use-form-state";
 
 import { DateInput } from "../../theme";
@@ -28,14 +22,6 @@ export const SetupApplicationForm: FC<Props> = ({
 
     const [validForm, setValidForm] = useState<boolean>(true);
     const [dateError, setDateError] = useState<string | undefined>(undefined);
-
-    const validateForm = useCallback(() => {
-        const errors: any[] = [];
-        if (dateError) {
-            errors.push({ text: dateError, targetName: "date" });
-        }
-        return !errors.length;
-    }, [dateError]);
 
     if (application.getApplication) {
         const openApplication =

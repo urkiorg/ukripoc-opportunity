@@ -21,7 +21,6 @@
         "react-markdown": "^4.0.8",
         "react-scripts": "3.0.0",
         "react-use-form-state": "^0.10.2",
-        "typescript": "^3.4.5",
         "typescript-json-schema": "^0.38.0"
     },
     "scripts": {
@@ -33,6 +32,7 @@
         "storybook": "start-storybook -p 9009 -s public",
         "build-storybook": "build-storybook -s public -o dist/storybook",
         "build:ci": "npm run build",
+        "build-lambdas": "cd amplify/backend/function/publishopportunitylisting/src/ && npm i && npm run build",
         "build-schema": "typescript-json-schema ./amplify/backend/function/publishopportunitylisting/src/api.d.ts WebsiteListingPublish -o ./amplify/backend/function/publishopportunitylisting/src/api.schema.json --required --strictNullChecks"
     },
     "eslintConfig": {
@@ -71,9 +71,34 @@
         "classnames": "^2.2.6",
         "eslint": "^5.16.0",
         "govuk-react": "^0.7.0",
+        "husky": ">=1",
         "hygen": "^4.0.2",
+        "lint-staged": ">=8",
         "node-sass": "^4.12.0",
+        "prettier": "^1.17.1",
         "react-test-renderer": "^16.8.6",
-        "styled-components": "^4.2.0"
+        "styled-components": "^4.2.0",
+        "typescript": "^3.5.1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "linters": {
+            "*.{css,scss,json,md}": [
+                "prettier --write",
+                "git add"
+            ],
+            "*.{js,jsx,ts,tsx}": [
+                "eslint --fix --max-warnings=0",
+                "git add"
+            ]
+        },
+        "ignore": [
+            "**/package.json",
+            "**/package-lock.json"
+        ]
     }
 }

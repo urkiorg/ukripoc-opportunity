@@ -7,11 +7,7 @@ import { getApplication } from "../../graphql/queries";
 
 import { RouterProps } from "@reach/router";
 
-import {
-    GetApplicationQuery,
-    UpdateApplicationMutation,
-    DeleteApplicationMutation
-} from "../../API";
+import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
 
 import { SetupApplication } from "../SetupApplication";
 
@@ -35,11 +31,11 @@ interface Props extends RouterProps {
     id?: string;
 }
 
-export const SetupApplicationPage: FC<Props> = (props: Props) => {
+export const SetupApplicationPage: FC<Props> = ({ id }) => {
     //GET THE APPLICATION ITSELF
     const { data } = useQuery<GetApplicationQuery>(GET_APPLICATION, {
         variables: {
-            id: props.id
+            id
         },
         fetchPolicy: "cache-and-network"
     });
@@ -55,7 +51,7 @@ export const SetupApplicationPage: FC<Props> = (props: Props) => {
             const result = await updateApplicationMutation({
                 variables: {
                     input: {
-                        id: props.id,
+                        id,
                         closeApplication: closeApplicationDate,
                         openApplication: openApplicationDate
                     }
@@ -71,7 +67,7 @@ export const SetupApplicationPage: FC<Props> = (props: Props) => {
                 }`
             );
         },
-        [updateApplicationMutation]
+        [updateApplicationMutation, id]
     );
 
     //ADDING A QUESTION TO APPLICATION
@@ -114,7 +110,7 @@ export const SetupApplicationPage: FC<Props> = (props: Props) => {
             refetchQueries: [
                 {
                     query: GET_APPLICATION,
-                    variables: { id: props.id }
+                    variables: { id }
                 }
             ]
         }
