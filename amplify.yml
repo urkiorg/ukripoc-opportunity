@@ -4,6 +4,8 @@ backend:
         build:
             commands:
                 - "# Execute Amplify CLI with the helper script"
+                - nvm use 10
+                - yarn build-lambdas
                 - amplifyPush --simple
 frontend:
     phases:
