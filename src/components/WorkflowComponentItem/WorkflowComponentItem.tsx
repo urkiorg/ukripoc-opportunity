@@ -55,15 +55,15 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
     return (
         <SettingsListItem className={styles.row}>
             <GridRow>
-                <GridCol className={styles.draggable} setWidth="50%">
+                <GridCol className={styles.draggable} setWidth="55%">
                     <Link className={styles.title} to={listingLink}>{formattedName}</Link>
                 </GridCol>
-                <GridCol className={styles.divider}>
+                <GridCol className={styles.divider} setWidth="20%">
                     <a className={styles.remove} onClick={() => deleteListing(component.id)}>
                         remove
                     </a>
                 </GridCol>
-                <GridCol>
+                <GridCol setWidth="25%">
                     {component.__typename === "Application" && 
                         renderApplicationDetails(component) }
                     {component.__typename === "WebsiteListing" 
