@@ -127,10 +127,13 @@ const sendOpportunityToSNS = async (event: FunctionEvent) => {
             closeDate = app.closeApplication;
         }
 
+        const { id, name, funders, description } = opportunity;
+
         const message: Opportunity = {
-            id: opportunity.id,
-            name: opportunity.name,
-            funders: opportunity.funders
+            id,
+            name,
+            funders,
+            description
         };
 
         const topicName = getTopicName(topic, env);
