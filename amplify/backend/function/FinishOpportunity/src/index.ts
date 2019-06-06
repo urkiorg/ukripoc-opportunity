@@ -1,4 +1,9 @@
 import AWS from "aws-sdk";
+import {
+    getDBTableName,
+    getTopicName,
+    postSNSMessage
+} from "../../../helpers/aws-helpers";
 import { api } from "../../../amplify-meta.json";
 /* Amplify Params - DO NOT EDIT
 You can access the following resource attributes as environment variables from your Lambda function
@@ -10,59 +15,126 @@ Amplify Params - DO NOT EDIT */
 AWS.config.region = "eu-west-1";
 const topic = "FinishOpportunityUpdate";
 
-export const getSNSARNName = (
-    partition: string,
-    service: string,
-    region: string = AWS.config.region as string,
-    accountId: string,
-    topicName: string
-): string => `arn:${partition}:${service}:${region}:${accountId}:${topicName}`;
+const getApplications = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<Application[]> => {
+    console.log({ TableName });
+    const result = await client
+        .query({
+            TableName,
+            ExpressionAttributeValues: { ":o": opportunityId },
+            IndexName: "gsi-Application",
+            KeyConditionExpression: "applicationOpportunityId = :o"
+        })
+        .promise();
 
-const getTopicName = (topic: string, env: string): string => `${topic}-${env}`;
+    return result.Items || [];
+};
 
-const postSNSMessage = async (
-    topicName: string,
-    accountId: string,
-    message: any
-): Promise<any> => {
-    const sns = new AWS.SNS();
+const getListingsForOpportunity = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<WebsiteListing[]> => {
+    let result = await client
+        .query({
+            TableName,
+            KeyConditionExpression: "websiteListingOpportunityId = :a",
+            ExpressionAttributeValues: { ":a": opportunityId }
+        })
+        .promise();
 
-    sns.publish(
-        {
-            TopicArn: getSNSARNName(
-                "aws",
-                "sns",
-                undefined,
-                accountId,
-                topicName
-            ),
-            Message: JSON.stringify(message)
-        },
-        function(err, data) {
-            if (err) {
-                console.error(err.stack);
-                return Promise.reject("Could not push to SNS");
-            }
-            console.log("push sent");
-            console.log(data);
+    return result.Items || [];
+};
 
-            return Promise.resolve(data);
-        }
-    );
+const getOpportunity = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
+): Promise<Opportunity | undefined> => {
+    let result = await client
+        .get({ TableName, Key: { id: opportunityId } })
+        .promise();
+
+    return result.Item as Opportunity;
 };
 
 const sendOpportunityToSNS = async (event: FunctionEvent) => {
     try {
         const env = process.env.env;
         const apiId = api.ukri.output.GraphQLAPIIdOutput;
+        const opportunityId = event.source.id;
 
         if (!env || !event.source) {
             console.error("An environment and opportunity id must be set");
             throw new Error("Opportunity can't be found");
         }
 
+        const client = new AWS.DynamoDB.DocumentClient({
+            region: "eu-west-1"
+        });
+
+        const opportunityTableName = getDBTableName(env, apiId, "Opportunity");
+        const opportunity = await getOpportunity(
+            client,
+            opportunityTableName,
+            opportunityId
+        );
+        console.log("opportunity", opportunity);
+        if (!opportunity) {
+            console.error(
+                `The opportunity ${opportunityId} is not was not found`
+            );
+
+            throw new Error(`Opportunity not found`);
+        }
+
+        const listingTableName = getDBTableName(env, apiId, "WebsiteListing");
+        const listing = await getListingsForOpportunity(
+            client,
+            listingTableName,
+            opportunityId
+        );
+        const now = new Date().toISOString();
+
+        if (!listing) {
+            console.error(
+                `Error finding listings for the opportunity, ${opportunityId}`
+            );
+
+            throw new Error(`Error finding listings for the opportunity`);
+        }
+
+        const applications = await getApplications(
+            client,
+            getDBTableName(env, apiId, "Application"),
+            opportunityId
+        );
+
+        let openDate: string | undefined;
+        let closeDate: string | undefined;
+
+        if (applications.length) {
+            const app =
+                applications.length === 1
+                    ? applications[0]
+                    : applications.sort(
+                          (a, b) => (a.rank || 0) - (b.rank || 0)
+                      )[0];
+            openDate = app.openApplication;
+            closeDate = app.closeApplication;
+        }
+
+        const message: Opportunity = {
+            id: opportunity.id,
+            name: opportunity.name,
+            funders: opportunity.funders
+        };
+
         const topicName = getTopicName(topic, env);
-        await postSNSMessage(topicName, apiId, event.source);
+        await postSNSMessage(topicName, apiId, message);
     } catch (error) {}
 };
 
@@ -82,6 +154,8 @@ interface FunctionEvent {
     };
     source: {
         /* The object returned by the parent resolver. E.G. if resolving field 'Post.comments', the source is the Post object. */
+        id: string;
+        typeComplete: boolean;
     };
     request: {
         /* AppSync request object. Contains things like headers. */
