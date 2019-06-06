@@ -1,28 +1,21 @@
-import React, {
-    FC,
-    HTMLAttributes,
-    useState,
-    Children,
-    useCallback
-} from "react";
-
+import React, { FC, useState, useEffect, useCallback } from "react";
 import Details from "@govuk-react/details";
-import { getOpportunity } from "../../graphql/queries";
 import { GetOpportunityQuery } from "../../API";
 import { Link } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
 import { Title, LinkButton } from "../../theme";
 import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
-import P from "@govuk-react/paragraph";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import Button from "@govuk-react/button";
 
 import SectionBreak from "@govuk-react/section-break";
-import { WorkflowComponentList } from "../WorkflowComponentList";
-import { WebsiteListing } from "../../types";
+import { WebsiteListing, Opportunity } from "../../types";
 import styled from "styled-components";
+import { WorkflowComponentList } from "../WorkflowComponentList";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import LoadingBox from "@govuk-react/loading-box";
 
 const checkWebsiteListingComplete = (
     websiteListings: (WebsiteListing | null)[]
@@ -32,6 +25,8 @@ const checkWebsiteListingComplete = (
     }, false);
 
 interface Props {
+    updateApplicationRanking: (id: string, rank: number) => void;
+    updateWebsiteListingRanking: (id: string, rank: number) => void;
     opportunity: GetOpportunityQuery;
     finishOpportunity: () => Promise<any>;
 }
@@ -51,42 +46,104 @@ const Hr = styled(SectionBreak)`
     border-top: 1px solid #999;
 `;
 
+const getAllWorkflows = (getOpportunity: Opportunity) => {
+    const websiteListings =
+        getOpportunity &&
+        getOpportunity.websiteListings &&
+        getOpportunity.websiteListings.items
+            ? getOpportunity.websiteListings.items
+            : [];
+
+    const applications =
+        getOpportunity &&
+        getOpportunity.application &&
+        getOpportunity.application.items
+            ? getOpportunity.application.items
+            : [];
+
+    const mergedWorkflows = () => [...websiteListings, ...applications];
+
+    return mergedWorkflows().sort((a, b) => {
+        if (a && b) {
+            return a.rank - b.rank;
+        } else {
+            return -1;
+        }
+    });
+};
+
 export const SetupOpportunity: FC<Props> = ({
     opportunity,
+    updateWebsiteListingRanking,
+    updateApplicationRanking,
     finishOpportunity
 }) => {
+    const { getOpportunity } = opportunity;
+    const [allWorkflows, setAllWorkflows] = useState();
     const onButtonClick = useCallback(() => {
         finishOpportunity();
     }, [finishOpportunity]);
 
-    if (!opportunity.getOpportunity) {
-        return <div> Loading... </div>;
-    }
+    const linkToFunders = getOpportunity
+        ? `/setup/${getOpportunity.id}/funders`
+        : "";
 
-    const linkToFunders = `/setup/${opportunity.getOpportunity.id}/funders`;
+    useEffect(() => {
+        if (!getOpportunity) {
+            return;
+        }
 
-    const websiteListings =
-        opportunity.getOpportunity &&
-        opportunity.getOpportunity.websiteListings &&
-        opportunity.getOpportunity.websiteListings.items;
+        setAllWorkflows(getAllWorkflows(getOpportunity));
+    }, []);
 
-    // Add other checks here
+    const handleOnDragEnd = (draggableEvent: DropResult) => {
+        const { destination, source } = draggableEvent;
+
+        if (
+            !destination ||
+            (destination.index === source.index &&
+                destination.droppableId === source.droppableId)
+        ) {
+            // No reordering required
+            return;
+        } else {
+            const newOrdering = [...allWorkflows];
+            newOrdering.splice(source.index, 1);
+            newOrdering.splice(
+                destination.index,
+                0,
+                allWorkflows[source.index]
+            );
+            setAllWorkflows(newOrdering);
+
+            newOrdering.forEach(({ __typename, id }, index) => {
+                if (opportunity) {
+                    if (__typename === "Application") {
+                        updateApplicationRanking(id, index);
+                    }
+                    if (__typename === "WebsiteListing") {
+                        updateWebsiteListingRanking(id, index);
+                    }
+                }
+            });
+        }
+    };
+
+    // Add other completion check functions here
     const allComplete =
-        (!websiteListings ||
-            !websiteListings.length ||
-            checkWebsiteListingComplete(websiteListings)) &&
-        opportunity.getOpportunity.fundersComplete;
+        getOpportunity &&
+        checkWebsiteListingComplete(allWorkflows) &&
+        getOpportunity.fundersComplete;
 
-    console.log(websiteListings);
     return (
-        <>
-            <Caption mb={1}>{opportunity.getOpportunity.name}</Caption>
+        <LoadingBox loading={!getOpportunity}>
+            <Caption mb={1}>
+                {getOpportunity ? getOpportunity.name : ""}
+            </Caption>
             <Title>Opportunity setup</Title>
-
             <Caption mb={6} size="XL">
                 Settings
             </Caption>
-
             <SettingsListItem>
                 <GridRow>
                     <GridCol setWidth="90%">
@@ -95,15 +152,13 @@ export const SetupOpportunity: FC<Props> = ({
                         </Link>
                     </GridCol>
                     <GridCol>
-                        {opportunity.getOpportunity.fundersComplete
+                        {getOpportunity && getOpportunity.fundersComplete
                             ? "Done"
                             : "Not Done"}
                     </GridCol>
                 </GridRow>
             </SettingsListItem>
-
             <Caption mb={3}>Workflow</Caption>
-
             <Details summary="How do I create my workflow ?" mb={2}>
                 To add a workflow component, just select a component and
                 sub-type to add using the dropdowns. You can re-order your
@@ -112,12 +167,29 @@ export const SetupOpportunity: FC<Props> = ({
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            <WorkflowComponentList
-                websiteListings={websiteListings ? websiteListings : null}
-            />
+            {allWorkflows ? (
+                <DragDropContext onDragEnd={handleOnDragEnd}>
+                    <Droppable droppableId="droppable">
+                        {provided => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                <WorkflowComponentList
+                                    orderedWorkflows={allWorkflows}
+                                />
+                                {provided.placeholder}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            ) : (
+                <Title>Not Found</Title>
+            )}
             <Hr />
             <WorkflowComponentAdd
-                opportunityId={opportunity.getOpportunity.id}
+                opportunityId={getOpportunity ? getOpportunity.id : ""}
             />
             <Hr />
             <FinishSection>
@@ -132,7 +204,7 @@ export const SetupOpportunity: FC<Props> = ({
                     <DeleteLink>Delete opportunity</DeleteLink>
                 </GridCol>
             </FinishSection>
-        </>
+        </LoadingBox>
     );
 };
 

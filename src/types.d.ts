@@ -1,18 +1,25 @@
 interface Opportunity {
+    __typename: string;
     id: string;
     name: string;
-    description: string;
-    funders: string[];
-    fundersComplete?: boolean;
-    openDate: string | null;
-    closeDate: string | null;
-    websiteListings: WebsiteListing[] | null;
-    teammembers: TeamMember[] | null;
-    teammembersComplete: boolean | null;
-    type: OpportunityType | null;
-    typeComplete: boolean | null;
+    description: string | null;
+    funders: (string | null)[] | null;
+    fundersComplete?: boolean | null;
+    websiteListings?: WebsiteListings | null;
+    teammembers?: TeamMembers | null;
+    teammembersComplete?: boolean | null;
+    type?: OpportunityType | null;
+    typeComplete?: boolean | null;
+    application?: Applications | null;
 }
 
+export interface Applications {
+    items: (ApplicationListing | null)[] | null;
+}
+
+export interface WebsiteListings {
+    items: (WebsiteListing | null)[] | null;
+}
 export interface WebsiteListing {
     id: string;
     rank: number;
@@ -21,18 +28,44 @@ export interface WebsiteListing {
     __typename: string;
 }
 
-interface TeamMember {
+export interface TeamMembers {
+    items: (TeamMemberListing | null)[] | null;
+}
+
+export interface TeamMemberListing {
     id: string;
     name: string;
     role: string | null;
 }
 
-interface OpportunityType {
+export interface OpportunityType {
     id: string;
     name: string;
     description: string;
 }
 
-interface Obj {
+export interface Obj {
     [key: string]: any;
+}
+
+export interface ApplicationListing {
+    __typename: string;
+    id: string;
+    rank: number;
+    openApplication: string | null;
+    closeApplication: string | null;
+}
+
+export interface ApplicationQuestionType {
+    heading: string | null;
+    title: string | null;
+    subtitle: string | null;
+    notes: string | null;
+    wordLimit: number | null;
+    complete: boolean | null;
+}
+
+export interface ApplicationTypes {
+    application: "Application";
+    websiteListing: "Website Listing";
 }
