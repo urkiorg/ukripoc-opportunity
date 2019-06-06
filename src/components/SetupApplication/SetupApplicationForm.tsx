@@ -115,12 +115,12 @@ export const SetupApplicationForm: FC<Props> = ({
         const today = new Date();
 
         if (openDate < today) {
-            setDateError("Open date must be before today");
+            setDateError("Open date must start after today");
             return false;
         }
 
         if (openDate > closeDate) {
-            setDateError("Open date must be before the closing date");
+            setDateError("Open date must start before the closing date");
             return false;
         }
 
