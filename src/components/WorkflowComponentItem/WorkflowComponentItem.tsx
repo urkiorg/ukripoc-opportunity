@@ -4,6 +4,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import { SettingsListItem } from "../../theme";
 import { WebsiteListing, ApplicationListing, ApplicationTypes } from "../../types";
+import styles from "./WorkflowComponentItem.module.scss";
 
 interface Props {
     component: WebsiteListing | ApplicationListing;
@@ -16,16 +17,20 @@ const niceName: ApplicationTypes = {
 }
 
 const formatCasing = (word: string) => word.charAt(0).toLowerCase() + word.slice(1);
+const noInformation = "Unknown"
 
 const renderApplicationDetails = (component: ApplicationListing) => {
     const {openApplication, closeApplication} = component;
     return (
-        (openApplication && closeApplication) &&
-        <div>
+        <div className={styles.info}>
             <p>Application open</p>
-            <p>{openApplication}</p>
+            <p className={styles.bold}>
+                {openApplication ? openApplication : noInformation}
+            </p>
             <p>Application close</p>
-            <p>{closeApplication}</p>
+            <p className={styles.bold}>
+                {closeApplication ? closeApplication : noInformation}
+            </p>
         </div>
     )
 }
@@ -33,10 +38,12 @@ const renderApplicationDetails = (component: ApplicationListing) => {
 const renderWebsiteListing = (component: WebsiteListing) => {
     const {lastPublished} = component;
     return (
-        lastPublished &&
-            <div>
+        !lastPublished &&
+            <div className={styles.info}>
                 <p>Publish data</p>
-                <p>{lastPublished}</p>
+                <p className={styles.bold}>
+                    {lastPublished ? lastPublished : noInformation}
+                </p>
             </div>
     )
 }
@@ -46,14 +53,14 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
     const listingLink = `/component/${formattedName}/${component.id}`;
     
     return (
-        <SettingsListItem>
+        <SettingsListItem className={styles.row}>
             <GridRow>
-                <GridCol setWidth="70%">
-                    <Link to={listingLink}>{formattedName}</Link>
+                <GridCol className={styles.draggable} setWidth="50%">
+                    <Link className={styles.title} to={listingLink}>{formattedName}</Link>
                 </GridCol>
-                <GridCol >
-                    <a onClick={() => deleteListing(component.id)}>
-                        Remove
+                <GridCol className={styles.divider}>
+                    <a className={styles.remove} onClick={() => deleteListing(component.id)}>
+                        remove
                     </a>
                 </GridCol>
                 <GridCol>
