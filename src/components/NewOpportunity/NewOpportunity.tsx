@@ -1,12 +1,11 @@
 import React, { FC, useState, useCallback } from "react";
 import styles from "./NewOpportunity.module.scss";
 import Button from "@govuk-react/button";
-import { H2, H4 } from "@govuk-react/heading";
+import { H4 } from "@govuk-react/heading";
 import HintText from "@govuk-react/hint-text";
 import Details from "@govuk-react/details";
 import Input from "@govuk-react/input";
 import { ukriGreen, Title } from "../../theme";
-import { navigate } from "@reach/router";
 
 interface Props {
     addOpportunity: (name: string) => void;
@@ -21,7 +20,7 @@ export const NewOpportunity: FC<Props> = ({ addOpportunity }) => {
     );
 
     const onButtonClick = useCallback(() => {
-        const newOpportunity = addOpportunity(opportunityName);
+        addOpportunity(opportunityName);
         setOpportunityName("");
     }, [opportunityName, addOpportunity]);
 

@@ -60,7 +60,7 @@ export const WorkflowComponentAdd: FC<Props> = ({ opportunityId }) => {
         if (data) {
             navigate(`/component/application/${data.createApplication.id}`);
         }
-    }, [createApplicationMutation]);
+    }, [createApplicationMutation, opportunityId]);
 
     const websiteListing = useCallback(async () => {
         //if website component

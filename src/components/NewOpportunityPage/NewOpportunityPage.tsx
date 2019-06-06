@@ -18,7 +18,7 @@ export const NewOpportunityPage: FC = () => {
                 }
             });
 
-            const { data, loading, error } = result;
+            const { data } = result;
 
             if (data) {
                 navigate(`/setup/${data.createOpportunity.id}`);

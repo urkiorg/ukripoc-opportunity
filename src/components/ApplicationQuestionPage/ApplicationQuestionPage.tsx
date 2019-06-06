@@ -5,7 +5,6 @@ import { updateApplicationQuestion } from "../../graphql/mutations";
 
 import { navigate, RouterProps } from "@reach/router";
 import { getApplicationQuestion } from "../../graphql/queries";
-import { UpdateApplicationQuestionInput } from "../../API";
 
 import { ApplicationQuestion } from "../ApplicationQuestion";
 import { ApplicationQuestionType } from "../../types";
