@@ -1,9 +1,9 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { WorkflowComponentItem } from "./index";
-import { Application } from "../../types";
+import { ApplicationType } from "../../types";
 
-const type: Application  = "Application";
+const type: ApplicationType  = "Application";
 
 const component = {
     id: "1",

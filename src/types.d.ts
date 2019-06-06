@@ -1,16 +1,16 @@
-export type WebsiteListing  = "WebsiteListing";
-export type Application  = "Application"
+export type WebsiteListingType  = "WebsiteListing";
+export type ApplicationType  = "Application"
 
 export interface WebsiteListing {
+    __typename: WebsiteListingType;
     id: string;
     rank: number;
     lastPublished: string | null;
     description: string | null;
-    __typename: WebsiteListing;
 }
 
 export interface ApplicationListing {
-    __typename: Application;
+    __typename: ApplicationType;
     id: string;
     rank: number;
     openApplication: string | null;

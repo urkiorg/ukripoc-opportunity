@@ -17,10 +17,10 @@ const niceName: ApplicationTypes = {
 
 const formatCasing = (word: string) => word.charAt(0).toLowerCase() + word.slice(1);
 
-const renderApplicationDetails = (component:  ApplicationListing) => {
+const renderApplicationDetails = (component: ApplicationListing) => {
     const {openApplication, closeApplication} = component;
-    
     return (
+        (openApplication && closeApplication) &&
         <div>
             <p>Application open</p>
             <p>{openApplication}</p>
@@ -32,12 +32,12 @@ const renderApplicationDetails = (component:  ApplicationListing) => {
 
 const renderWebsiteListing = (component: WebsiteListing) => {
     const {lastPublished} = component;
-
     return (
-        <div>
-            <p>Publish data</p>
-            <p>{lastPublished}</p>
-        </div>
+        lastPublished &&
+            <div>
+                <p>Publish data</p>
+                <p>{lastPublished}</p>
+            </div>
     )
 }
 
@@ -51,7 +51,7 @@ export const WorkflowComponentItem: FC<Props> = ({deleteListing, component}) => 
                 <GridCol setWidth="70%">
                     <Link to={listingLink}>{formattedName}</Link>
                 </GridCol>
-                <GridCol>
+                <GridCol >
                     <a onClick={() => deleteListing(component.id)}>
                         Remove
                     </a>

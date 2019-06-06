@@ -1,10 +1,10 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { WorkflowComponentList } from "./index";
-import { Application, WebsiteListing } from "../../types";
+import { ApplicationType, WebsiteListingType } from "../../types";
 
-const application: Application  = "Application";
-const websiteListing: WebsiteListing  = "WebsiteListing";
+const application: ApplicationType  = "Application";
+const websiteListing: WebsiteListingType  = "WebsiteListing";
 
 const orderedOpportunity = [
     {
