@@ -19,33 +19,30 @@ interface Props extends RouterProps {
     id?: string;
 }
 
-export const WebsiteListingPage: FC<Props> = (props: Props) => {
+export const WebsiteListingPage: FC<Props> = ({ id }) => {
     const updateWebsiteListingMutation = useMutation<
         UpdateWebsiteListingMutation
     >(UPDATE_WEBSITE_LISTING);
 
-    const { data, loading, error } = useQuery<GetWebsiteListingQuery>(
-        GET_LISTING,
-        {
-            variables: {
-                id: props.id
-            },
-            fetchPolicy: "cache-and-network"
-        }
-    );
+    const { data } = useQuery<GetWebsiteListingQuery>(GET_LISTING, {
+        variables: {
+            id
+        },
+        fetchPolicy: "cache-and-network"
+    });
 
     const updateWebsiteListing = useCallback(
         async (description: string) => {
             const result = await updateWebsiteListingMutation({
                 variables: {
-                    input: { id: props.id, description: description }
+                    input: { id, description }
                 }
             });
 
-            const { data, loading, error } = result;
+            const { data } = result;
 
             const payload = {
-                listingId: props.id,
+                listingId: id,
                 opportunityId: data.updateWebsiteListing.opportunity.id,
                 description: description
             };
@@ -62,9 +59,9 @@ export const WebsiteListingPage: FC<Props> = (props: Props) => {
                 body: payload
             };
 
-            const response = await API.post(apiName, path, init);
+            await API.post(apiName, path, init);
         },
-        [updateWebsiteListingMutation, props]
+        [updateWebsiteListingMutation, id]
     );
 
     return (

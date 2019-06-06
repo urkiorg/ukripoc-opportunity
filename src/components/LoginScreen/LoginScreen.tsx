@@ -143,7 +143,7 @@ export const LoginScreen: FC<Props> = props => {
                 setLoading(false);
             }
         },
-        [username, password]
+        [username, password, validateInput]
     );
 
     return (

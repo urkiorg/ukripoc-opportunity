@@ -1,19 +1,16 @@
-import React, { FC, useCallback } from "react";
+import React, { FC } from "react";
 
 import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Caption from "@govuk-react/caption";
 import Details from "@govuk-react/details";
 
-import { GetApplicationQuery, UpdateApplicationMutation } from "../../API";
+import { GetApplicationQuery } from "../../API";
 
 import { Title } from "../../theme";
 
 import SetupApplicationForm from "./SetupApplicationForm";
 import { ApplicationQuestionsList } from "../ApplicationQuestionsList";
 
-interface Funder {
-    name: string;
-}
 interface Props {
     application?: GetApplicationQuery;
     updateApplication: (openDate: string, closeDate: string) => void;
