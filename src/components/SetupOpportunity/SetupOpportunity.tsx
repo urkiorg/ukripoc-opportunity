@@ -100,12 +100,12 @@ export const SetupOpportunity: FC<Props> = ({
         : "";
 
     useEffect(() => {
-        if (!getOpportunity) {
+        if (!getOpportunity || loading) {
             return;
         }
 
         setAllWorkflows(getAllWorkflows(getOpportunity));
-    }, [getOpportunity]);
+    }, [getOpportunity, loading]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent;
