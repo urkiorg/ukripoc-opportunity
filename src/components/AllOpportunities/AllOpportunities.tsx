@@ -1,5 +1,6 @@
 import React, { FC, HTMLAttributes } from "react";
 import LoadingBox from "@govuk-react/loading-box";
+import Button from "@govuk-react/button";
 import { Query } from "react-apollo";
 
 import { Link } from "@reach/router";
@@ -7,6 +8,7 @@ import { Link } from "@reach/router";
 import gql from "graphql-tag";
 
 import Table from "@govuk-react/table";
+import { ukriGreen } from "../../theme";
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
@@ -58,6 +60,9 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                 );
             }}
         </Query>
+        <Button as={Link} to="opportunity" buttonColour={ukriGreen}>
+            Add opportunity
+        </Button>
     </div>
 );
 
