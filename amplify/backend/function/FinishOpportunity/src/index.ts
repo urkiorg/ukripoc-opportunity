@@ -4,7 +4,7 @@ import {
     getTopicName,
     postSNSMessage
 } from "../../../helpers/aws-helpers";
-import { api } from "../../../amplify-meta.json";
+import console = require("console");
 /* Amplify Params - DO NOT EDIT
 You can access the following resource attributes as environment variables from your Lambda function
 var environment = process.env.ENV
@@ -64,12 +64,12 @@ const getOpportunity = async (
 
 const sendOpportunityToSNS = async (event: FunctionEvent) => {
     try {
-        const env = process.env.env;
-        const apiId = api.ukri.output.GraphQLAPIIdOutput;
+        const env = process.env.ENV;
+        const apiId = process.env.AppSyncApiId;
         const opportunityId = event.source.id;
 
-        if (!env || !event.source) {
-            console.error("An environment and opportunity id must be set");
+        if (!env || !event.source || !apiId) {
+            console.error("An environment and opportunity must be set");
             throw new Error("Opportunity can't be found");
         }
 

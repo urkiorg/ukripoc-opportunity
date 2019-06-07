@@ -7,9 +7,10 @@ type Opportunity @model {
     teammembers: [TeamMember] @connection(name: "OpportunityTeamMembers")
     teammembersComplete: Boolean
     type: OpportunityType @connection(name: "OpportunityTypes")
-    typeComplete: Boolean @function(name: "FinishOpportunity-${env}")
+    typeComplete: Boolean
     websiteListings: [WebsiteListing] @connection(name: "WebsiteListing")
     application: [Application] @connection(name: "Application")
+    opportunityComplete: Boolean
 }
 
 type TeamMember @model {

@@ -17,6 +17,7 @@ const GET_OPP = gql`
                 name
                 description
                 id
+                opportunityComplete
             }
         }
     }
@@ -43,6 +44,11 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                                                 >
                                                     {opportunity.name}
                                                 </Link>
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {opportunity.opportunityComplete
+                                                    ? "Done"
+                                                    : "Not done"}
                                             </Table.Cell>
                                         </Table.Row>
                                     )

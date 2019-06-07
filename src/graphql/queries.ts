@@ -29,6 +29,7 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -50,6 +51,7 @@ export const getOpportunity = `query GetOpportunity($id: ID!) {
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -81,6 +83,7 @@ export const listOpportunitys = `query ListOpportunitys(
       application {
         nextToken
       }
+      opportunityComplete
     }
     nextToken
   }
@@ -113,6 +116,7 @@ export const getTeamMember = `query GetTeamMember($id: ID!) {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -135,6 +139,7 @@ export const listTeamMembers = `query ListTeamMembers(
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     nextToken
@@ -168,6 +173,7 @@ export const getOpportunityType = `query GetOpportunityType($id: ID!) {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -190,6 +196,7 @@ export const listOpportunityTypes = `query ListOpportunityTypes(
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     nextToken
@@ -224,6 +231,7 @@ export const getWebsiteListing = `query GetWebsiteListing($id: ID!) {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -247,6 +255,7 @@ export const listWebsiteListings = `query ListWebsiteListings(
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     nextToken
@@ -281,6 +290,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -316,6 +326,7 @@ export const listApplications = `query ListApplications(
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
@@ -346,6 +357,7 @@ export const getApplicationQuestion = `query GetApplicationQuestion($id: ID!) {
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken

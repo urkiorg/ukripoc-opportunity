@@ -8,17 +8,22 @@ exports[`WorkflowComponentItem renders correctly 1`] = `
     className="sc-bdVaJa gkOpjT"
   >
     <div
-      className="sc-bwzfXH dkijAd"
+      className="sc-bwzfXH iXLolC"
     >
       <a
-        href="/component/Application/1"
+        href="/component/application/1"
         onClick={[Function]}
       >
         Application
       </a>
     </div>
     <div
-      className="sc-bwzfXH iXLolC"
+      className="sc-bwzfXH gVHbMj"
+    >
+      Incomplete
+    </div>
+    <div
+      className="sc-bwzfXH gVHbMj"
     >
       <button
         onClick={[Function]}

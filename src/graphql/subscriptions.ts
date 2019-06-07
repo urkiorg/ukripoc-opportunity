@@ -29,6 +29,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -50,6 +51,7 @@ export const onCreateOpportunity = `subscription OnCreateOpportunity {
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -81,6 +83,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -102,6 +105,7 @@ export const onUpdateOpportunity = `subscription OnUpdateOpportunity {
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -133,6 +137,7 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -154,6 +159,7 @@ export const onDeleteOpportunity = `subscription OnDeleteOpportunity {
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -184,6 +190,7 @@ export const onCreateTeamMember = `subscription OnCreateTeamMember {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -215,6 +222,7 @@ export const onUpdateTeamMember = `subscription OnUpdateTeamMember {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -246,6 +254,7 @@ export const onDeleteTeamMember = `subscription OnDeleteTeamMember {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -277,6 +286,7 @@ export const onCreateOpportunityType = `subscription OnCreateOpportunityType {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -308,6 +318,7 @@ export const onUpdateOpportunityType = `subscription OnUpdateOpportunityType {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -339,6 +350,7 @@ export const onDeleteOpportunityType = `subscription OnDeleteOpportunityType {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -371,6 +383,7 @@ export const onCreateWebsiteListing = `subscription OnCreateWebsiteListing {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -403,6 +416,7 @@ export const onUpdateWebsiteListing = `subscription OnUpdateWebsiteListing {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -435,6 +449,7 @@ export const onDeleteWebsiteListing = `subscription OnDeleteWebsiteListing {
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -467,6 +482,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -511,6 +527,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -555,6 +572,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -592,6 +610,7 @@ export const onCreateApplicationQuestion = `subscription OnCreateApplicationQues
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
@@ -622,6 +641,7 @@ export const onUpdateApplicationQuestion = `subscription OnUpdateApplicationQues
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
@@ -652,6 +672,7 @@ export const onDeleteApplicationQuestion = `subscription OnDeleteApplicationQues
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken

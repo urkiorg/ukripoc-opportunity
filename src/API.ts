@@ -9,6 +9,7 @@ export type CreateOpportunityInput = {
   fundersComplete?: boolean | null,
   teammembersComplete?: boolean | null,
   typeComplete?: boolean | null,
+  opportunityComplete?: boolean | null,
   opportunityTypeId?: string | null,
 };
 
@@ -20,6 +21,7 @@ export type UpdateOpportunityInput = {
   fundersComplete?: boolean | null,
   teammembersComplete?: boolean | null,
   typeComplete?: boolean | null,
+  opportunityComplete?: boolean | null,
   opportunityTypeId?: string | null,
 };
 
@@ -137,6 +139,7 @@ export type ModelOpportunityFilterInput = {
   fundersComplete?: ModelBooleanFilterInput | null,
   teammembersComplete?: ModelBooleanFilterInput | null,
   typeComplete?: ModelBooleanFilterInput | null,
+  opportunityComplete?: ModelBooleanFilterInput | null,
   and?: Array< ModelOpportunityFilterInput | null > | null,
   or?: Array< ModelOpportunityFilterInput | null > | null,
   not?: ModelOpportunityFilterInput | null,
@@ -273,6 +276,7 @@ export type CreateOpportunityMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -298,6 +302,7 @@ export type CreateOpportunityMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -338,6 +343,7 @@ export type UpdateOpportunityMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -363,6 +369,7 @@ export type UpdateOpportunityMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -403,6 +410,7 @@ export type DeleteOpportunityMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -428,6 +436,7 @@ export type DeleteOpportunityMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -468,6 +477,7 @@ export type CreateTeamMemberMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -509,6 +519,7 @@ export type UpdateTeamMemberMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -550,6 +561,7 @@ export type DeleteTeamMemberMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -591,6 +603,7 @@ export type CreateOpportunityTypeMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -632,6 +645,7 @@ export type UpdateOpportunityTypeMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -673,6 +687,7 @@ export type DeleteOpportunityTypeMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -715,6 +730,7 @@ export type CreateWebsiteListingMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -757,6 +773,7 @@ export type UpdateWebsiteListingMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -799,6 +816,7 @@ export type DeleteWebsiteListingMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -841,6 +859,7 @@ export type CreateApplicationMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -897,6 +916,7 @@ export type UpdateApplicationMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -953,6 +973,7 @@ export type DeleteApplicationMutation = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -999,6 +1020,7 @@ export type CreateApplicationQuestionMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -1037,6 +1059,7 @@ export type UpdateApplicationQuestionMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -1075,6 +1098,7 @@ export type DeleteApplicationQuestionMutation = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -1122,6 +1146,7 @@ export type GetOpportunityQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -1147,6 +1172,7 @@ export type GetOpportunityQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -1186,6 +1212,7 @@ export type ListOpportunitysQuery = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1228,6 +1255,7 @@ export type GetTeamMemberQuery = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1255,6 +1283,7 @@ export type ListTeamMembersQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null > | null,
     nextToken: string | null,
@@ -1298,6 +1327,7 @@ export type GetOpportunityTypeQuery = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1325,6 +1355,7 @@ export type ListOpportunityTypesQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null > | null,
     nextToken: string | null,
@@ -1369,6 +1400,7 @@ export type GetWebsiteListingQuery = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1397,6 +1429,7 @@ export type ListWebsiteListingsQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null > | null,
     nextToken: string | null,
@@ -1441,6 +1474,7 @@ export type GetApplicationQuery = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -1483,6 +1517,7 @@ export type ListApplicationsQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -1521,6 +1556,7 @@ export type GetApplicationQuestionQuery = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -1594,6 +1630,7 @@ export type OnCreateOpportunitySubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -1619,6 +1656,7 @@ export type OnCreateOpportunitySubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -1655,6 +1693,7 @@ export type OnUpdateOpportunitySubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -1680,6 +1719,7 @@ export type OnUpdateOpportunitySubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -1716,6 +1756,7 @@ export type OnDeleteOpportunitySubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
     } | null,
     typeComplete: boolean | null,
@@ -1741,6 +1782,7 @@ export type OnDeleteOpportunitySubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    opportunityComplete: boolean | null,
   } | null,
 };
 
@@ -1777,6 +1819,7 @@ export type OnCreateTeamMemberSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1814,6 +1857,7 @@ export type OnUpdateTeamMemberSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1851,6 +1895,7 @@ export type OnDeleteTeamMemberSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1888,6 +1933,7 @@ export type OnCreateOpportunityTypeSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1925,6 +1971,7 @@ export type OnUpdateOpportunityTypeSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -1962,6 +2009,7 @@ export type OnDeleteOpportunityTypeSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -2000,6 +2048,7 @@ export type OnCreateWebsiteListingSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -2038,6 +2087,7 @@ export type OnUpdateWebsiteListingSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -2076,6 +2126,7 @@ export type OnDeleteWebsiteListingSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
   } | null,
 };
@@ -2114,6 +2165,7 @@ export type OnCreateApplicationSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -2166,6 +2218,7 @@ export type OnUpdateApplicationSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -2218,6 +2271,7 @@ export type OnDeleteApplicationSubscription = {
         __typename: "ModelApplicationConnection",
         nextToken: string | null,
       } | null,
+      opportunityComplete: boolean | null,
     } | null,
     applicationQuestions:  {
       __typename: "ModelApplicationQuestionConnection",
@@ -2260,6 +2314,7 @@ export type OnCreateApplicationQuestionSubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -2294,6 +2349,7 @@ export type OnUpdateApplicationQuestionSubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",
@@ -2328,6 +2384,7 @@ export type OnDeleteApplicationQuestionSubscription = {
         fundersComplete: boolean | null,
         teammembersComplete: boolean | null,
         typeComplete: boolean | null,
+        opportunityComplete: boolean | null,
       } | null,
       applicationQuestions:  {
         __typename: "ModelApplicationQuestionConnection",

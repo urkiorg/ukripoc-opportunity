@@ -13,6 +13,8 @@ interface Opportunity {
     application?: Applications | null;
 }
 
+export type WorkflowItem = ApplicationListing | WebsiteListing | null;
+
 export interface Applications {
     items: (ApplicationListing | null)[] | null;
 }
@@ -25,7 +27,7 @@ export interface WebsiteListing {
     rank: number;
     lastPublished: string | null;
     description: string | null;
-    __typename: string;
+    __typename: "WebsiteListing";
 }
 
 export interface TeamMembers {
@@ -49,11 +51,14 @@ export interface Obj {
 }
 
 export interface ApplicationListing {
-    __typename: string;
+    __typename: "Application";
     id: string;
     rank: number;
     openApplication: string | null;
     closeApplication: string | null;
+    applicationQuestions: {
+        items: (ApplicationQuestionType | null)[] | null;
+    } | null;
 }
 
 export interface ApplicationQuestionType {
@@ -72,5 +77,5 @@ export interface WorkflowTypes {
 
 export interface WorkflowUrls {
     application: "application";
-    websiteListing: "website-listing";   
+    websiteListing: "website-listing";
 }

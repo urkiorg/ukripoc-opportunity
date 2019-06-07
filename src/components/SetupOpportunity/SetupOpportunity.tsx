@@ -1,52 +1,39 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 import Details from "@govuk-react/details";
-import { GetOpportunityQuery } from "../../API";
 import Link from "@govuk-react/link";
 
 import { Link as RouterLink } from "@reach/router";
 import { WorkflowComponentAdd } from "../WorkflowComponentAdd";
-import { Title, LinkButton } from "../../theme";
+import { Title } from "../../theme";
 import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import Button from "@govuk-react/button";
+import LabelText from "@govuk-react/label-text";
 
 import SectionBreak from "@govuk-react/section-break";
-import { WebsiteListing, Opportunity, ApplicationListing } from "../../types";
+import {
+    WebsiteListing,
+    Opportunity,
+    ApplicationListing,
+    WorkflowItem
+} from "../../types";
 import styled from "styled-components";
 import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import LoadingBox from "@govuk-react/loading-box";
+import { GetOpportunityQueryWithQuestions } from "../SetupOpportunityPage/SetupOpportunityPage";
+import {
+    listingIsComplete,
+    isApplicationListing,
+    isWebsiteListing
+} from "../../dataHelpers";
 
-const checkWebsiteListingComplete = (listing: WebsiteListing): boolean => {
-    return !!(listing.description && listing.lastPublished);
-};
-const checkApplicationListingComplete = (
-    listing: ApplicationListing
-): boolean => {
-    return !!(listing.openApplication && listing.closeApplication);
-};
-
-const checkListingsComplete = (
-    listing: (WebsiteListing | ApplicationListing | null)[]
-): boolean =>
+const checkListingsComplete = (listing: WorkflowItem[]): boolean =>
+    !listing.length ||
     listing.reduce<boolean>(
-        (acc, listing: WebsiteListing | ApplicationListing | null) => {
-            if (!listing) {
-                return true;
-            }
-            const typename = listing.__typename;
-
-            if (typename === "WebsiteListing") {
-                return checkWebsiteListingComplete ? true : acc;
-            }
-
-            if (typename === "Application") {
-                return checkApplicationListingComplete ? true : acc;
-            }
-            return acc;
-        },
+        (acc, listing) => listingIsComplete(listing) || acc,
         false
     );
 
@@ -54,19 +41,19 @@ interface Props {
     loading: boolean;
     updateApplicationRanking: (id: string, rank: number) => void;
     updateWebsiteListingRanking: (id: string, rank: number) => void;
-    opportunity: GetOpportunityQuery;
+    opportunity: GetOpportunityQueryWithQuestions;
     finishOpportunity: () => Promise<any>;
 }
 
-const DeleteLink = styled(LinkButton)`
-    vertical-align: middle;
-    padding: 0px 10px;
-    margin-left: 10px;
-    align-self: flex-start;
-`;
+// const DeleteLink = styled(LinkButton)`
+//     vertical-align: middle;
+//     padding: 0px 10px;
+//     margin-left: 10px;
+//     align-self: flex-start;
+// `;
 
 const FinishSection = styled(GridRow)`
-    padding-top: 3em;
+    padding: 3em 0;
 `;
 
 const Hr = styled(SectionBreak)`
@@ -156,19 +143,19 @@ export const SetupOpportunity: FC<Props> = ({
                     return;
                 }
 
-                const { __typename, id } = item;
-
                 if (opportunity) {
-                    if (__typename === "Application") {
-                        updateApplicationRanking(id, index);
+                    if (isApplicationListing(item)) {
+                        updateApplicationRanking(item.id, index);
                     }
-                    if (__typename === "WebsiteListing") {
-                        updateWebsiteListingRanking(id, index);
+                    if (isWebsiteListing(item)) {
+                        updateWebsiteListingRanking(item.id, index);
                     }
                 }
             });
         }
     };
+
+    console.log("OK", allWorkflows);
 
     // Add other completion check functions here
     const allComplete =
@@ -239,14 +226,18 @@ export const SetupOpportunity: FC<Props> = ({
             <Hr />
             <FinishSection>
                 <GridCol>
-                    <Button
-                        isStart={false}
-                        disabled={!allComplete}
-                        onClick={onButtonClick}
-                    >
-                        Finish setup
-                    </Button>
-                    <DeleteLink>Delete opportunity</DeleteLink>
+                    {!!getOpportunity && !getOpportunity.opportunityComplete ? (
+                        <Button
+                            isStart={false}
+                            disabled={!allComplete}
+                            onClick={onButtonClick}
+                        >
+                            Finish setup
+                        </Button>
+                    ) : (
+                        <LabelText>Complete</LabelText>
+                    )}
+                    {/* <DeleteLink>Delete opportunity</DeleteLink> */}
                 </GridCol>
             </FinishSection>
         </LoadingBox>
