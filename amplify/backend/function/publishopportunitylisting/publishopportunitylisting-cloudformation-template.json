@@ -63,8 +63,8 @@
                 "Runtime": "nodejs8.10",
                 "Timeout": "25",
                 "Code": {
-                    "S3Bucket": "ukri-develop-20190524095630-deployment",
-                    "S3Key": "amplify-builds/publishopportunitylisting-1559828808-latest-build.zip"
+                    "S3Bucket": "ukri-mattdev-20190522113836-deployment",
+                    "S3Key": "amplify-builds/publishopportunitylisting-1559899094-latest-build.zip"
                 }
             }
         },
