@@ -1,10 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WebsiteListing renders correctly 1`] = `
-<h1
-  className="sc-kGXeez fysBMX sc-kgoBCf dSnglf"
-  size="XLARGE"
+<div
+  className="sc-chPdSV eCwJrY"
 >
-  Not found
-</h1>
+  <div
+    className="sc-VigVT kECeaf"
+  >
+    <ol
+      className="sc-jTzLTM bwDqNM"
+    >
+      <li
+        className="sc-fjdhpX fXZRcJ"
+      >
+        <a
+          className="sc-gqjmRU iXXHvM"
+          href="/setup/"
+        >
+          Opportunity setup
+        </a>
+      </li>
+      <li
+        className="sc-fjdhpX fXZRcJ"
+      >
+        Website listing
+      </li>
+    </ol>
+  </div>
+  <span
+    className="sc-jzJRlG hpExou"
+    size="XL"
+  >
+    
+  </span>
+  <h1
+    className="sc-kpOJdX kumznA sc-bxivhb hMlrDO"
+    size="XLARGE"
+  >
+    Website listing
+  </h1>
+  <details
+    className="sc-ifAKCX cyIqaI"
+    open={false}
+  >
+    <summary
+      className="sc-EHOje fxpUSX"
+    >
+      <span
+        className="sc-bZQynM HMsRn"
+      >
+        About this workflow component
+      </span>
+    </summary>
+    <div
+      className="sc-gzVnrw kSeSEc"
+    >
+      The public website component allows you to define the opportunity details that are visible to optential applicants via the UKRI website. Only information defined within this component will be published. If you have added an application component, open and close dates will be published.
+    </div>
+  </details>
+  <h4
+    className="sc-bxivhb lnNzTy"
+    size="SMALL"
+  >
+    High level summary
+  </h4>
+  <label
+    className="sc-htoDjs bKbXb"
+  >
+    <span
+      className="sc-htpNat eCRQZP"
+    />
+    <textarea
+      className="sc-gZMcBi kVsvgm"
+      onChange={[Function]}
+      rows="5"
+      type="text"
+      value=""
+    />
+  </label>
+  <div
+    className="sc-cSHVUG cYsxpw"
+  >
+    <div
+      className="sc-kAzzGY hdpzqY"
+    >
+      <button
+        className="sc-bdVaJa bBDdCP"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Publish
+      </button>
+    </div>
+    <div
+      className="sc-kAzzGY cyjjsH"
+    >
+      <button
+        className="sc-ckVGcZ bktqAH"
+        onClick={[Function]}
+      >
+        Save and return without publishing
+      </button>
+    </div>
+  </div>
+</div>
 `;

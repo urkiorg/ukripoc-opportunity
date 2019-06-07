@@ -4,22 +4,24 @@ import { WorkflowComponentList } from "./index";
 
 const orderedOpportunity = [
     {
-        __typename: "Website Listing",
+        __typename: "WebsiteListing" as "WebsiteListing",
         id: "1",
         rank: 0,
         lastPublished: "",
-        description: "Test webs site listing",
+        description: "Test webs site listing"
     },
     {
-        __typename: "Application",
+        __typename: "Application" as "Application",
         id: "1",
         rank: 0,
         openApplication: "",
         closeApplication: "",
-    },
+        applicationQuestions: {
+            items: []
+        }
+    }
 ];
 
 storiesOf("Components|WorkflowComponentList", module).add("Default", () => (
-    <WorkflowComponentList 
-        orderedOpportunity={orderedOpportunity} />
+    <WorkflowComponentList orderedWorkflows={orderedOpportunity} />
 ));

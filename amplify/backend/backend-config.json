@@ -27,10 +27,7 @@
                 {
                     "category": "function",
                     "resourceName": "publishopportunitylisting",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
+                    "attributes": ["Name", "Arn"]
                 }
             ]
         }
@@ -44,11 +41,15 @@
                 {
                     "category": "api",
                     "resourceName": "ukri",
-                    "attributes": [
-                        "GraphQLAPIIdOutput"
-                    ]
+                    "attributes": ["GraphQLAPIIdOutput"]
                 }
             ]
+        },
+        "FinishOpportunity": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": []
         }
     }
 }

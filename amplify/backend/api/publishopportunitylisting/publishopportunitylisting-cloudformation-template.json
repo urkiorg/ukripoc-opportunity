@@ -60,9 +60,6 @@
                       "execute-api:Invoke"
                     ],
                     "Resource": [
-                    
-                    
-                    
                       {
                         "Fn::Join": [
                           "",
@@ -94,7 +91,7 @@
                           ]
                         ]
                       },
-                                            {
+                      {
                         "Fn::Join": [
                           "",
                           [

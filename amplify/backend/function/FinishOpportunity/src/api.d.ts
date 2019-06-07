@@ -13,55 +13,50 @@ interface Opportunity {
     application?: Applications | null;
 }
 
-export type WorkflowItem = ApplicationListing | WebsiteListing | null;
-
-export interface Applications {
+interface Applications {
     items: (ApplicationListing | null)[] | null;
 }
 
-export interface WebsiteListings {
+interface WebsiteListings {
     items: (WebsiteListing | null)[] | null;
 }
-export interface WebsiteListing {
+interface WebsiteListing {
     id: string;
     rank: number;
     lastPublished: string | null;
     description: string | null;
-    __typename: "WebsiteListing";
+    __typename: string;
 }
 
-export interface TeamMembers {
+interface TeamMembers {
     items: (TeamMemberListing | null)[] | null;
 }
 
-export interface TeamMemberListing {
+interface TeamMemberListing {
     id: string;
     name: string;
     role: string | null;
 }
 
-export interface OpportunityType {
+interface OpportunityType {
     id: string;
     name: string;
     description: string;
 }
 
-export interface Obj {
+interface Obj {
     [key: string]: any;
 }
 
-export interface ApplicationListing {
-    __typename: "Application";
+interface ApplicationListing {
+    __typename: string;
     id: string;
     rank: number;
     openApplication: string | null;
     closeApplication: string | null;
-    applicationQuestions: {
-        items: (ApplicationQuestionType | null)[] | null;
-    } | null;
 }
 
-export interface ApplicationQuestionType {
+interface ApplicationQuestionType {
     heading: string | null;
     title: string | null;
     subtitle: string | null;
@@ -70,12 +65,17 @@ export interface ApplicationQuestionType {
     complete: boolean | null;
 }
 
-export interface WorkflowTypes {
+interface ApplicationTypes {
     application: "Application";
     websiteListing: "Website Listing";
 }
 
-export interface WorkflowUrls {
-    application: "application";
-    websiteListing: "website-listing";
+interface Application {
+    applicationOpportunityId?: string;
+    closeApplication?: string;
+    createdAt?: string;
+    id?: string;
+    openApplication?: string;
+    rank?: number;
+    updatedAt?: string;
 }

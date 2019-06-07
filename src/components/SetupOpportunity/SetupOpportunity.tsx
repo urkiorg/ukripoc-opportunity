@@ -1,6 +1,5 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import Details from "@govuk-react/details";
-import { GetOpportunityQuery } from "../../API";
 import Link from "@govuk-react/link";
 
 import { Link as RouterLink } from "@reach/router";
@@ -10,20 +9,51 @@ import Caption from "@govuk-react/caption";
 import { SettingsListItem } from "../../theme";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
+import Button from "@govuk-react/button";
+import LabelText from "@govuk-react/label-text";
+
+import SectionBreak from "@govuk-react/section-break";
+import {
+    WebsiteListing,
+    Opportunity,
+    ApplicationListing,
+    WorkflowItem
+} from "../../types";
+import styled from "styled-components";
 import { WorkflowComponentList } from "../WorkflowComponentList";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import LoadingBox from "@govuk-react/loading-box";
+import { GetOpportunityQueryWithQuestions } from "../SetupOpportunityPage/SetupOpportunityPage";
+import {
+    listingIsComplete,
+    isApplicationListing,
+    isWebsiteListing
+} from "../../dataHelpers";
+
+const checkListingsComplete = (listing: WorkflowItem[]): boolean =>
+    !listing.length ||
+    listing.reduce<boolean>(
+        (acc, listing) => listingIsComplete(listing) || acc,
+        false
+    );
 
 interface Props {
     loading: boolean;
     updateApplicationRanking: (id: string, rank: number) => void;
     updateWebsiteListingRanking: (id: string, rank: number) => void;
-    opportunity: GetOpportunityQuery;
+    opportunity: GetOpportunityQueryWithQuestions;
+    finishOpportunity: () => Promise<any>;
 }
 
-const getAllOpportunities = (opportunity: GetOpportunityQuery) => {
-    const { getOpportunity } = opportunity;
+const FinishSection = styled(GridRow)`
+    padding: 3em 0;
+`;
 
+const Hr = styled(SectionBreak)`
+    border-top: 1px solid #999;
+`;
+
+const getAllWorkflows = (getOpportunity: Opportunity) => {
     const websiteListings =
         getOpportunity &&
         getOpportunity.websiteListings &&
@@ -38,7 +68,8 @@ const getAllOpportunities = (opportunity: GetOpportunityQuery) => {
             ? getOpportunity.application.items
             : [];
 
-    const mergedOpportunities = () => [...websiteListings, ...applications];
+    const mergedOpportunities = () =>
+        [...websiteListings, ...applications].filter(Boolean);
 
     return mergedOpportunities().sort((a, b) => {
         if (a && b) {
@@ -53,18 +84,28 @@ export const SetupOpportunity: FC<Props> = ({
     opportunity,
     updateWebsiteListingRanking,
     updateApplicationRanking,
-    loading,
+    finishOpportunity,
+    loading
 }) => {
-    const [allOpportunities, setAllOpportunities] = useState();
-    const linkToFunders = opportunity.getOpportunity
-        ? `/setup/${opportunity.getOpportunity.id}/funders`
+    const { getOpportunity } = opportunity;
+    const [allWorkflows, setAllWorkflows] = useState<
+        (ApplicationListing | WebsiteListing | null)[]
+    >([]);
+    const onButtonClick = useCallback(() => {
+        finishOpportunity();
+    }, [finishOpportunity]);
+
+    const linkToFunders = getOpportunity
+        ? `/setup/${getOpportunity.id}/funders`
         : "";
 
     useEffect(() => {
-        if (!loading) {
-            setAllOpportunities(getAllOpportunities(opportunity));
+        if (!getOpportunity || loading) {
+            return;
         }
-    }, [loading]);
+
+        setAllWorkflows(getAllWorkflows(getOpportunity));
+    }, [getOpportunity, loading]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent;
@@ -77,34 +118,48 @@ export const SetupOpportunity: FC<Props> = ({
             // No reordering required
             return;
         } else {
-            const newOrdering = [...allOpportunities];
+            if (!allWorkflows || !allWorkflows.length) {
+                return;
+            }
+
+            const newOrdering = [...allWorkflows];
             newOrdering.splice(source.index, 1);
             newOrdering.splice(
                 destination.index,
                 0,
-                allOpportunities[source.index]
+                allWorkflows[source.index]
             );
-            setAllOpportunities(newOrdering);
+            setAllWorkflows(newOrdering);
 
-            newOrdering.forEach(({ __typename, id }, index) => {
+            newOrdering.forEach((item, index) => {
+                if (!item) {
+                    return;
+                }
+
                 if (opportunity) {
-                    if (__typename === "Application") {
-                        updateApplicationRanking(id, index);
+                    if (isApplicationListing(item)) {
+                        updateApplicationRanking(item.id, index);
                     }
-                    if (__typename === "WebsiteListing") {
-                        updateWebsiteListingRanking(id, index);
+                    if (isWebsiteListing(item)) {
+                        updateWebsiteListingRanking(item.id, index);
                     }
                 }
             });
         }
     };
 
+    console.log("OK", allWorkflows);
+
+    // Add other completion check functions here
+    const allComplete =
+        getOpportunity &&
+        checkListingsComplete(allWorkflows) &&
+        getOpportunity.fundersComplete;
+
     return (
         <LoadingBox loading={loading}>
             <Caption mb={1}>
-                {opportunity.getOpportunity
-                    ? opportunity.getOpportunity.name
-                    : ""}
+                {getOpportunity ? getOpportunity.name : ""}
             </Caption>
             <Title>Opportunity setup</Title>
             <Caption mb={6} size="XL">
@@ -112,7 +167,7 @@ export const SetupOpportunity: FC<Props> = ({
             </Caption>
             <SettingsListItem>
                 <GridRow>
-                    <GridCol>
+                    <GridCol setWidth="90%">
                         <Link
                             to={linkToFunders}
                             as={RouterLink}
@@ -121,9 +176,8 @@ export const SetupOpportunity: FC<Props> = ({
                             Funders
                         </Link>
                     </GridCol>
-                    <GridCol setWidth="100">
-                        {opportunity.getOpportunity &&
-                        opportunity.getOpportunity.fundersComplete
+                    <GridCol>
+                        {getOpportunity && getOpportunity.fundersComplete
                             ? "Done"
                             : "Not Done"}
                     </GridCol>
@@ -138,7 +192,7 @@ export const SetupOpportunity: FC<Props> = ({
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            {allOpportunities ? (
+            {allWorkflows ? (
                 <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId="droppable">
                         {provided => (
@@ -147,7 +201,7 @@ export const SetupOpportunity: FC<Props> = ({
                                 ref={provided.innerRef}
                             >
                                 <WorkflowComponentList
-                                    orderedOpportunity={allOpportunities}
+                                    orderedWorkflows={allWorkflows}
                                 />
                                 {provided.placeholder}
                                 {provided.placeholder}
@@ -158,13 +212,26 @@ export const SetupOpportunity: FC<Props> = ({
             ) : (
                 <Title>Not Found</Title>
             )}
+            <Hr />
             <WorkflowComponentAdd
-                opportunityId={
-                    opportunity.getOpportunity
-                        ? opportunity.getOpportunity.id
-                        : ""
-                }
+                opportunityId={getOpportunity ? getOpportunity.id : ""}
             />
+            <Hr />
+            <FinishSection>
+                <GridCol>
+                    {!!getOpportunity && !getOpportunity.opportunityComplete ? (
+                        <Button
+                            isStart={false}
+                            disabled={!allComplete}
+                            onClick={onButtonClick}
+                        >
+                            Finish setup
+                        </Button>
+                    ) : (
+                        <LabelText>Complete</LabelText>
+                    )}
+                </GridCol>
+            </FinishSection>
         </LoadingBox>
     );
 };

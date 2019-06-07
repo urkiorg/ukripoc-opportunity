@@ -4,10 +4,6 @@
     "Parameters": {
         "env": {
             "Type": "String"
-        },
-        "apiukriGraphQLAPIIdOutput": {
-            "Type": "String",
-            "Description": "The id of the AppSync API associated with this project."
         }
     },
     "Conditions": {
@@ -21,6 +17,30 @@
         }
     },
     "Resources": {
+        "FinishOpportunityUpdate": {
+            "Type": "AWS::SNS::Topic",
+            "Properties": {
+                "DisplayName": "FinishOpportunityUpdate",
+                "TopicName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "FinishOpportunityUpdate",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "FinishOpportunityUpdate",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
         "LambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Metadata": {
@@ -32,12 +52,12 @@
                 "FunctionName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "publishopportunitylisting",
+                        "FinishOpportunity",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "publishopportunitylisting",
+                                    "FinishOpportunity",
                                     "-",
                                     {
                                         "Ref": "env"
@@ -52,8 +72,8 @@
                         "ENV": {
                             "Ref": "env"
                         },
-                        "AppSyncApiId": {
-                            "Ref": "apiukriGraphQLAPIIdOutput"
+                        "REGION": {
+                            "Ref": "AWS::Region"
                         }
                     }
                 },
@@ -64,7 +84,7 @@
                 "Timeout": "25",
                 "Code": {
                     "S3Bucket": "ukri-mattdev-20190522113836-deployment",
-                    "S3Key": "amplify-builds/publishopportunitylisting-1559906837-latest-build.zip"
+                    "S3Key": "amplify-builds/FinishOpportunity-1559908730-latest-build.zip"
                 }
             }
         },
@@ -74,12 +94,12 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "ukriLambdaRole12c72f7e",
+                        "ukriLambdaRoleac0d8b4a",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "ukriLambdaRole12c72f7e",
+                                    "ukriLambdaRoleac0d8b4a",
                                     "-",
                                     {
                                         "Ref": "env"
@@ -135,46 +155,6 @@
                                         },
                                         "lambda": {
                                             "Ref": "LambdaFunction"
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "dynamodb:GetItem",
-                                "dynamodb:PutItem",
-                                "dynamodb:UpdateItem",
-                                "dynamodb:DeleteItem",
-                                "dynamodb:Query"
-                            ],
-                            "Resource": {
-                                "Fn::Sub": [
-                                    "arn:aws:dynamodb:${region}:${account}:*",
-                                    {
-                                        "region": {
-                                            "Ref": "AWS::Region"
-                                        },
-                                        "account": {
-                                            "Ref": "AWS::AccountId"
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "Effect": "Allow",
-                            "Action": ["SNS:Publish"],
-                            "Resource": {
-                                "Fn::Sub": [
-                                    "arn:aws:sns:${region}:${account}:*",
-                                    {
-                                        "region": {
-                                            "Ref": "AWS::Region"
-                                        },
-                                        "account": {
-                                            "Ref": "AWS::AccountId"
                                         }
                                     }
                                 ]

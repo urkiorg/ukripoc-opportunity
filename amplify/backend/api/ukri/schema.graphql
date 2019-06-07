@@ -10,6 +10,7 @@ type Opportunity @model {
     typeComplete: Boolean
     websiteListings: [WebsiteListing] @connection(name: "WebsiteListing")
     application: [Application] @connection(name: "Application")
+    opportunityComplete: Boolean
 }
 
 type TeamMember @model {

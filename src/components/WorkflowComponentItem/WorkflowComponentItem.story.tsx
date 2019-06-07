@@ -7,7 +7,10 @@ const component = {
     rank: 0,
     openApplication: "",
     closeApplication: "",
-    __typename: "Application"
+    applicationQuestions: {
+        items: []
+    },
+    __typename: "Application" as "Application"
 };
 
 const deleteListing = () => {};
@@ -15,5 +18,6 @@ const deleteListing = () => {};
 storiesOf("Components|WorkflowComponentList", module).add("Default", () => (
     <WorkflowComponentItem
         component={component}
-        deleteListing={deleteListing} />
+        deleteListing={deleteListing}
+    />
 ));

@@ -1,5 +1,6 @@
 import React, { FC, HTMLAttributes } from "react";
 import LoadingBox from "@govuk-react/loading-box";
+import Button from "@govuk-react/button";
 import { Query } from "react-apollo";
 
 import { Link } from "@reach/router";
@@ -7,6 +8,7 @@ import { Link } from "@reach/router";
 import gql from "graphql-tag";
 
 import Table from "@govuk-react/table";
+import { ukriGreen } from "../../theme";
 
 interface Props extends HTMLAttributes<HTMLElement> {}
 
@@ -17,6 +19,7 @@ const GET_OPP = gql`
                 name
                 description
                 id
+                opportunityComplete
             }
         }
     }
@@ -44,6 +47,11 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                                                     {opportunity.name}
                                                 </Link>
                                             </Table.Cell>
+                                            <Table.Cell>
+                                                {opportunity.opportunityComplete
+                                                    ? "Done"
+                                                    : "Not done"}
+                                            </Table.Cell>
                                         </Table.Row>
                                     )
                                 )}
@@ -52,6 +60,9 @@ export const AllOpportunities: FC<Props> = ({ ...props }) => (
                 );
             }}
         </Query>
+        <Button as={Link} to="opportunity" buttonColour={ukriGreen}>
+            Add opportunity
+        </Button>
     </div>
 );
 

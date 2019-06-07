@@ -29,6 +29,7 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -50,6 +51,7 @@ export const createOpportunity = `mutation CreateOpportunity($input: CreateOppor
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -81,6 +83,7 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -102,6 +105,7 @@ export const updateOpportunity = `mutation UpdateOpportunity($input: UpdateOppor
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -133,6 +137,7 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
     }
     typeComplete
@@ -154,6 +159,7 @@ export const deleteOpportunity = `mutation DeleteOpportunity($input: DeleteOppor
       }
       nextToken
     }
+    opportunityComplete
   }
 }
 `;
@@ -184,6 +190,7 @@ export const createTeamMember = `mutation CreateTeamMember($input: CreateTeamMem
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -215,6 +222,7 @@ export const updateTeamMember = `mutation UpdateTeamMember($input: UpdateTeamMem
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -246,6 +254,7 @@ export const deleteTeamMember = `mutation DeleteTeamMember($input: DeleteTeamMem
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -277,6 +286,7 @@ export const createOpportunityType = `mutation CreateOpportunityType($input: Cre
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -308,6 +318,7 @@ export const updateOpportunityType = `mutation UpdateOpportunityType($input: Upd
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -339,6 +350,7 @@ export const deleteOpportunityType = `mutation DeleteOpportunityType($input: Del
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -371,6 +383,7 @@ export const createWebsiteListing = `mutation CreateWebsiteListing($input: Creat
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -403,6 +416,7 @@ export const updateWebsiteListing = `mutation UpdateWebsiteListing($input: Updat
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -435,6 +449,7 @@ export const deleteWebsiteListing = `mutation DeleteWebsiteListing($input: Delet
       application {
         nextToken
       }
+      opportunityComplete
     }
   }
 }
@@ -467,6 +482,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -511,6 +527,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -555,6 +572,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       application {
         nextToken
       }
+      opportunityComplete
     }
     applicationQuestions {
       items {
@@ -592,6 +610,7 @@ export const createApplicationQuestion = `mutation CreateApplicationQuestion($in
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
@@ -622,6 +641,7 @@ export const updateApplicationQuestion = `mutation UpdateApplicationQuestion($in
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
@@ -652,6 +672,7 @@ export const deleteApplicationQuestion = `mutation DeleteApplicationQuestion($in
         fundersComplete
         teammembersComplete
         typeComplete
+        opportunityComplete
       }
       applicationQuestions {
         nextToken
