@@ -4,7 +4,7 @@ import {
     getTopicName,
     postSNSMessage
 } from "../../../helpers/aws-helpers";
-import console = require("console");
+
 /* Amplify Params - DO NOT EDIT
 You can access the following resource attributes as environment variables from your Lambda function
 var environment = process.env.ENV
