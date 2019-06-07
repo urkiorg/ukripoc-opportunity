@@ -32,7 +32,6 @@
         "storybook": "start-storybook -p 9009 -s public",
         "build-storybook": "build-storybook -s public -o dist/storybook",
         "build:ci": "npm run build",
-        "build-lambdas": "cd amplify/backend/function/publishopportunitylisting/src/ && npm i && npm run build",
         "build-schema": "typescript-json-schema ./amplify/backend/function/publishopportunitylisting/src/api.d.ts WebsiteListingPublish -o ./amplify/backend/function/publishopportunitylisting/src/api.schema.json --required --strictNullChecks"
     },
     "eslintConfig": {

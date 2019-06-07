@@ -51,6 +51,7 @@ const checkListingsComplete = (
     );
 
 interface Props {
+    loading: boolean;
     updateApplicationRanking: (id: string, rank: number) => void;
     updateWebsiteListingRanking: (id: string, rank: number) => void;
     opportunity: GetOpportunityQuery;
@@ -87,7 +88,8 @@ const getAllWorkflows = (getOpportunity: Opportunity) => {
             ? getOpportunity.application.items
             : [];
 
-    const mergedOpportunities = () => [...websiteListings, ...applications];
+    const mergedOpportunities = () =>
+        [...websiteListings, ...applications].filter(Boolean);
 
     return mergedOpportunities().sort((a, b) => {
         if (a && b) {
@@ -102,7 +104,8 @@ export const SetupOpportunity: FC<Props> = ({
     opportunity,
     updateWebsiteListingRanking,
     updateApplicationRanking,
-    finishOpportunity
+    finishOpportunity,
+    loading
 }) => {
     const { getOpportunity } = opportunity;
     const [allWorkflows, setAllWorkflows] = useState<
@@ -122,7 +125,7 @@ export const SetupOpportunity: FC<Props> = ({
         }
 
         setAllWorkflows(getAllWorkflows(getOpportunity));
-    }, []);
+    }, [getOpportunity]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent;
@@ -174,7 +177,7 @@ export const SetupOpportunity: FC<Props> = ({
         getOpportunity.fundersComplete;
 
     return (
-        <LoadingBox loading={!getOpportunity}>
+        <LoadingBox loading={loading}>
             <Caption mb={1}>
                 {getOpportunity ? getOpportunity.name : ""}
             </Caption>
@@ -185,8 +188,12 @@ export const SetupOpportunity: FC<Props> = ({
             <SettingsListItem>
                 <GridRow>
                     <GridCol setWidth="90%">
-                        <Link to={linkToFunders}>
-                            <span aria-label="Funders"> Funders </span>
+                        <Link
+                            to={linkToFunders}
+                            as={RouterLink}
+                            aria-label="Funders"
+                        >
+                            Funders
                         </Link>
                     </GridCol>
                     <GridCol>

@@ -25,7 +25,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
-    const { data } = useQuery(GET_OPP, {
+    const { data, loading } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
         },
@@ -51,7 +51,7 @@ export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
 
     const updateApplicationRanking = useCallback(
         async (id, rank) => {
-            updateApplicationRankingMutation({
+            await updateApplicationRankingMutation({
                 variables: {
                     input: { id, rank }
                 }
@@ -71,7 +71,7 @@ export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
             }
         });
 
-        const { res, loading, error } = result;
+        const { res } = result;
         // @todo handle errrrorrr
 
         if (res) {
@@ -83,6 +83,7 @@ export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
         <SetupOpportunity
             opportunity={data}
             finishOpportunity={finishOpportunity}
+            loading={loading}
             updateApplicationRanking={updateApplicationRanking}
             updateWebsiteListingRanking={updateWebsiteListingRanking}
         />

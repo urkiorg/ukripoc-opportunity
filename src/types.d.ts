@@ -65,7 +65,12 @@ export interface ApplicationQuestionType {
     complete: boolean | null;
 }
 
-export interface ApplicationTypes {
+export interface WorkflowTypes {
     application: "Application";
     websiteListing: "Website Listing";
+}
+
+export interface WorkflowUrls {
+    application: "application";
+    websiteListing: "website-listing";   
 }
