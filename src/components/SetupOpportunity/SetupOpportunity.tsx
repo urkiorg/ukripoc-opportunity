@@ -15,6 +15,7 @@ import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import LoadingBox from "@govuk-react/loading-box";
 
 interface Props {
+    loading: boolean;
     updateApplicationRanking: (id: string, rank: number) => void;
     updateWebsiteListingRanking: (id: string, rank: number) => void;
     opportunity: GetOpportunityQuery;
@@ -51,17 +52,19 @@ const getAllOpportunities = (opportunity: GetOpportunityQuery) => {
 export const SetupOpportunity: FC<Props> = ({
     opportunity,
     updateWebsiteListingRanking,
-    updateApplicationRanking
+    updateApplicationRanking,
+    loading,
 }) => {
     const [allOpportunities, setAllOpportunities] = useState();
-
     const linkToFunders = opportunity.getOpportunity
         ? `/setup/${opportunity.getOpportunity.id}/funders`
         : "";
 
     useEffect(() => {
-        setAllOpportunities(getAllOpportunities(opportunity));
-    }, [opportunity]);
+        if (!loading) {
+            setAllOpportunities(getAllOpportunities(opportunity));
+        }
+    }, [loading]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent;
@@ -97,7 +100,7 @@ export const SetupOpportunity: FC<Props> = ({
     };
 
     return (
-        <LoadingBox loading={!opportunity.getOpportunity}>
+        <LoadingBox loading={loading}>
             <Caption mb={1}>
                 {opportunity.getOpportunity
                     ? opportunity.getOpportunity.name

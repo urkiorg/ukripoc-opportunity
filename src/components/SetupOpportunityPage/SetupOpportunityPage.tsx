@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const SetupOpportunityPage: FC<Props> = ({opportunityId}) => {
-    const { data } = useQuery(GET_OPP, {
+    const { data, loading } = useQuery(GET_OPP, {
         variables: {
             id: opportunityId
         },
@@ -30,24 +30,25 @@ export const SetupOpportunityPage: FC<Props> = ({opportunityId}) => {
                 variables: {
                     input: { id, rank }
                 }
-            });
+            })
         },
         [updateWebsiteRankingMutation]
     );
 
     const updateApplicationRanking = useCallback(
         async (id, rank) => {
-            updateApplicationRankingMutation({
+            await updateApplicationRankingMutation({
                 variables: {
                     input: { id, rank }
                 }
-            });
+            })
         },
         [updateApplicationRankingMutation]
     );
 
     return (
         <SetupOpportunity
+            loading={loading}
             updateApplicationRanking={updateApplicationRanking}
             updateWebsiteListingRanking={updateWebsiteListingRanking}
             opportunity={data} />
