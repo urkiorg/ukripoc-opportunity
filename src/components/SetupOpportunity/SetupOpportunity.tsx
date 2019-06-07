@@ -21,7 +21,7 @@ interface Props {
     opportunity: GetOpportunityQuery;
 }
 
-const getAllOpportunities = (opportunity: GetOpportunityQuery) => {
+const getAllWorkflows = (opportunity: GetOpportunityQuery) => {
     const { getOpportunity } = opportunity;
 
     const websiteListings =
@@ -53,18 +53,18 @@ export const SetupOpportunity: FC<Props> = ({
     opportunity,
     updateWebsiteListingRanking,
     updateApplicationRanking,
-    loading,
+    loading
 }) => {
-    const [allOpportunities, setAllOpportunities] = useState();
+    const [allWorkflows, setAllWorkflows] = useState();
     const linkToFunders = opportunity.getOpportunity
         ? `/setup/${opportunity.getOpportunity.id}/funders`
         : "";
 
     useEffect(() => {
         if (!loading) {
-            setAllOpportunities(getAllOpportunities(opportunity));
+            setAllWorkflows(getAllWorkflows(opportunity));
         }
-    }, [loading]);
+    }, [loading, opportunity]);
 
     const handleOnDragEnd = (draggableEvent: DropResult) => {
         const { destination, source } = draggableEvent;
@@ -77,14 +77,14 @@ export const SetupOpportunity: FC<Props> = ({
             // No reordering required
             return;
         } else {
-            const newOrdering = [...allOpportunities];
+            const newOrdering = [...allWorkflows];
             newOrdering.splice(source.index, 1);
             newOrdering.splice(
                 destination.index,
                 0,
-                allOpportunities[source.index]
+                allWorkflows[source.index]
             );
-            setAllOpportunities(newOrdering);
+            setAllWorkflows(newOrdering);
 
             newOrdering.forEach(({ __typename, id }, index) => {
                 if (opportunity) {
@@ -138,7 +138,7 @@ export const SetupOpportunity: FC<Props> = ({
                 information shown within a Website listing component will be
                 published externally.
             </Details>
-            {allOpportunities ? (
+            {allWorkflows ? (
                 <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId="droppable">
                         {provided => (
@@ -147,7 +147,7 @@ export const SetupOpportunity: FC<Props> = ({
                                 ref={provided.innerRef}
                             >
                                 <WorkflowComponentList
-                                    orderedOpportunity={allOpportunities}
+                                    orderedOpportunity={allWorkflows}
                                 />
                                 {provided.placeholder}
                                 {provided.placeholder}
