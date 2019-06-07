@@ -45,13 +45,6 @@ interface Props {
     finishOpportunity: () => Promise<any>;
 }
 
-// const DeleteLink = styled(LinkButton)`
-//     vertical-align: middle;
-//     padding: 0px 10px;
-//     margin-left: 10px;
-//     align-self: flex-start;
-// `;
-
 const FinishSection = styled(GridRow)`
     padding: 3em 0;
 `;
@@ -237,7 +230,6 @@ export const SetupOpportunity: FC<Props> = ({
                     ) : (
                         <LabelText>Complete</LabelText>
                     )}
-                    {/* <DeleteLink>Delete opportunity</DeleteLink> */}
                 </GridCol>
             </FinishSection>
         </LoadingBox>
