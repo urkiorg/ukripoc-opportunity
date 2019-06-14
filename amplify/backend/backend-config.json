@@ -30,6 +30,17 @@
                     "attributes": ["Name", "Arn"]
                 }
             ]
+        },
+        "getOpportunity": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "getOpportunity",
+                    "attributes": ["Name", "Arn"]
+                }
+            ]
         }
     },
     "function": {
@@ -50,6 +61,11 @@
             "providerPlugin": "awscloudformation",
             "build": true,
             "dependsOn": []
+        },
+        "getOpportunity": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true
         }
     }
 }
