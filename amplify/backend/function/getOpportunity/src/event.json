@@ -1,5 +1,34 @@
 {
-    "key1": "value1",
-    "key2": "value2",
-    "key3": "value3"
+    "resource": "/opportunity-listing/retrieve",
+    "path": "/opportunity/retrieve/b4646d56-2e10-4812-80b8-cbf34d233b16",
+    "httpMethod": "GET",
+    "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "GB",
+        "content-type": "application/json; charset=UTF-8",
+        "Host": "yvwax8u54k.execute-api.eu-west-1.amazonaws.com",
+        "origin": "http://localhost:3000",
+        "Referer": "http://localhost:3000/setup/b2f83655-0829-4371-a03b-daab3c71387a",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+        "Via": "2.0 cb61a80d1dbb1ad2fee08568166c1dea.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "RfCyvnoQ2q2cnE8ZMFIyscOLVle-B4FlSh3NkxQ4Al_4yGay8fm-SA==",
+        "x-amz-date": "20190604T144209Z",
+        "X-Amzn-Trace-Id": "Root=1-5cf68342-5ad4f34420b5518a252f979a",
+        "X-Forwarded-For": "213.122.181.229, 52.46.13.80",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "isBase64Encoded": false
 }
