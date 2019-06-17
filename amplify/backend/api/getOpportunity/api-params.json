@@ -1,0 +1,32 @@
+{
+    "paths": [
+        {
+            "name": "/opportunity/retrieve",
+            "lambdaFunction": "getOpportunity",
+            "privacy": {
+                "private": true,
+                "auth": []
+            }
+        }
+    ],
+    "resourceName": "getOpportunity",
+    "apiName": "getOpportunity",
+    "functionArns": [
+        {
+            "lambdaFunction": "getOpportunity"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "ukri-diveydev-20190614112851-authRole",
+        "unAuthRoleName": "ukri-diveydev-20190614112851-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "getOpportunity",
+            "attributes": ["Name", "Arn"]
+        }
+    ]
+}

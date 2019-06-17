@@ -17,30 +17,6 @@
         }
     },
     "Resources": {
-        "FinishOpportunityUpdate": {
-            "Type": "AWS::SNS::Topic",
-            "Properties": {
-                "DisplayName": "FinishOpportunityUpdate",
-                "TopicName": {
-                    "Fn::If": [
-                        "ShouldNotCreateEnvResources",
-                        "FinishOpportunityUpdate",
-                        {
-                            "Fn::Join": [
-                                "",
-                                [
-                                    "FinishOpportunityUpdate",
-                                    "-",
-                                    {
-                                        "Ref": "env"
-                                    }
-                                ]
-                            ]
-                        }
-                    ]
-                }
-            }
-        },
         "LambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Metadata": {
@@ -52,12 +28,12 @@
                 "FunctionName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "FinishOpportunity",
+                        "getOpportunity",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "FinishOpportunity",
+                                    "getOpportunity",
                                     "-",
                                     {
                                         "Ref": "env"
@@ -84,7 +60,7 @@
                 "Timeout": "25",
                 "Code": {
                     "S3Bucket": "ukri-diveydev-20190614112851-deployment",
-                    "S3Key": "amplify-builds/FinishOpportunity-1560512397-latest-build.zip"
+                    "S3Key": "amplify-builds/getOpportunity-1560512403-latest-build.zip"
                 }
             }
         },
@@ -94,12 +70,12 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "ukriLambdaRoleac0d8b4a",
+                        "ukriLambdaRoled2ba293e",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "ukriLambdaRoleac0d8b4a",
+                                    "ukriLambdaRoled2ba293e",
                                     "-",
                                     {
                                         "Ref": "env"
