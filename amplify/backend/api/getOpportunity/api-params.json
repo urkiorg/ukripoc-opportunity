@@ -4,8 +4,7 @@
             "name": "/opportunity/retrieve",
             "lambdaFunction": "getOpportunity",
             "privacy": {
-                "private": true,
-                "auth": []
+                "open": true
             }
         }
     ],
@@ -19,8 +18,8 @@
     "privacy": {
         "auth": 0,
         "unauth": 0,
-        "authRoleName": "ukri-diveydev-20190614112851-authRole",
-        "unAuthRoleName": "ukri-diveydev-20190614112851-unauthRole"
+        "authRoleName": "ukri-develop-20190524095630-authRole",
+        "unAuthRoleName": "ukri-develop-20190524095630-unauthRole"
     },
     "dependsOn": [
         {
@@ -28,5 +27,6 @@
             "resourceName": "getOpportunity",
             "attributes": ["Name", "Arn"]
         }
-    ]
+    ],
+    "uuid": "c94754a9"
 }

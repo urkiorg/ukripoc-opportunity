@@ -23,27 +23,27 @@ const getOpportunity = async (
 };
 
 const getApplications = async (
-  client: AWS.DynamoDB.DocumentClient,
-  TableName: string,
-  opportunityId: string
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    opportunityId: string
 ): Promise<Application[]> => {
-  console.log({ TableName });
-  const result = await client
-      .query({
-          TableName,
-          ExpressionAttributeValues: { ":o": opportunityId },
-          IndexName: "gsi-Application",
-          KeyConditionExpression: "applicationOpportunityId = :o"
-      })
-      .promise();
+    console.log({ TableName });
+    const result = await client
+        .query({
+            TableName,
+            ExpressionAttributeValues: { ":o": opportunityId },
+            IndexName: "gsi-Application",
+            KeyConditionExpression: "applicationOpportunityId = :o"
+        })
+        .promise();
 
-  return result.Items || [];
+    return result.Items || [];
 };
 
 // Setup app
 const app = express();
 
-// Middleware 
+// Middleware
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -54,66 +54,69 @@ app.use(function(req, res, next) {
     next();
 });
 if (process.env && process.env.env) {
-  app.use(awsServerlessExpressMiddleware.eventContext());
+    app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
 // Get an opportunity with the lowest ranking application
 // 1. get opportunity using id from query param
 // 2. get all applications for opportunity
 // 3. return the opportunity with the lowest ranking applications
-app.get('/opportunity/retrieve/:id', async (req, res) => {
-  const opportunityId = req.params.id;
-  const env = process.env.ENV;
-  const apiId = process.env.AppSyncApiId;
+app.get("/opportunity/retrieve/:id", async (req, res) => {
+    // const opportunityId = req.params.id;
+    const opportunityId = req.pathParameters.proxy;
+    const env = process.env.ENV;
+    const apiId = process.env.AppSyncApiId;
 
-  if (!env || !apiId || !opportunityId) {
-    console.error("An environment, api id and opportunity id must be provided");
-    return res.status(404).json({});
-  }
+    if (!env || !apiId || !opportunityId) {
+        console.error(
+            "An environment, api id and opportunity id must be provided"
+        );
+        return res.status(404).json({});
+    }
 
-  const client = new AWS.DynamoDB.DocumentClient({
-    region: "eu-west-1"
-  });
-  const opportunityTableName = getDBTableName(env, apiId, "Opportunity");
-
-  // Get opportunity
-  const opportunity = await getOpportunity(
-      client,
-      opportunityTableName,
-      opportunityId
-  );
-
-  if (!opportunity) {
-    console.error(`The opportunity ${opportunityId} was not found`);
-    throw new Error(`Opportunity not found`);
-  };
-
-  // Extract application info
-  const applicationTableName = getDBTableName(env, apiId, "Application");
-  const applications = await getApplications(
-    client,
-    applicationTableName,
-    opportunityId
-  );
-
-  const lowestRankedApplication = () => {
-    const sortedApplicationsArray = applications.sort((a, b) => {
-      if (a.rank && b.rank) {
-          return a.rank - b.rank;
-      } else {
-        return -1;
-      }
+    const client = new AWS.DynamoDB.DocumentClient({
+        region: "eu-west-1"
     });
+    const opportunityTableName = getDBTableName(env, apiId, "Opportunity");
 
-    return sortedApplicationsArray[0] || {};
-  }
+    // Get opportunity
+    const opportunity = await getOpportunity(
+        client,
+        opportunityTableName,
+        opportunityId
+    );
 
-  const opportunityWithLowestRankedApplication = { 
-    ...opportunity,
-    lowestRankedApplication: lowestRankedApplication(),
-  }
+    if (!opportunity) {
+        console.error(`The opportunity ${opportunityId} was not found`);
+        throw new Error(`Opportunity not found`);
+    }
 
-  res.json(opportunityWithLowestRankedApplication);
+    // Extract application info
+    const applicationTableName = getDBTableName(env, apiId, "Application");
+    const applications = await getApplications(
+        client,
+        applicationTableName,
+        opportunityId
+    );
+
+    const lowestRankedApplication = () => {
+        const sortedApplicationsArray = applications.sort((a, b) => {
+            if (a.rank && b.rank) {
+                return a.rank - b.rank;
+            } else {
+                return -1;
+            }
+        });
+
+        return sortedApplicationsArray[0] || {};
+    };
+
+    const opportunityWithLowestRankedApplication = {
+        ...opportunity,
+        lowestRankedApplication: lowestRankedApplication()
+    };
+
+    res.json(opportunityWithLowestRankedApplication);
 });
 
 app.listen(3000, () => {
