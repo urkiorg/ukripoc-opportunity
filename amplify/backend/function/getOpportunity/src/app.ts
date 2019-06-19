@@ -65,8 +65,8 @@ if (process.env && process.env.env) {
 // 2. get all applications for opportunity
 // 3. return the opportunity with the lowest ranking applications
 app.get("/opportunity/retrieve/:id", async (req, res) => {
-    // const opportunityId = req.params.id;
-    const opportunityId = req.pathParameters.proxy;
+    const opportunityId = req.params.id;
+    // const opportunityId = req.pathParameters.proxy;
     const env = process.env.ENV;
     const apiId = process.env.AppSyncApiId;
 
