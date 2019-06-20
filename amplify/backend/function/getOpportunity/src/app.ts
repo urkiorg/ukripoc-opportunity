@@ -31,7 +31,7 @@ const getQuestions = async (
         .query({
             TableName,
             ExpressionAttributeValues: { ":o": applicationId },
-            IndexName: "gsi-Application",
+            IndexName: "gsi-ApplicationQuestion",
             KeyConditionExpression: "applicationQuestionApplicationId = :o"
         })
         .promise();
