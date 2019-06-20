@@ -66,8 +66,8 @@
                 "Runtime": "nodejs8.10",
                 "Timeout": "25",
                 "Code": {
-                    "S3Bucket": "ukri-torchiadev-20190524121944-deployment",
-                    "S3Key": "amplify-builds/getOpportunity-1560940936-latest-build.zip"
+                    "S3Bucket": "ukri-develop-20190524095630-deployment",
+                    "S3Key": "amplify-builds/getOpportunity-1561041625-latest-build.zip"
                 }
             }
         },
@@ -138,6 +138,23 @@
                                         },
                                         "lambda": {
                                             "Ref": "LambdaFunction"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": ["dynamodb:GetItem", "dynamodb:Query"],
+                            "Resource": {
+                                "Fn::Sub": [
+                                    "arn:aws:dynamodb:${region}:${account}:*",
+                                    {
+                                        "region": {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "account": {
+                                            "Ref": "AWS::AccountId"
                                         }
                                     }
                                 ]
