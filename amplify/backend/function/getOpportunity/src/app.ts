@@ -22,6 +22,23 @@ const getOpportunity = async (
     return result.Item as Opportunity;
 };
 
+const getQuestions = async (
+    client: AWS.DynamoDB.DocumentClient,
+    TableName: string,
+    applicationId: string
+) => {
+    let result = await client
+        .query({
+            TableName,
+            ExpressionAttributeValues: { ":o": applicationId },
+            IndexName: "gsi-Application",
+            KeyConditionExpression: "applicationQuestionApplicationId = :o"
+        })
+        .promise();
+
+    return result.Items || [];
+};
+
 const getApplications = async (
     client: AWS.DynamoDB.DocumentClient,
     TableName: string,
@@ -114,9 +131,29 @@ app.get("/opportunity/retrieve/:id", async (req, res) => {
         return sortedApplicationsArray[0] || {};
     };
 
+    const opportunityQuestionTableName = getDBTableName(
+        env,
+        apiId,
+        "ApplicationQuestion"
+    );
+
+    const application = lowestRankedApplication();
+
+    if (!application.id) {
+        console.error(`The application was not found`);
+        throw new Error(`Application not found`);
+    }
+
+    // Get questions for application
+    const questions = await getQuestions(
+        client,
+        opportunityQuestionTableName,
+        application.id
+    );
+
     const opportunityWithLowestRankedApplication = {
         ...opportunity,
-        lowestRankedApplication: lowestRankedApplication()
+        lowestRankedApplication: { ...application, questions }
     };
 
     res.json(opportunityWithLowestRankedApplication);
