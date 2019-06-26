@@ -13,7 +13,7 @@ import { listingIsComplete } from "../../dataHelpers";
 
 interface Props {
     component: WebsiteListing | ApplicationListing;
-    deleteListing: (id: string) => void;
+    deleteListing: (id: string, component: string) => void;
 }
 
 const niceName: WorkflowTypes = {
@@ -51,7 +51,11 @@ export const WorkflowComponentItem: FC<Props> = ({
                 </GridCol>
 
                 <GridCol setWidth="100">
-                    <button onClick={() => deleteListing(component.id)}>
+                    <button
+                        onClick={() =>
+                            deleteListing(component.id, component.__typename)
+                        }
+                    >
                         Remove
                     </button>
                 </GridCol>

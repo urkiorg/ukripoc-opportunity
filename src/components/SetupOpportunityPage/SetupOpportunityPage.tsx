@@ -175,6 +175,7 @@ export const SetupOpportunityPage: FC<Props> = ({ opportunityId }) => {
             loading={loading}
             updateApplicationRanking={updateApplicationRanking}
             updateWebsiteListingRanking={updateWebsiteListingRanking}
+            opportunityId={opportunityId ? opportunityId : ""}
         />
     );
 };

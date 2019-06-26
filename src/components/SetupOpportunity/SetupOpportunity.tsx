@@ -43,6 +43,7 @@ interface Props {
     updateWebsiteListingRanking: (id: string, rank: number) => void;
     opportunity: GetOpportunityQueryWithQuestions;
     finishOpportunity: () => Promise<any>;
+    opportunityId: string;
 }
 
 const FinishSection = styled(GridRow)`
@@ -85,12 +86,14 @@ export const SetupOpportunity: FC<Props> = ({
     updateWebsiteListingRanking,
     updateApplicationRanking,
     finishOpportunity,
-    loading
+    loading,
+    opportunityId
 }) => {
     const { getOpportunity } = opportunity;
     const [allWorkflows, setAllWorkflows] = useState<
         (ApplicationListing | WebsiteListing | null)[]
     >([]);
+
     const onButtonClick = useCallback(() => {
         finishOpportunity();
     }, [finishOpportunity]);
@@ -148,8 +151,6 @@ export const SetupOpportunity: FC<Props> = ({
         }
     };
 
-    console.log("OK", allWorkflows);
-
     // Add other completion check functions here
     const allComplete =
         getOpportunity &&
@@ -202,6 +203,7 @@ export const SetupOpportunity: FC<Props> = ({
                             >
                                 <WorkflowComponentList
                                     orderedWorkflows={allWorkflows}
+                                    opportunityId={opportunityId}
                                 />
                                 {provided.placeholder}
                                 {provided.placeholder}

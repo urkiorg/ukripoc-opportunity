@@ -23,5 +23,8 @@ const orderedOpportunity = [
 ];
 
 storiesOf("Components|WorkflowComponentList", module).add("Default", () => (
-    <WorkflowComponentList orderedWorkflows={orderedOpportunity} />
+    <WorkflowComponentList
+        orderedWorkflows={orderedOpportunity}
+        opportunityId={"200"}
+    />
 ));
